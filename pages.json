@@ -1,0 +1,125 @@
+{
+	"pages": [
+
+		{
+			"path": "pages/index/index",
+			"style": {
+				// #ifdef MP 
+				"navigationBarTitleText": "读者小站",
+				//"navigationStyle": "custom",
+				// #endif 
+				"app-plus": {
+					"softinputNavBar": "none",
+					"titleNView": {
+						"type": "transparent",
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "请输入搜索内容 如：海底两万里",
+							"placeholderColor": "#606266"
+						},
+						"buttons": [{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60d",
+								"fontSize": "26",
+								"color": "#303133",
+								"float": "left",
+								"background": "rgba(0,0,0,0)"
+							},
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue744",
+								"fontSize": "27",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"redDot": true
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+					"path": "pages/shop/shop"
+				},
+				{
+					"path": "pages/social/social"
+				},
+				{
+					"path": "pages/me/me"
+				},
+				{
+					"path": "pages/station/station",
+					"style": {
+						"navigationBarTitleText": "小站列表"
+					}
+				},
+				{
+					"path": "pages/paper/everyread",
+					"style": {
+						"navigationBarTitleText": "每日阅读"
+					}
+				},
+				{
+					"path": "pages/paper/detail",
+					"style": {
+						"navigationBarTitleText": "文章详情" 
+					}
+				}
+        ,{
+            "path" : "pages/station/station-detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "小站详情",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+			"path": "pages/notice/notice",
+			"style": {
+				"navigationBarTitleText": "通知"
+			}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "读者小站",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#f8f8f8"
+	},
+	"tabBar": {
+		"color": "#C0C0C0",
+		"selectedColor": "#FFD700",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"fontSize": "15px",
+		"iconWidth": "30px",
+		"spacing": "-3px",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/icon/Home.png",
+				"selectedIconPath": "static/icon/Home-active.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/shop/shop",
+				"iconPath": "static/icon/shop.png",
+				"selectedIconPath": "static/icon/shop-active.png",
+				"text": "商城"
+			},
+			{
+				"pagePath": "pages/social/social",
+				"iconPath": "static/icon/social.png",
+				"selectedIconPath": "static/icon/social-active.png",
+				"text": "社交"
+			},
+			{
+				"pagePath": "pages/me/me",
+				"iconPath": "static/icon/me.png",
+				"selectedIconPath": "static/icon/me-active.png",
+				"text": "我的"
+			}
+		]
+	}
+}
