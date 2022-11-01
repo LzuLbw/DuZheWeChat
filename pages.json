@@ -81,6 +81,15 @@
 				"navigationBarTitleText": "通知"
 			}
 		}
+        ,{
+            "path" : "pages/act/act",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
