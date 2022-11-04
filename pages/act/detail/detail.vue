@@ -219,7 +219,7 @@
 				fail: () => {},
 				complete: () => {}
 			});
-			
+
 			//初始化报名按钮状态
 			uni.request({
 				url: 'http://localhost:8082/actSignupinfo/' + getApp().globalData.uid + "/" + this.Activityid,
@@ -331,15 +331,15 @@
 				}
 			},
 			onClick(e) {
-			
+
 				if (e.content.text === "点赞") {
-			
+
 					//进行点赞操作
 					uni.showToast({
 						title: `点赞成功`,
 						icon: 'none'
 					})
-			
+
 					//发起点赞请求
 					uni.request({
 						url: 'http://localhost:8082/actGivelike',
@@ -363,7 +363,7 @@
 						title: `收藏成功`,
 						icon: 'none'
 					})
-					
+
 					//发起收藏请求
 					uni.request({
 						url: 'http://localhost:8082/actCollection',
@@ -381,15 +381,15 @@
 						fail: () => {},
 						complete: () => {}
 					});
-					
-					
+
+
 				} else if (e.content.text === "已点赞") {
 					//进行取消点赞操作
 					uni.showToast({
 						title: `您取消了点赞`,
 						icon: 'none'
 					})
-			
+
 					//发起取消点赞的请求
 					uni.request({
 						url: "http://localhost:8082/actGivelike/" + getApp().globalData.uid + "/" + this
@@ -405,16 +405,16 @@
 						fail: () => {},
 						complete: () => {}
 					});
-			
-			
+
+
 				} else if (e.content.text === "已收藏") {
 					//进行取消收藏操作
 					uni.showToast({
 						title: `您取消了收藏`,
 						icon: 'none'
 					})
-					
-					
+
+
 					//发起取消收藏的请求
 					uni.request({
 						url: "http://localhost:8082/actCollection/" + getApp().globalData.uid + "/" + this
@@ -430,15 +430,15 @@
 						fail: () => {},
 						complete: () => {}
 					});
-					
+
 				}
-			
-			
+
+
 				console.log("==============" + e);
-			
-			
+
+
 			},
-			
+
 			change(e) {
 				console.log('当前模式：' + e.type + ',状态：' + e.show);
 			},
@@ -471,7 +471,7 @@
 				uni.showLoading({
 					title: '3秒后会关闭'
 				})
-			
+
 				setTimeout(() => {
 					uni.hideLoading()
 					console.log(val)
@@ -483,7 +483,7 @@
 			shareToggle() {
 				this.$refs.share.open()
 			},
-			
+
 			favClick(index) {
 				this.checkList[index] = !this.checkList[index]
 				console.log(this.checkList[index]);
@@ -497,11 +497,24 @@
 					complete: () => {}
 				});
 			},
-			
+
 			buttonClick(e) {
 				console.log('点击了立即报名按钮');
 			}
-			
+
+		},
+		onNavigationBarButtonTap(e) {
+			console.log("点击了我的活动按钮");
+			uni.navigateTo({
+				url: '../myact/myact',
+				success: res => {
+					console.log("打开我的活动成功");
+				},
+				fail: () => {
+					console.log("打开我的活动失败");
+				},
+				complete: () => {}
+			});
 		}
 	}
 </script>

@@ -201,6 +201,19 @@
 					complete: () => {}
 				});
 			}
+		},
+		onNavigationBarButtonTap(e) {
+			console.log("点击了我的活动按钮");
+			uni.navigateTo({
+				url: 'myact/myact',
+				success: res => {
+					console.log("打开我的活动成功");
+				},
+				fail: () => {
+					console.log("打开我的活动失败");
+				},
+				complete: () => {}
+			});
 		}
 	}
 </script>
