@@ -58,6 +58,7 @@ Vue.prototype.$api = {msg, json, prePage};
 App.mpType = 'app'
 
 const app = new Vue({
+	store,
     ...App
 })
 app.$mount()

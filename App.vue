@@ -16,6 +16,7 @@
 </script>
 
 <style lang='scss'>
+	@import '@/static/fonts/iconfont.css';
 	@import url("/static/css/base.css");
 	@import "@/uni_modules/uview-ui/index.scss";
 

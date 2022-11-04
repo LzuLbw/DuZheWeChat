@@ -32,4 +32,13 @@ const store = new Vuex.Store({
 	}
 })
 
-export default store
+//购物车
+import cart from './modules/shop/cart.js'
+//地址管理
+import path from './modules/shop/path.js'
+export default new Vuex.Store({
+	modules:{
+		cart,
+		path
+	}
+})
