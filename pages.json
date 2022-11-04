@@ -85,12 +85,21 @@
 		}, {
 			"path": "pages/act/act",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "活动中心",
 				"enablePullDownRefresh": false
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/act/detail/detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活动详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

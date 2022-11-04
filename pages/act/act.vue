@@ -191,7 +191,7 @@
 			opendetail(id) {
 				console.log("点击查看活动ID为" + id + "的活动详情");
 				uni.navigateTo({
-					url: '../detail/detail?activityid=' + id,
+					url: 'detail/detail?activityid=' + id,
 					success: res => {
 						console.log("打开成功,id = ", id);
 					},
