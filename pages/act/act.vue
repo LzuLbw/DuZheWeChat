@@ -34,6 +34,8 @@
 		</view>
 
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
+		
+		<view style="height: 10px;"></view>
 	</view>
 </template>
 
