@@ -1,4 +1,8 @@
 {
+	"easycom": {
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
+
 	"pages": [
 
 		{
@@ -40,57 +44,53 @@
 			}
 		},
 		{
-					"path": "pages/shop/shop"
-				},
-				{
-					"path": "pages/social/social"
-				},
-				{
-					"path": "pages/me/me"
-				},
-				{
-					"path": "pages/station/station",
-					"style": {
-						"navigationBarTitleText": "小站列表"
-					}
-				},
-				{
-					"path": "pages/paper/everyread",
-					"style": {
-						"navigationBarTitleText": "每日阅读"
-					}
-				},
-				{
-					"path": "pages/paper/detail",
-					"style": {
-						"navigationBarTitleText": "文章详情" 
-					}
-				}
-        ,{
-            "path" : "pages/station/station-detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "小站详情",
-                "enablePullDownRefresh": false
-            }
-            
-        },
+			"path": "pages/shop/shop"
+		},
+		{
+			"path": "pages/social/social"
+		},
+		{
+			"path": "pages/me/me"
+		},
+		{
+			"path": "pages/station/station",
+			"style": {
+				"navigationBarTitleText": "小站列表"
+			}
+		},
+		{
+			"path": "pages/paper/everyread",
+			"style": {
+				"navigationBarTitleText": "每日阅读"
+			}
+		},
+		{
+			"path": "pages/paper/detail",
+			"style": {
+				"navigationBarTitleText": "文章详情"
+			}
+		}, {
+			"path": "pages/station/station-detail",
+			"style": {
+				"navigationBarTitleText": "小站详情",
+				"enablePullDownRefresh": false
+			}
+
+		},
 		{
 			"path": "pages/notice/notice",
 			"style": {
 				"navigationBarTitleText": "通知"
 			}
+		}, {
+			"path": "pages/act/act",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
-        ,{
-            "path" : "pages/act/act",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

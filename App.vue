@@ -1,5 +1,11 @@
 <script>
 	export default {
+
+		globalData: {
+			uid: 1,
+			name: '丁家雄'
+		},
+
 		onShow: function() {
 			console.log('App Show')
 		},
@@ -11,6 +17,8 @@
 
 <style lang='scss'>
 	@import url("/static/css/base.css");
+	@import "@/uni_modules/uview-ui/index.scss";
+
 	/*
 		全局公共样式和字体图标
 	*/
@@ -343,6 +351,7 @@
 	video {
 		box-sizing: border-box;
 	}
+
 	/* 骨架屏替代方案 */
 	.Skeleton {
 		background: #f3f3f3;
