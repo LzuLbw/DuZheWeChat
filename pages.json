@@ -126,11 +126,34 @@
 			"path": "pages/act/myact/myact",
 			"style": {
 				"navigationBarTitleText": "我的活动",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"fontWeight": "bold",
+							"float": "right",
+							"text": "申请发布活动 +",
+							"fontSize": "15",
+							"color": "#550000",
+							"type": "favorite",
+							"fontSrc": "/static/yticon.ttf"
+						}]
+					}
+				}
 			}
 
 		}
-	],
+	    
+        ,{
+            "path" : "pages/act/application/application",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "申请发布活动",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

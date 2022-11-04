@@ -175,6 +175,19 @@
 					complete: () => {}
 				});
 			}
+		},
+		onNavigationBarButtonTap(e) {
+			console.log("点击了申请发布活动按钮");
+			uni.navigateTo({
+				url: '../application/application',
+				success: res => {
+					console.log("打开申请发布活动页面成功");
+				},
+				fail: () => {
+					console.log("打开申请发布活动页面失败");
+				},
+				complete: () => {}
+			});
 		}
 	}
 </script>
