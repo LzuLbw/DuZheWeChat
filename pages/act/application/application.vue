@@ -151,7 +151,7 @@
 </template>
 
 <script>
-	import * as qiniu from 'qiniu-js';
+	// import * as qiniu from 'qiniu-js';
 
 	export default {
 		data() {

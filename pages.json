@@ -4,7 +4,6 @@
 	},
 
 	"pages": [
-
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -43,6 +42,96 @@
 				}
 			}
 		},
+
+		{
+			"path": "pages/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}, {
+			"path": "pages/regist",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/test",
+			"style": {
+				"navigationBarTitleText": "测试"
+			}
+		}, {
+			"path": "pages/mine/wallet/index",
+			"style": {
+				"navigationBarTitleText": "钱包"
+			}
+		}, {
+			"path": "pages/mine/member/index",
+			"style": {
+				"navigationBarTitleText": "会员中心"
+			}
+		}, {
+			"path": "pages/mine/member/daily_sign-in",
+			"style": {
+				"navigationBarTitleText": "日常签到"
+			}
+		}, {
+			"path": "pages/others/index",
+			"style": {
+				"navigationBarTitleText": "其他服务"
+			}
+		}, {
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}, {
+			"path": "pages/mine/avatar/index",
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		}, {
+			"path": "pages/mine/info/index",
+			"style": {
+				"navigationBarTitleText": "个人信息"
+			}
+		}, {
+			"path": "pages/mine/info/edit",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
+			}
+		}, {
+			"path": "pages/mine/pwd/index",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		}, {
+			"path": "pages/mine/setting/index",
+			"style": {
+				"navigationBarTitleText": "应用设置"
+			}
+		}, {
+			"path": "pages/mine/help/index",
+			"style": {
+				"navigationBarTitleText": "常见问题"
+			}
+		}, {
+			"path": "pages/mine/about/index",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		}, {
+			"path": "pages/common/webview/index",
+			"style": {
+				"navigationBarTitleText": "浏览网页"
+			}
+		}, {
+			"path": "pages/common/textview/index",
+			"style": {
+				"navigationBarTitleText": "浏览文本"
+			}
+		},
+
+		
 		{
 			"path": "pages/shop/index",
 			"style": {
@@ -371,9 +460,9 @@
 				"text": "社交"
 			},
 			{
-				"pagePath": "pages/me/me",
-				"iconPath": "static/icon/me.png",
-				"selectedIconPath": "static/icon/me-active.png",
+				"pagePath": "pages/mine/index",
+				"iconPath": "static/images/tabbar/mine.png",
+				"selectedIconPath": "static/images/tabbar/mine_.png",
 				"text": "我的"
 			}
 		]

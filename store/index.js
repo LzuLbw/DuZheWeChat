@@ -1,9 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import user from '@/store/modules/user'
+import getters from './getters'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+	modules: {
+	  user,
+	  cart,
+	  path
+	},
+	getters,
 	state: {
 		hasLogin: false,
 		userInfo: {},
@@ -36,9 +44,11 @@ const store = new Vuex.Store({
 import cart from './modules/shop/cart.js'
 //地址管理
 import path from './modules/shop/path.js'
-export default new Vuex.Store({
-	modules:{
-		cart,
-		path
-	}
-})
+// export default new Vuex.Store({
+// 	modules:{
+// 		cart,
+// 		path
+// 	}
+// })
+
+export default store

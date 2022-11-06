@@ -7,7 +7,9 @@
 }
 
 @import '@/uni_modules/uview-ui/theme.scss';
-
+/**
+ * uni-app内置的常用样式变量
+ */
 /* 颜色变量 */
 $main-color: #FF5500;
 /* 行为相关颜色 */
@@ -79,5 +81,11 @@ $uni-font-size-subtitle:36rpx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30rpx;
 
+/* 背景颜色 */
+$uni-bg-color:#ffffff;
+$uni-bg-color-grey:#f8f8f8;
+$uni-bg-color-hover:#f1f1f1;//点击状态颜色
+$uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
 
-
+/* 边框颜色 */
+$uni-border-color:#e5e5e5;

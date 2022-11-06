@@ -1,6 +1,15 @@
 import Vue from 'vue'
 import store from './store'
 import App from './App'
+import swCalendar from '@/components/sw-calendar/sw-calendar.vue'
+import plugins from './plugins' // plugins
+import './permission' // permission
+import ssCalendar from '@/components/ss-calendar/ss-calendar.vue'
+Vue.use(plugins)
+
+Vue.config.productionTip = false
+Vue.prototype.$store = store
+
 
 
 import Json from './Json' //测试用数据
@@ -61,4 +70,32 @@ const app = new Vue({
 	store,
     ...App
 })
+
+//组件注册
+export default {
+	data() {
+	  return {
+	    checks: []
+	  }
+	},
+	components: {
+	  ssCalendar,swCalendar
+	},
+	methods: {
+	  onSignIn(payload) {
+	    const { checked, year, month, day } = payload
+	
+	    !checked && this.checks.push(`${year}-${month}-${day}`)
+	
+	    console.log('onSignIn', payload)
+	  },
+	  onPrev(payload) {
+	    console.log('onPrev', payload)
+	  },
+	  onNext(payload) {
+	    console.log('onNext', payload)
+	  }
+	}
+// components:{swCalendar}
+}
 app.$mount()
