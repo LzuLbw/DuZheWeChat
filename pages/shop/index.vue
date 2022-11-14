@@ -138,6 +138,7 @@
 </template>
 
 <script>
+	import { getUserProfile } from "@/api/system/user"
 	import $http from "@/common/api/request.js"
 	export default {
 		props: {
@@ -152,6 +153,7 @@
 		onLoad() {
 			this.initSwiper();
 			this.initProductList();
+			this.getUser();
 		},
 		onReady() {
 
@@ -173,10 +175,16 @@
 				productList: [],
 				currentSwiper: 0,
 				Promotion: [],
-				loadingText: '正在加载...'
+				loadingText: '正在加载...',
+				userId:0
 			}
 		},
 		methods: {
+			getUser() {
+			  getUserProfile().then(response => {
+			    this.userId = response.data.userId;
+			  })
+			},
 			//轮播图指示器
 			swiperChange(event) {
 				this.currentSwiper = event.detail.current;
@@ -203,19 +211,20 @@
 			//商品跳转
 			toGoods(id) {
 				uni.navigateTo({
-					url: '/pages/shop/goods/goods?id=' + id + ''
+					//url: '/pages/shop/goods/goods?id=' + id + ' &userId = '+this.userId
+					url: '/pages/shop/goods/goods?id= '+id+'&userId='+this.userId+''
 				});
 			},
 			//购物车跳转
 			toCart(){
 				uni.navigateTo({
-					url: '/pages/shop/cart/cart'
+					url: '/pages/shop/cart/cart?userId= '+this.userId+''
 				});
 			},
 			//我的地址跳转
 			toAddress(){
 				uni.navigateTo({
-					url: '/pages/shop/address/address'
+					url: '/pages/shop/address/address?userId= '+this.userId+''
 				});
 			},
 			toOrder(){

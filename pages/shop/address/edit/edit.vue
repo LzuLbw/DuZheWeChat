@@ -1,106 +1,197 @@
 <template>
-	<view>
-		<view class="content">
-			<view class="row">
-				<view class="nominal">
-					收件人
-				</view>
-				<view class="input">
-					<input placeholder="请输入收件人姓名" type="text" v-model="name" />
-				</view>
-			</view>
-			<view class="row">
-				<view class="nominal">
-					电话号码
-				</view>
-				<view class="input">
-					<input placeholder="请输入收件人电话号码" type="text" v-model="tel" />
-				</view>
-			</view>
-			<view class="row">
-				<view class="nominal">
-					所在地区
-				</view>
-				<view class="input" @tap="chooseCity">
-					{{region.label}}
-				</view>
-				
-			</view>
-			<view class="row">
-				<view class="nominal">
-					详细地址
-				</view>
-				<view class="input">
-					<textarea v-model="detailed" auto-height="true" placeholder="输入详细地址"></textarea>
-				</view>
-			</view>
-			<view class="row">
-				<view class="nominal">
-					设置默认地址
-				</view>
-				<view class="input switch">
-					<switch color="#f06c7a" :checked="isDefault" @change=isDefaultChange />
-				</view>
-			</view>
-			<view class="row" v-if="editType=='edit'" @tap="del">
-				<view class="del">
-					删除收货地址
-				</view>
-			</view>
+	<view class='my-add-path'>
+
+		<view class='path-item'>
+			<view>收 件 人</view>
+			<input type="text" value="" placeholder="收件人姓名" v-model="pathObj.name" @blur="headName" />
 		</view>
-		<view class="save" @tap="save">
+
+		<view class='path-item'>
+			<view>手 机 号</view>
+			<input type="text" value="" placeholder="11位手机号" v-model="pathObj.tel" />
+		</view>
+
+		<view class='path-item'>
+			<view>所在地址</view>
+			<view @tap='showCityPicker'>{{ pathCity }} > </view>
+			<mpvue-city-picker ref="mpvueCityPicker" :pickerValueDefault="pickerValueDefault" @onConfirm="onConfirm">
+			</mpvue-city-picker>
+		</view>
+
+		<view class='path-item'>
+			<view>详细地址</view>
+			<input type="text" value="" placeholder="5到60个字符" v-model="pathObj.detailed" />
+		</view>
+
+		<view class='path-item'>
+			<view>设为默认地址</view>
+			<radio-group name="" @change="radioChange">
+				<label class="radio">
+					<radio color="#FF3333" :checked="pathObj.isDefault == 1 ? true:false" /><text></text>
+				</label>
+			</radio-group>
+		</view>
+		<!-- <view class="del" v-if="editType=='edit'" @tap="del">
 			<view class="btn">
-				保存地址
+				删除收货地址
 			</view>
-		</view>
-		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValue" @onCancel="onCancel" @onConfirm="onConfirm"></mpvue-city-picker>
+		</view> -->
+
 	</view>
 </template>
 
 <script>
+	import $http from '@/common/api/request.js'
 	import mpvueCityPicker from '@/components/shop/mpvue-citypicker/mpvueCityPicker.vue'
-	import {mapActions} from 'vuex'
+	import {
+		mapActions
+	} from 'vuex'
 	export default {
-		components: {
-			mpvueCityPicker,
-		},
 		data() {
 			return {
-				editType:'edit',
-				id:'',
-				name:'',
-				tel:'',
-				detailed:'',
-				isDefault:false,
-				cityPickerValue: [0, 0, 1],
-				themeColor: '#007AFF',
-				region:{label:"请点击选择地址",value:[],cityCode:""}
-			};
+				userId: "",
+				pickerValueDefault: [0, 0, 1],
+				head: "",
+				editType: "",
+				pathObj: {
+					id: "",
+					name: "", //收货人
+					tel: "", //收货人电话
+					province: "", //省
+					city: "", //市
+					district: "", //区
+					detailed: "", //收货人详细地址
+					isDefault: false //默认地址
+				},
+				i: -1,
+				//是否修改的状态
+				isStatus: false
+			}
+		},
+		computed: {
+			pathCity() {
+				if (this.pathObj.province) {
+					return `${this.pathObj.province}-${this.pathObj.city}-${this.pathObj.district}`
+				} else {
+					return '请选择';
+				}
+			}
+		},
+		onLoad(e) {
+			this.userId = e.userId;
+			this.editType = e.type;
+			if (e.type == 'edit') {
+				uni.getStorage({
+					key: 'address',
+					success: (e) => {
+						console.log(e);
+						this.pathObj.id = e.data.id;
+						this.pathObj.name = e.data.name;
+						this.pathObj.tel = e.data.tel;
+						this.pathObj.detailed = e.data.detailed;
+						this.pathObj.isDefault = e.data.isDefault;
+						this.pathObj.province = e.data.province;
+						this.pathObj.city = e.data.city;
+						this.pathObj.district = e.data.district;
+						this.head = e.data.head;
+						this.userId = e.data.user_id;
+					}
+				})
+			}
+		},
+		components: {
+			mpvueCityPicker
+		},
+		//页面生命周期
+		onNavigationBarButtonTap() {
+			let data={"name":this.pathObj.name,"head":this.pathObj.name.substr(0,1),"tel":this.pathObj.tel,"detailed":this.pathObj.detailed,"province":this.pathObj.province,"city":this.pathObj.city,"district":this.pathObj.district,"isDefault":this.pathObj.isDefault}
+			if (this.editType == 'edit') {
+				//修改
+				$http.request({
+					url: "/shop/editAddress",
+					method: "POST",
+					header: {
+						token: true
+					},
+					data: {
+						head: this.head,
+						userId: this.userId,
+						...this.pathObj
+					}
+				}).then((res) => {
+
+					uni.setStorage({
+						key:'saveAddress',
+						data:data,
+						success() {
+							uni.navigateBack();
+						}
+					})
+
+				}).catch(() => {
+
+				})
+				uni.navigateBack({
+					delta: 1
+				})
+			} else {
+				//新增
+				$http.request({
+					url: "/shop/addAddress",
+					method: "POST",
+					header: {
+						token: true
+					},
+					data: {
+						head: this.head,
+						userId: this.userId,
+						...this.pathObj
+					}
+				}).then((res) => {
+
+					this.createPathFn(this.pathObj);
+					uni.navigateBack({
+						delta: 1
+					})
+
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			}
 		},
 		methods: {
-			...mapActions(["createPathFn"]),
-			onCancel(e) {
-				console.log(e)
-			},
-			chooseCity() {
-				this.$refs.mpvueCityPicker.show()
+			...mapActions(["createPathFn", 'updatePathFn']),
+			showCityPicker() {
+				this.$refs.mpvueCityPicker.show();
 			},
 			onConfirm(e) {
-				this.region = e;
-				this.cityPickerValue = e.value;
+				let arr = e.label.split("-");
+				this.pathObj.province = arr[0];
+				this.pathObj.city = arr[1];
+				this.pathObj.district = arr[2];
 			},
-			isDefaultChange(e){
-				this.isDefault = e.detail.value;
+			radioChange() {
+				this.pathObj.isDefault = this.pathObj.isDefault == 1 ? true : false;
+				this.pathObj.isDefault = !this.pathObj.isDefault;
 			},
-			del(){
+			headName() {
+				this.head = this.pathObj.name.substr(0, 1);
+				console.log(this.head);
+			},
+			del() {
 				uni.showModal({
 					title: '删除提示',
 					content: '你将删除这个收货地址',
-					success: (res)=>{
+					success: (res) => {
 						if (res.confirm) {
 							uni.setStorage({
-								key:'delAddress',
-								data:{id:this.id},
+								key: 'delAddress',
+								data: {
+									id: this.id
+								},
 								success() {
 									uni.navigateBack();
 								}
@@ -110,95 +201,42 @@
 						}
 					}
 				});
-				
-			},
-			save(){
-				let data={"name":this.name,"head":this.name.substr(0,1),"tel":this.tel,"address":{"region":this.region,"detailed":this.detailed},"isDefault":this.isDefault}
-				if(this.editType=='edit'){
-					data.id = this.id
-				}
-				if(!data.name){
-					uni.showToast({title:'请输入收件人姓名',icon:'none'});
-					return ;
-				}
-				if(!data.tel){
-					uni.showToast({title:'请输入收件人电话号码',icon:'none'});
-					return ;
-				}
-				if(!data.address.detailed){
-					uni.showToast({title:'请输入收件人详细地址',icon:'none'});
-					return ;
-				}
-				if(data.address.region.value.length==0){
-					uni.showToast({title:'请选择收件地址',icon:'none'});
-					return ;
-				}
-				uni.showLoading({
-					title:'正在提交'
-				})
-				//实际应用中请提交ajax,模板定时器模拟提交效果
-				setTimeout(()=>{
-					uni.setStorage({
-						key:'saveAddress',
-						data:data,
-						success() {
-							uni.hideLoading();
-							uni.navigateBack();
-						}
-					})
-				},300)
-				
-				
-			}
-		},
-		onLoad(e) {
-			//获取传递过来的参数
-			
-			this.editType = e.type;
-			if(e.type=='edit'){
-				uni.getStorage({
-					key:'address',
-					success: (e) => {
-						this.id = e.data.id;
-						this.name = e.data.name;
-						this.tel = e.data.tel;
-						this.detailed = e.data.address.detailed;
-						this.isDefault = e.data.isDefault;
-						this.cityPickerValue = e.data.address.region.value;
-						this.region = e.data.address.region;
-					}
-				})
-			}
-			
-		},
-		onBackPress() {
-			if (this.$refs.mpvueCityPicker.showPicker) {
-				this.$refs.mpvueCityPicker.pickerCancel();
-				return true;
-			}
-		},
-		onUnload() {
-			if (this.$refs.mpvueCityPicker.showPicker) {
-				this.$refs.mpvueCityPicker.pickerCancel()
-			}
-		}
-	};
-</script>
-<style lang="scss">
 
-.save{
-		view{
-			display: flex;
+			},
 		}
+	}
+</script>
+
+<style scoped>
+	.my-add-path {
+		padding-left: 20rpx;
+	}
+
+	.path-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16rpx 0;
+		width: 100%;
+		border-bottom: 2rpx solid #CCCCCC;
+	}
+
+	.path-item input {
+		flex: 1;
+		text-align: left;
+		padding-left: 10rpx;
+	}
+
+	.del {
 		position: fixed;
 		bottom: 0;
 		width: 100%;
 		height: 120upx;
-		display: flex;
 		justify-content: center;
 		align-items: center;
-		.btn{
-			box-shadow: 0upx 5upx 10upx rgba(0,0,0,0.4);
+
+		.btn {
+			box-shadow: 0upx 5upx 10upx rgba(0, 0, 0, 0.4);
 			width: 70%;
 			height: 80upx;
 			border-radius: 80upx;
@@ -206,58 +244,7 @@
 			color: #fff;
 			justify-content: center;
 			align-items: center;
-			.icon{
-				height: 80upx;
-				color: #fff;
-				font-size: 30upx;
-				justify-content: center;
-				align-items: center;
-			}
 			font-size: 30upx;
 		}
 	}
-	.content{
-		display: flex;
-		flex-wrap: wrap;
-		view{
-			display: flex;
-		}
-		.row{
-			width: 94%;
-			
-			margin: 0 3%;
-			border-top: solid 1upx #eee;
-			.nominal{
-				width: 30%;
-				height: 120upx;
-				font-weight: 200;
-				font-size: 30upx;
-				align-items: center;
-			}
-			.input{
-				width: 70%;
-				padding: 20upx 0;
-				align-items: center;
-				font-size: 30upx;
-				&.switch{
-					justify-content: flex-end;
-				}
-				.textarea{
-					margin: 20upx 0;
-					min-height: 120upx;
-				}
-			}
-			.del{
-				width: 100%;
-				height: 100upx;
-				justify-content: center;
-				align-items: center;
-				font-size: 36upx;
-				color: #f06c7a;
-				background-color: rgba(255,0,0,0.05);
-				border-bottom: solid 1upx #eee;
-			}
-		}
-	}
-	
 </style>

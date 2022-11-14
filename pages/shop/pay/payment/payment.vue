@@ -82,20 +82,30 @@
 		methods:{
 			doDeposit(){
 				//模板模拟支付，实际应用请调起微信/支付宝
-				uni.showLoading({
-					title:'支付中...'
+				// uni.showLoading({
+				// 	title:'支付中...'
+				// });
+				// setTimeout(()=>{
+				// 	uni.hideLoading();
+				// 	uni.showToast({
+				// 		title:'支付成功'
+				// 	});
+				// 	setTimeout(()=>{
+				// 		uni.redirectTo({
+				// 			url:'../../pay/success/success?amount='+this.amount
+				// 		});
+				// 	},300);
+				// },700)
+				uni.requestPayment({
+				    provider: 'alipay',
+				    orderInfo: '123456', //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
+				    success: function (res) {
+				        console.log('success:' + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log('fail:' + JSON.stringify(err));
+				    }
 				});
-				setTimeout(()=>{
-					uni.hideLoading();
-					uni.showToast({
-						title:'支付成功'
-					});
-					setTimeout(()=>{
-						uni.redirectTo({
-							url:'../../pay/success/success?amount='+this.amount
-						});
-					},300);
-				},700)
 			}
 		}
 	}

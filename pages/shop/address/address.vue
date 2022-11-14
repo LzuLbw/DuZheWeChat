@@ -12,12 +12,12 @@
 						<view class="name-tel">
 							<view class="name">{{row.name}}</view>
 							<view class="tel">{{row.tel}}</view>
-							<view class="default" v-if="row.isDefault">
+							<view class="default" v-if="row.isDefault == 1 ">
 								默认
 							</view>
 						</view>
 						<view class="address">
-							{{row.address.region.label}} {{row.address.detailed}}
+							{{row.province}} {{row.city}} {{row.district}} {{row.detailed}}
 						</view>
 					</view>
 					<view class="right">
@@ -36,10 +36,12 @@
 	</view>
 </template>
 <script>
-	import {mapState} from 'vuex'
+	import $http from "@/common/api/request.js"
+	import {mapState,mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
+				userId:0,
 				isSelect:false,
 			};
 		},
@@ -94,15 +96,37 @@
 			if(e.type=='select'){
 				this.isSelect = true;
 			}
+			this.userId = e.userId;
+			console.log(this.userId);
+			this.initAddress();
 		},
 		methods:{
+			...mapMutations(['initAddressList']),
+			//初始化（请求收获地址接口）
+			initAddress(){
+				$http.request({
+					url: "/shop/selectAddress",
+					method:"POST",
+					data:{
+						userId:this.userId
+					}
+				}).then((res) => {
+					console.log(res);
+					this.initAddressList(res);
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
 			edit(row){
 				uni.setStorage({
 					key:'address',
 					data:row,
 					success() {
 						uni.navigateTo({
-							url:"/pages/shop/address/edit/edit?type=edit"
+							url:'/pages/shop/address/edit/edit?type=edit&userId='+this.userId+''
 						})
 					}
 				});
@@ -110,7 +134,7 @@
 			},
 			add(){
 				uni.navigateTo({
-					url:"/pages/shop/address/edit/edit?type=add"
+					url:'/pages/shop/address/edit/edit?type=add&userId='+this.userId+''
 				})
 			},
 			select(row){

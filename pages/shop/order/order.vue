@@ -18,10 +18,10 @@
 						<view class="num">{{user.integral}}</view>
 						<view class="text">积分</view>
 					</view>
-					<view class="box">
+					<!-- <view class="box">
 						<view class="num">{{user.envelope}}</view>
 						<view class="text">佣金</view>
-					</view>
+					</view> -->
 					<view class="box">
 						<view class="num">{{user.balance}}</view>
 						<view class="text">余额</view>
@@ -84,8 +84,8 @@
 				mytoolbarList:[
 					{url:'../../shop/keep/keep',text:'我的收藏',img:'/static/image/shop/point.png'},
 					{url:'../../shop/address/address',text:'收货地址',img:'/static/image/shop/addr.png'},
-					{url:'',text:'账户安全',img:'/static/image/shop/security.png'},
-					{url:'',text:'银行卡',img:'/static/image/shop/bank.png'},
+					// {url:'',text:'账户安全',img:'/static/image/shop/security.png'},
+					// {url:'',text:'银行卡',img:'/static/image/shop/bank.png'},
 				]
 			}
 		},

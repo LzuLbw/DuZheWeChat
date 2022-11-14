@@ -31,7 +31,7 @@
 									<view>*{{row.goods_num}}</view>
 								</template>
 								<template v-else>
-									<uniNumberBox :value='row.goods_num' :min="1" @change='changeNumber($event,index)'>
+									<uniNumberBox :value='row.goods_num' :min="1" @change='changeNumber($event,index,row)'>
 									</uniNumberBox>
 								</template>
 
@@ -53,7 +53,7 @@
 				<view class="settlement">
 					<view class="sum">合计:<view class="money">￥{{totalCount.nprice}}</view>
 					</view>
-					<view class="btn" @tap="toConfirmation">结算({{totalCount.goods_num}})</view>
+					<view class="btn" @tap="toConfirmation()">结算({{totalCount.goods_num}})</view>
 				</view>
 			</template>
 			<template v-else>
@@ -79,6 +79,7 @@
 	export default {
 		data() {
 			return {
+				userId:0,
 				isNavBar: false,
 				headerPosition: "fixed",
 				headerTop: null,
@@ -106,7 +107,9 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
-		onLoad() {
+		onLoad(e) {
+			this.userId = e.userId;
+			console.log(this.userId);
 			//兼容H5下结算条位置
 			// #ifdef H5
 			this.footerbottom = document.getElementsByTagName('uni-tabbar')[0].offsetHeight + 'px';
@@ -117,30 +120,34 @@
 			// #endif
 		},
 		onShow() {
-			//this.getData();
+			this.getData();
 		},
 		computed: {
 			...mapState({
-				goodsList: state => state.cart.list
+				goodsList: state => state.cart.list,
+				selectedList:state=>state.cart.selectedList
 			}),
 			...mapGetters(['checkedAll', 'totalCount'])
 		},
 		methods: {
 			...mapActions(['checkedAllFn','delGoodsFn']),
-			...mapMutations(['selectedItem']),
-			// getData() {
-			// 	$http.request({
-			// 		url: "/goods/selectCart",
-			// 	}).then((res) => {
-			// 		console.log(res);
-			// 		this.goodsList = res;
-			// 	}).catch(() => {
-			// 		uni.showToast({
-			// 			title: '请求失败',
-			// 			icon: 'none'
-			// 		})
-			// 	})
-			// },
+			...mapMutations(['selectedItem','initGetData']),
+			getData() {
+				$http.request({
+					url: "/goods/selectCart",
+					method:"POST",
+					data:{
+						userId:this.userId
+					}
+				}).then((res) => {
+					this.initGetData(res);
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
 			//加入商品 参数 goods:商品数据
 
 			//商品跳转
@@ -155,50 +162,61 @@
 			},
 			//跳转确认订单页面
 			toConfirmation() {
-				let tmpList = [];
-				let len = this.goodsList.length;
-				for (let i = 0; i < len; i++) {
-					if (this.goodsList[i].selected) {
-						tmpList.push(this.goodsList[i]);
-					}
+				if( this.selectedList.length === 0 ){
+					return uni.showToast({
+						title:"请选择商品结算",
+						icon:"none"
+					})
 				}
-				if (tmpList.length < 1) {
-					uni.showToast({
-						title: '请选择商品结算',
-						icon: 'none'
-					});
-					return;
-				}
-				uni.setStorage({
-					key: 'buylist',
-					data: tmpList,
-					success: () => {
-						uni.navigateTo({
-							url: '../../order/confirmation'
-						})
-					}
-				})
-			},
-			changeNumber(value, index) {
+				// let newList = [];
+				// console.log(this.goodsList);
+				// this.goodsList.forEach(item=>{
+				// 	this.selectedList.filter(v=>{
+				// 		if(item.id == v){
+				// 			newList.push(item);
+				// 		}
+				// 	})
+				// })
+				// console.log(newList);
 				// $http.request({
-				// 	url: "/goods/updateCart",
-				// 	methods: "POST",
-				// 	header: {
-				// 		token: true
-				// 	},
-				// 	data: {
-				// 		goodsId: item.goods_id,
-				// 		num: value
+				// 	url: "/goods/addOrder",
+				// 	method:"POST",
+				// 	data:{
+				// 		userId:this.userId,
+				// 		arr:newList
 				// 	}
 				// }).then((res) => {
-				// 	this.goodsList[index].goods_num = value;
+				// 	console.log(res);
+				// 	uni.navigateTo({
+				// 		url: '/pages/shop/order/confirmation?userId= '+this.userId+'&detail= '+JSON.stringify(this.selectedList)+''
+				// 	})
 				// }).catch(() => {
 				// 	uni.showToast({
 				// 		title: '请求失败',
 				// 		icon: 'none'
 				// 	})
 				// })
-				this.goodsList[index].goods_num = value;
+				uni.navigateTo({
+					url: '/pages/shop/order/confirmation?userId= '+this.userId+'&detail= '+JSON.stringify(this.selectedList)+''
+				})
+			},
+			changeNumber(value, index,item) {
+				$http.request({
+					url: "/goods/updateNumCart",
+					method: "POST",
+					data: {
+						userId:this.userId,
+						goodsId:item.goods_id,
+						num:value
+					}
+				}).then((res) => {
+					this.goodsList[index].goods_num = value;
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
 			}
 		}
 	}

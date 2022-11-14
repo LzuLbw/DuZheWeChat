@@ -1,3 +1,4 @@
+import $http from "@/common/api/request.js"
 export default {
 	state: {
 		list: [],
@@ -27,6 +28,9 @@ export default {
 		}
 	},
 	mutations: {
+		initGetData(state,list){
+			state.list = list;
+		},
 		//全选
 		checkAll(state) {
 			state.selectedList = state.list.map(v => {
@@ -72,12 +76,31 @@ export default {
 		}) {
 			getters.checkedAll ? commit("unCheckAll") : commit("checkAll");
 		},
-		delGoodsFn({commit}){
-			commit('delGoods');
-			commit('unCheckAll');
-			uni.showToast({
-				title: "删除成功",
-				icon: "none"
+		delGoodsFn({commit,state}){
+			uni.showModal({
+				content:"确定删除吗？",
+				success: () => {
+					$http.request({
+						url: "/goods/deleteCart",
+						method:"POST",
+						data:{
+							goodsId:state.selectedList,
+							userId:this.userId
+						}
+					}).then((res) => {
+						commit('delGoods');
+						commit('unCheckAll');
+						uni.showToast({
+							title: "删除成功",
+							icon: "none"
+						})
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+				}
 			})
 		}
 	}

@@ -56,25 +56,25 @@
 				<view class="h1">分享</view>
 				<view class="list">
 					<view class="box">
-						<image src="/static/image/share/wx.png"></image>
+						<image src="/static/image/share/wx.png" @tap="toShareWexin()"></image>
 						<view class="title">
 							微信好友
 						</view>
 					</view>
 					<view class="box">
-						<image src="/static/image/share/pyq.png"></image>
+						<image src="/static/image/share/pyq.png" @tap="toShareWexinScene()"></image>
 						<view class="title">
 							朋友圈
 						</view>
 					</view>
 					<view class="box">
-						<image src="/static/image/share/wb.png"></image>
+						<image src="/static/image/share/wb.png" @tap="toShareWeibo()"></image>
 						<view class="title">
 							新浪微博
 						</view>
 					</view>
 					<view class="box">
-						<image src="/static/image/share/qq.png"></image>
+						<image src="/static/image/share/qq.png" @tap="toShareQQ()"></image>
 						<view class="title">
 							QQ
 						</view>
@@ -211,6 +211,7 @@
 	export default {
 		data() {
 			return {
+				userId:0,
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11, //层级
 				afterHeaderzIndex: 10, //层级
@@ -268,6 +269,7 @@
 			uniNumberBox
 		},
 		onLoad(option) {
+			this.userId = option.userId;
 			// #ifdef MP
 			//小程序隐藏返回按钮
 			this.showBack = false;
@@ -314,8 +316,6 @@
 					this.swiperList.push(this.goodsContent.swiperimgUrl1);
 					this.swiperList.push(this.goodsContent.swiperimgUrl2);
 					this.swiperList.push(this.goodsContent.swiperimgUrl3);
-					console.log(this.swiperList);
-					console.log(this.swiperList.length);
 				}).catch(() => {
 					uni.showToast({
 						title: '请求失败',
@@ -398,7 +398,7 @@
 					data: tmpList,
 					success: () => {
 						uni.navigateTo({
-							url: '../order/confirmation'
+							url: '/pages/shop/order/confirmation'
 						})
 					}
 				})
@@ -507,6 +507,66 @@
 					title:"成功加入购物车",
 					icon:'none'
 				})
+				console.log(this.goodsContent.id);
+				$http.request({
+					url: "/goods/addCart",
+					method: "POST",
+					data: {
+						userId:this.userId,
+						goodsId:this.goodsContent.id,
+						num:this.num
+					}
+				}).then((res) => {
+					
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
+			toShareWexin(){
+				uni.share({
+					"provider":"weixin",
+					"type":0,
+					"scene":"WXSceneSession",
+					"title":this.goodsContent.name,
+					"href":"http://172.23.168.174:8080/#/pages/shop/goods/goods?id="+this.goodsContent.id+"",
+					imageUrl:this.goodsContent.imgUrl,
+					success: function (res) {
+						uni.showTabBar({
+							title:"分享成功"
+						})
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+					
+				})
+			},
+			toShareWexinScene(){
+				uni.share({
+					provider: "weixin",
+					scene: "WXSceneTimeline",
+					type: 0,
+					href: "http://172.23.168.174:8080/#/pages/shop/goods/goods?id="+this.goodsContent.id+"",
+					title: this.goodsContent.name,
+					imageUrl: this.goodsContent.imgUrl,
+					success: function (res) {
+						uni.showTabBar({
+							title:"分享成功"
+						})
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			},
+			toShareWeibo(){
+				
+			},
+			toShareQQ(){
+				
 			}
 		}
 	};

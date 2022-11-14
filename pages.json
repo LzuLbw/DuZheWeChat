@@ -3,8 +3,7 @@
 		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
 	},
 
-	"pages": [
-		{
+	"pages": [{
 			"path": "pages/index/index",
 			"style": {
 				// #ifdef MP 
@@ -131,7 +130,7 @@
 			}
 		},
 
-		
+
 		{
 			"path": "pages/shop/index",
 			"style": {
@@ -258,11 +257,23 @@
 		},
 		{
 			"path": "pages/shop/address/edit/edit",
-			"style": {
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTitleText": "编辑收件人地址",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
+			"style" : {
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTitleText": "新增地址",
+				"app-plus":{
+					"scrollIndicator":"none",
+					"titleNView":{
+						"buttons":[
+							{
+								"float":"right",
+								"color":"#636263",
+								"text":"保存",
+								"fontSize":"16px",
+								"width":"60px"
+							}
+						]
+					}
+				}
 			}
 		},
 		{
@@ -318,6 +329,13 @@
 				"navigationBarTitleText": "支付成功",
 				"backgroundColorTop": "#ffffff",
 				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/shop/order/confirmation",
+			"style": {
+				"navigationBarTitleText": "确认订单",
+				"softinputNavBar": "none"
 			}
 		},
 		{
