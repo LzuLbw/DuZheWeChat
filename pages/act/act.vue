@@ -13,8 +13,8 @@
 			<w-select style="margin-left: 20rpx;" v-model='chooseValue3' defaultValue="活动发起人" :list='list3'
 				valueName='content' @change='change3'>
 			</w-select>
-		</view>
 
+		</view>
 
 		<view v-for="(item,index) in AllActivityData">
 
@@ -34,7 +34,7 @@
 		</view>
 
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
-		
+
 		<view style="height: 10px;"></view>
 	</view>
 </template>
@@ -43,6 +43,8 @@
 	export default {
 		data() {
 			return {
+
+
 				AllActivityData: [],
 				scrollTop: 0,
 				chooseValue1: "",
@@ -110,6 +112,9 @@
 		},
 		methods: {
 
+		
+
+			// 保留 别动
 			change1(e) {
 				console.log('活动地点', this.chooseValue1);
 				console.log('活动状态', this.chooseValue2);
@@ -221,7 +226,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.wrap {
-		height: 200vh;
+	.example-body {
+		padding: 10px;
 	}
 </style>
