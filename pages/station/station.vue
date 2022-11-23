@@ -4,7 +4,7 @@
 			<view class="tabs">
 				<view class="tab">附近小站</view>
 			</view>
-			<input class="search-input" confirm-type="search" placeholder="搜索门店" type="text" />
+			<input class="search-input" confirm-type="search" placeholder="搜索门店" type="text" @click="nearSearch"/>
 		</view>
 		<view class="store-map">
 			<map id="map"
@@ -20,7 +20,7 @@
 		<view class="collapse-area">
 		</view>
 		<scroll-view class="store-list" style="height: calc(100vh - ( collapse ? 180 : 700)rpx);" scroll-y>
-			<view class="store-box" v-for="item in storeList" :key="item.id">
+			<view class="store-box" v-for="item in storeList" :key="item.id" v-if="item.distance <= 5.00">
 				<view class="info-area" @click="toDetail(item.id)" >
 					<view class="name">{{item.name}}</view>
 					<view class="info">{{item.location}}</view>
@@ -37,7 +37,7 @@
 					 <!-- #endif -->
 				</view>
 				<view class="location-area">
-					<view class="distance" @s="getDistance(item.latitude,item.longitude)">距离{{distance}}km</view>
+					<view class="distance">距离{{item.distance}}km</view>
 					<view class="action-area">
 						<image class="location" src="../../static/icon/tolocation.png" @click="openGuide(item.longitude,item.latitude)"></image>
 						<image class="phone" src="../../static/icon/phone.png" @click="callPhone(item.phone)"></image>
@@ -49,48 +49,49 @@
 </template>
 
 <script>
+
+
+
 export default {
 	data() {
 		return {
 			latitude: 0,
 			longitude: 0,
-			distance: 0,
+			distances:[],
 			open: true,
 			storeList:[],
-			lng:0,
-			lat:0,
 			markers: [{
 				id:1,
-				latitude:36.101722,
-				longitude:103.629598,
-				title:"读者小站-金城书房",
-				iconPath:'/static/location.png',
-				width:35,
-				height:39
+				title:'读者小站-金城书房',
+				longitude:103.623215,
+				latitude:36.096003,
+				iconPath:'../../static/location.png',
+				width:'20rpx',
+				height:'20rpx'
 			},{
 				id:2,
-				latitude:36.08,
-				longitude:103.62,
-				title:"读者小站（五一菜市场店）",
-				iconPath:'/static/location.png',
-				width:35,
-				height:39
+				title:'读者小站-金城书房',
+				longitude:103.625845,
+				latitude:36.085497,
+				iconPath:'../../static/location.png',
+				width:'20rpx',
+				height:'20rpx'
 			},{
 				id:3,
-				latitude:36.09,
-				longitude:103.64,
-				title:"读者小站-金城书房",
-				iconPath:'/static/location.png',
-				width:35,
-				height:39
+				title:'读者小站（五一菜市场店）',
+				longitude:103.636068,
+				latitude:36.091437,
+				iconPath:'../../static/location.png',
+				width:'20rpx',
+				height:'20rpx'
 			},{
 				id:4,
-				latitude:36.10,
-				longitude:103.61,
-				title:"读者小站(中街社区)",
-				iconPath:'/static/location.png',
-				width:35,
-				height:39
+				title:'读者小站（中街社区）',
+				longitude:103.605208,
+				latitude:36.099493,
+				iconPath:'../../static/location.png',
+				width:'20rpx',
+				height:'20rpx'
 			}]
 		}
 	},
@@ -105,6 +106,7 @@ export default {
 					latitude,
 					longitude
 				})
+				that.getViennaList(latitude,longitude)
 			}
 		})
 		
@@ -115,7 +117,6 @@ export default {
 		this.fetchStoreList();
 	},
 	mounted() {
-		this.distance = this.getDistance(this.lat,this.lng);
 	},
 	methods: {
 		setData:function(obj){    
@@ -145,51 +146,63 @@ export default {
 			})
 		},
 		fetchStoreList(){
-			const that = this;
+			var that = this;
 			uni.request({
-				url:'http://localhost:8080/readerstation/station/list',
+				url:'http://192.168.96.227:8080/readerstation/station/list',
 				success: (res) => {
-				    console.log(res.data.data);
-					that.storeList = res.data.rows;
-					// res.data.data.forEach(item =>{
-					// 	that.lat = item.latitude;
-					// 	that.lng = item.longitude;
-					// 	that.distance = that.getDistance(that.lat,that.lng);
-					// 	console.log(that.distance);
-					//})
+				    console.log(res.data.rows);
+					//that.storeList = res.data.rows
+					console.log(res.data.rows.length)
+					var mks = []
+					for (var i = 0; i < res.data.rows.length; i++) {
+						mks.push({
+							id:res.data.rows[i].id,
+							name:res.data.rows[i].name,
+							location:res.data.rows[i].location,
+							latitude:res.data.rows[i].latitude,
+							longitude:res.data.rows[i].longitude,
+							openTime:res.data.rows[i].openTime,
+							phone:res.data.rows[i].phone,
+							distance:''
+						})
+					}
+				console.log(mks)
+				that.distanceCalculation(mks)
 				}
 			})
 		},
-		makeStoreList(data){
-			//let storeList = [];
-			
-		},
-		Rad(d) {
-			return d * Math.PI / 180.0; 
-		},
-			/*
-			 计算距离，参数分别为第一点的纬度，经度；第二点的纬度，经度
-			 默认单位km
-			*/
-
-			//根据金纬度计算距离
-		getDistance(lat1, lng1) {
+		//根据金纬度计算距离
+		distanceCalculation(mks) {
 			var that = this;
 			let lat2 = that.latitude;
 			let lng2 = that.longitude;
-			let rad1 = lat1 * Math.PI / 180.0;
-			let rad2 = lat2 * Math.PI / 180.0;
-			let a = rad1 - rad2;
-			let b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
-			let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) *
-				Math.cos(
+			console.log(that.latitude,that.longitude);
+			let dis = [];
+			for(var i = 0; i < mks.length; i++){
+				let lat1 = mks[i].latitude;
+				let lng1 = mks[i].longitude;
+				let rad1 = lat1 * Math.PI / 180.0;
+				let rad2 = lat2 * Math.PI / 180.0;
+				let a = rad1 - rad2;
+				let b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+				let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) * Math.cos(
 					rad2) * Math.pow(
 					Math.sin(b / 2), 2)));
-			s = s * 6378.137;
-			s = Math.round(s * 10000) / 10000;
-			s = s.toString();
-			s = s.substring(0, s.indexOf('.') + 2);
-			return s
+				s = s * 6378.137;
+				s = Math.round(s * 10000) / 10000;
+				s = s.toString();
+				s = s.substring(0, s.indexOf('.') + 2);
+				mks[i].distance = s
+			}
+			function compare(property) {
+			  return function (a, b) {
+			    var value1 = a[property];
+			    var value2 = b[property];
+			    return value1 - value2;
+			  }
+			}
+			console.log(mks)
+			that.storeList = mks.sort(compare("distance"))
 		},
 		callPhone(phone)	{
 			uni.makePhoneCall({
@@ -207,6 +220,40 @@ export default {
 				}
 			})
 		},
+		getViennaList(lat,lng){
+			 //获取商家位置
+			 let that = this
+			 var form = {
+				 latitude,
+				 longitude
+			 }
+			 form.latitude = lat
+			 form.longitude = lng
+			 that.qqmapsdk.search({
+				//关键字改成所需商家名称
+				keyword: "读者小站",
+				//自身经纬度对象
+				location: that.form,
+				distance: '5000',
+				success: (res) =>{
+				  for (var i = 0; i < res.data.length; i++) {
+					that.markers.push({ // 获取返回结果，放到mks数组中
+					  title: res.data[i].title,
+					  id: res.data[i].id,
+					  latitude: res.data[i].location.lat,
+					  longitude: res.data[i].location.lng,
+					})
+				  }
+				},
+				fail: (err) => {
+				  uni.showToast({
+					   title: '无法获取商店位置!',
+					   icon:'error',
+					   duration:1500
+				  });
+				}
+			 })
+		},
 		getDateNode(){
 			let that = this;
 		    var dateHours = new Date().getHours();
@@ -219,6 +266,16 @@ export default {
 		toDetail(id){
 			uni.navigateTo({
 				url:'/pages/station/station-detail?id=' + id,
+			})
+		},
+		nearSearch(){
+			let that = this
+			uni.chooseLocation({
+				success: function (res) {
+					that.latitude = res.latitude
+					that.longitude = res.longitude
+					that.distanceCalculation(that.storeList)
+				}
 			})
 		}
 	}
@@ -244,7 +301,7 @@ export default {
 			}
 		}
 		.search-input{
-			width: 348rpx;
+			width: 200rpx;
 			height: 58rpx;
 			background-color: #f5f5f5;
 			border-radius: 29rpx;
