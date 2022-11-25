@@ -2,7 +2,7 @@
 	<view class="main">
 
 		<uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" /><br>
-		<image :src="ActivityData.activityPicUrl"></image><br>
+		<image :src="'http://localhost/dev-api' + ActivityData.activityPicUrl"></image><br>
 
 		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title: '进行中'}, {title: '已结束'}]" :active="stepactive"
 			activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>
@@ -166,7 +166,7 @@
 
 			//获取活动信息
 			uni.request({
-				url: 'http://localhost:8082/actActivity/' + this.Activityid,
+				url: 'http://localhost:8080/actActivity/' + this.Activityid,
 				method: 'GET',
 				data: {},
 				success: res => {

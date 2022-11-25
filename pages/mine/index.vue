@@ -108,6 +108,14 @@
 
 			openmyact() {
 				console.log("打开我的活动页面");
+				uni.navigateTo({
+					url: '../act/myact/myact',
+					success: res => {
+						console.log("打开我的活动页面成功");
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			},
 
 

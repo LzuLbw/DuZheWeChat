@@ -16,11 +16,17 @@
 
 		</view>
 
+		<view style="margin-top: 5px;margin-left: 5px;margin-right: 5px;">
+			<u-gap height="20" bgColor="#00aaff"></u-gap>
+		</view>
+
+
+
 		<view v-for="(item,index) in AllActivityData">
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
-				<uni-card :cover="AllActivityData[index].activityPicUrl">
+				<uni-card :cover="'http://localhost/dev-api' + AllActivityData[index].activityPicUrl">
 
 					<view>
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
@@ -43,6 +49,11 @@
 	export default {
 		data() {
 			return {
+
+				type: 'center',
+				msgType: 'success',
+				messageText: '这是一条成功提示',
+				value: '',
 
 
 				AllActivityData: [],
@@ -95,10 +106,12 @@
 		onLoad() {
 			console.log("当前所在位置：全部活动页面");
 			console.log("当前登录用户id=", getApp().globalData.uid);
+			
+			console.log("当前登录用户昵称=", getApp().globalData.name);
 
 			//获取全部活动数据
 			uni.request({
-				url: 'http://localhost:8082/actActivity',
+				url: 'http://localhost:8080/actActivity',
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -112,7 +125,53 @@
 		},
 		methods: {
 
-		
+
+			change(e) {
+				console.log('当前模式：' + e.type + ',状态：' + e.show);
+			},
+			toggle(type) {
+				this.type = type
+				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
+				this.$refs.popup.open(type)
+			},
+			messageToggle(type) {
+				this.msgType = type
+				this.messageText = `这是一条${type}消息提示`
+				this.$refs.message.open()
+			},
+			dialogToggle(type) {
+				this.msgType = type
+				this.$refs.alertDialog.open()
+			},
+			dialogConfirm() {
+				console.log('点击确认')
+				this.messageText = `点击确认了 ${this.msgType} 窗口`
+				this.$refs.message.open()
+			},
+			inputDialogToggle() {
+				this.$refs.inputDialog.open()
+			},
+			dialogClose() {
+				console.log('点击关闭')
+			},
+			dialogInputConfirm(val) {
+				uni.showLoading({
+					title: '3秒后会关闭'
+				})
+
+				setTimeout(() => {
+					uni.hideLoading()
+					console.log(val)
+					this.value = val
+					// 关闭窗口后，恢复默认内容
+					this.$refs.inputDialog.close()
+				}, 3000)
+			},
+			shareToggle() {
+				this.$refs.share.open()
+			},
+
+
 
 			// 保留 别动
 			change1(e) {
@@ -121,7 +180,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8082/actActivity/condition/',
+					url: 'http://localhost:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 
@@ -146,7 +205,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8082/actActivity/condition/',
+					url: 'http://localhost:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 
@@ -169,7 +228,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8082/actActivity/condition/',
+					url: 'http://localhost:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 
@@ -188,9 +247,9 @@
 			},
 
 
-			change(e) {
-				console.log("e:", e);
-			},
+			// change(e) {
+			// 	console.log("e:", e);
+			// },
 
 			print() {
 				console.log(this.AllActivityData);
@@ -226,6 +285,131 @@
 </script>
 
 <style lang="scss" scoped>
+	@mixin flex {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+	}
+
+	@mixin height {
+		/* #ifndef APP-NVUE */
+		height: 100%;
+		/* #endif */
+		/* #ifdef APP-NVUE */
+		flex: 1;
+		/* #endif */
+	}
+
+	.box {
+		@include flex;
+	}
+
+	.button {
+		@include flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		height: 35px;
+		margin: 0 5px;
+		border-radius: 5px;
+	}
+
+	.example-body {
+		background-color: #fff;
+		padding: 10px 0;
+	}
+
+	.button-text {
+		color: #fff;
+		font-size: 12px;
+	}
+
+	.popup-content {
+		@include flex;
+		align-items: center;
+		justify-content: center;
+		padding: 15px;
+		height: 50px;
+		background-color: #fff;
+	}
+
+	.popup-height {
+		@include height;
+		width: 200px;
+	}
+
+	.text {
+		font-size: 12px;
+		color: #333;
+	}
+
+	.popup-success {
+		color: #fff;
+		background-color: #e1f3d8;
+	}
+
+	.popup-warn {
+		color: #fff;
+		background-color: #faecd8;
+	}
+
+	.popup-error {
+		color: #fff;
+		background-color: #fde2e2;
+	}
+
+	.popup-info {
+		color: #fff;
+		background-color: #f2f6fc;
+	}
+
+	.success-text {
+		color: #09bb07;
+	}
+
+	.warn-text {
+		color: #e6a23c;
+	}
+
+	.error-text {
+		color: #f56c6c;
+	}
+
+	.info-text {
+		color: #909399;
+	}
+
+	.dialog,
+	.share {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: column;
+	}
+
+	.dialog-box {
+		padding: 10px;
+	}
+
+	.dialog .button,
+	.share .button {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
+		margin: 0;
+		margin-top: 10px;
+		padding: 3px 0;
+		flex: 1;
+	}
+
+	.dialog-text {
+		font-size: 14px;
+		color: #333;
+	}
+
+
+
 	.example-body {
 		padding: 10px;
 	}

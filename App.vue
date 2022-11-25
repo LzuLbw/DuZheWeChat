@@ -6,8 +6,8 @@
 	export default {
 
 		globalData: {
-			uid: 1,
-			name: '丁家雄'
+			uid: '',
+			name: ''
 		},
 		onLaunch: function() {
 		  this.initApp()
