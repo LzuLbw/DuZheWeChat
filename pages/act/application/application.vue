@@ -219,7 +219,7 @@
 				console.log(this.matters);
 
 				uni.request({
-					url: 'http://localhost:8082/actActivity/user/activity',
+					url: 'http://localhost:8080/actActivity/user/activity',
 					method: 'POST',
 					data: {
 							"activityMaintitle": this.maintitlevalue,
@@ -298,20 +298,21 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://localhost:8082/file/uploads',
+						url: 'http://localhost/dev-api/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {
 							user: 'test'
 						},
 						success: (res) => {
-
+							
 							console.log(res);
+							url = JSON.parse(res.data).fileName;
+							
+							// console.log(eval(res.data));
 
-							console.log(res.data);
-							this.picurl = res.data;
-
-							console.log(this.picurl);
+							console.log("要存的url为：" + url);
+							this.picurl = url;
 
 							setTimeout(() => {
 								resolve(res.data.data)

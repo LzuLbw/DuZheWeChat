@@ -222,7 +222,7 @@
 
 			//初始化报名按钮状态
 			uni.request({
-				url: 'http://localhost:8082/actSignupinfo/' + getApp().globalData.uid + "/" + this.Activityid,
+				url: 'http://localhost:8080/actSignupinfo/' + getApp().globalData.uid + "/" + this.Activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -241,7 +241,7 @@
 
 			//初始化点赞按钮状态
 			uni.request({
-				url: 'http://localhost:8082/actGivelike/' + getApp().globalData.uid + "/" + this.Activityid,
+				url: 'http://localhost:8080/actGivelike/' + getApp().globalData.uid + "/" + this.Activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -262,7 +262,7 @@
 
 			//初始化收藏按钮状态
 			uni.request({
-				url: 'http://localhost:8082/actCollection/' + getApp().globalData.uid + "/" + this.Activityid,
+				url: 'http://localhost:8080/actCollection/' + getApp().globalData.uid + "/" + this.Activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -290,7 +290,7 @@
 					//已经报名了，可进行取消报名的操作
 					console.log("用户点击了取消报名");
 					uni.request({
-						url: "http://localhost:8082/actSignupinfo/" + getApp().globalData.uid + "/" + this
+						url: "http://localhost:8080/actSignupinfo/" + getApp().globalData.uid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},
@@ -311,7 +311,7 @@
 					//还未报名，可进行立即报名的操作
 					//立即报名
 					uni.request({
-						url: 'http://localhost:8082/actSignupinfo',
+						url: 'http://localhost:8080/actSignupinfo',
 						method: 'POST',
 						data: {
 							"userid": getApp().globalData.uid,
@@ -342,7 +342,7 @@
 
 					//发起点赞请求
 					uni.request({
-						url: 'http://localhost:8082/actGivelike',
+						url: 'http://localhost:8080/actGivelike',
 						method: 'POST',
 						data: {
 							"userid": getApp().globalData.uid,
@@ -366,7 +366,7 @@
 
 					//发起收藏请求
 					uni.request({
-						url: 'http://localhost:8082/actCollection',
+						url: 'http://localhost:8080/actCollection',
 						method: 'POST',
 						data: {
 							"collectionuserid": getApp().globalData.uid,
@@ -392,7 +392,7 @@
 
 					//发起取消点赞的请求
 					uni.request({
-						url: "http://localhost:8082/actGivelike/" + getApp().globalData.uid + "/" + this
+						url: "http://localhost:8080/actGivelike/" + getApp().globalData.uid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},
@@ -417,7 +417,7 @@
 
 					//发起取消收藏的请求
 					uni.request({
-						url: "http://localhost:8082/actCollection/" + getApp().globalData.uid + "/" + this
+						url: "http://localhost:8080/actCollection/" + getApp().globalData.uid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},

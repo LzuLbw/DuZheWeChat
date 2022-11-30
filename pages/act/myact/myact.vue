@@ -10,7 +10,7 @@
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
-				<uni-card :cover="activitydata[index].activityPicUrl">
+				<uni-card :cover="'http://localhost/dev-api' + activitydata[index].activityPicUrl">
 
 					<view>
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
@@ -109,7 +109,7 @@
 			signupinfo() {
 				//已经报名
 				uni.request({
-					url: 'http://localhost:8082/actActivity/signup/' + getApp().globalData.uid,
+					url: 'http://localhost:8080/actActivity/signup/' + getApp().globalData.uid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -132,7 +132,7 @@
 			approvedinfo() {
 				//已经审核通过的活动信息
 				uni.request({
-					url: 'http://localhost:8082/actActivity/approved/' + getApp().globalData.uid,
+					url: 'http://localhost:8080/actActivity/approved/' + getApp().globalData.uid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -155,7 +155,7 @@
 			endinfo() {
 				//历史参加的活动信息
 				uni.request({
-					url: 'http://localhost:8082/actActivity/end/' + getApp().globalData.uid,
+					url: 'http://localhost:8080/actActivity/end/' + getApp().globalData.uid,
 					method: 'GET',
 					data: {},
 					success: res => {

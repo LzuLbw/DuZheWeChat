@@ -102,6 +102,7 @@
 		},
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
+			
 		},
 		onLoad() {
 			console.log("当前所在位置：全部活动页面");
