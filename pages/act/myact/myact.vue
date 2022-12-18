@@ -38,7 +38,7 @@
 
 				show: false,
 
-				list: ['已报名', '审核通过', '历史参加'],
+				list: ['已报名', '审核通过', '历史参加', "我的申请"],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
 				current: 1,
@@ -49,6 +49,8 @@
 				activity_approved: [],
 				//历史参加的活动信息
 				activity_history: [],
+				// 我申请发布的活动信息
+				activity_application: [],
 
 				activitydata: []
 			}
@@ -103,6 +105,9 @@
 				} else if (index === 2) {
 
 					this.endinfo();
+				} else if (index == 3) {
+					console.log("暂未开发完成!");
+					this.activitydata = [];
 				}
 
 			},
