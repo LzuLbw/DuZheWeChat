@@ -148,24 +148,34 @@ export default {
 		fetchStoreList(){
 			var that = this;
 			uni.request({
-				url:'http://192.168.96.227:8080/readerstation/station/list',
+				url:'http://localhost:8080/readerstation/list',
 				success: (res) => {
-				    console.log(res.data.rows);
-					//that.storeList = res.data.rows
-					console.log(res.data.rows.length)
 					var mks = []
-					for (var i = 0; i < res.data.rows.length; i++) {
+					var point = []
+					for (var i = 0; i < res.data.data.length; i++) {
 						mks.push({
-							id:res.data.rows[i].id,
-							name:res.data.rows[i].name,
-							location:res.data.rows[i].location,
-							latitude:res.data.rows[i].latitude,
-							longitude:res.data.rows[i].longitude,
-							openTime:res.data.rows[i].openTime,
-							phone:res.data.rows[i].phone,
+							id:res.data.data[i].id,
+							name:res.data.data[i].name,
+							location:res.data.data[i].location,
+							latitude:res.data.data[i].latitude,
+							longitude:res.data.data[i].longitude,
+							openTime:res.data.data[i].openTime,
+							phone:res.data.data[i].phone,
 							distance:''
 						})
 					}
+					for (var i = 0; i < res.data.data.length; i++) {
+						point.push({
+							id:res.data.data[i].id,
+							title:res.data.data[i].name,
+							latitude:res.data.data[i].latitude,
+							longitude:res.data.data[i].longitude,
+							iconPath:'../../static/location.png',
+							width:30,
+							height:30
+						})
+					}
+				that.markers = point
 				console.log(mks)
 				that.distanceCalculation(mks)
 				}
@@ -219,40 +229,6 @@ export default {
 					console.log('success')
 				}
 			})
-		},
-		getViennaList(lat,lng){
-			 //获取商家位置
-			 let that = this
-			 var form = {
-				 latitude,
-				 longitude
-			 }
-			 form.latitude = lat
-			 form.longitude = lng
-			 that.qqmapsdk.search({
-				//关键字改成所需商家名称
-				keyword: "读者小站",
-				//自身经纬度对象
-				location: that.form,
-				distance: '5000',
-				success: (res) =>{
-				  for (var i = 0; i < res.data.length; i++) {
-					that.markers.push({ // 获取返回结果，放到mks数组中
-					  title: res.data[i].title,
-					  id: res.data[i].id,
-					  latitude: res.data[i].location.lat,
-					  longitude: res.data[i].location.lng,
-					})
-				  }
-				},
-				fail: (err) => {
-				  uni.showToast({
-					   title: '无法获取商店位置!',
-					   icon:'error',
-					   duration:1500
-				  });
-				}
-			 })
 		},
 		getDateNode(){
 			let that = this;

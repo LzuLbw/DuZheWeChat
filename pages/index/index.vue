@@ -127,12 +127,12 @@
 			async loadData() {
 				const that = this;
 				await uni.request({
-					url:'http://localhost:8080/home/swiper/list',
+					url:'http://localhost:8080/swiper/list',
 					method:'GET',
 					//header:["Access-Control-Allow-Origin","*"],
 					success: (res) => {
 						console.log(res.data);
-						that.carouselList = res.data.rows;
+						that.carouselList = res.data.data;
 						that.swiperLength = that.carouselList.length;
 						that.titleNViewBackground = that.carouselList[0].background;
 					}

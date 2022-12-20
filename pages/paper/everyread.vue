@@ -27,7 +27,8 @@
 				scroller: {},
 				optUp: { auto: true, onScroll: true, page: { size: 2 }, empty: { tip: '暂无文章~' } },
 				currentSliderIndex: '',
-				slider: []
+				slider: [],
+				totalPage:0
 			}
 		},
 		components:{
@@ -64,14 +65,15 @@
 			getData(){
 				const that = this;
 				uni.request({
-					url:'http://localhost:8080/home/article/list',
+					url:'http://localhost:8080/article/list',
 					method:'GET',
 					success: (res) => {
-						that.list = res.data.rows;
-						that.slider = res.data.rows;
+						that.totalPage = Math.ceil(res.data.tata.length / 10);
+						that.list = res.data.data;
+						that.slider = res.data.data.slice(0,10);
 					}
 				})
-				this.scroller.endByPage(7, 0);
+				this.scroller.endByPage(10, that.totalPage);
 				uni.stopPullDownRefresh();
 				uni.hideLoading();
 			},
