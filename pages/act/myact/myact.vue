@@ -10,9 +10,14 @@
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
+
 				<uni-card :cover="'http://localhost/dev-api' + activitydata[index].activityPicUrl">
 
 					<view>
+						<uni-tag :text="activitydata[index].activityReviewstatus"
+							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
+						</uni-tag>
+						
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
 						<text class="uni-body">{{item.activitySubtitle}}</text>
 					</view>
@@ -38,7 +43,7 @@
 
 				show: false,
 
-				list: ['已报名', '审核通过', '历史参加', "我的申请"],
+				list: ['已报名的活动', '申请发布的活动'],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
 				current: 1,
@@ -52,7 +57,10 @@
 				// 我申请发布的活动信息
 				activity_application: [],
 
-				activitydata: []
+				activitydata: [],
+
+				actPicUrl: []
+
 			}
 		},
 
@@ -60,7 +68,7 @@
 		onLoad() {
 
 			//请求接口拿到三种数据
-			this.signupinfo();
+			// this.signupinfo();
 
 
 			// this.activity_signup = "已经报名的活动信息";
@@ -97,16 +105,62 @@
 				this.current = index;
 
 				if (index === 0) {
-
-					this.signupinfo();
+					console.log("暂未开发完成");
+					this.activitydata = [];
+					// this.signupinfo();
 				} else if (index === 1) {
+					console.log("暂未开发完成");
 
-					this.approvedinfo();
+					console.log(getApp().uid);
+
+					uni.request({
+						url: 'http://localhost:8080/actActivity/activity/user/application/' + getApp().globalData
+							.uid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data.length);
+
+							if (res.data.data.length == 0) {
+								this.show = true;
+							} else {
+								this.show = false;
+							}
+
+							this.activitydata = res.data.data;
+
+
+							console.log(res.data.data[0]);
+
+							for (let i = 0; i < this.activitydata.length; i++) {
+
+								if (this.activitydata[i].activityReviewstatus == 0) {
+									this.activitydata[i].activityReviewstatus = "未审核";
+								} else if (this.activitydata[i].activityReviewstatus == 1) {
+									this.activitydata[i].activityReviewstatus = "申请已通过审核";
+								} else if (this.activitydata[i].activityReviewstatus == 2) {
+									this.activitydata[i].activityReviewstatus = "申请未通过审核";
+								}
+							}
+
+
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
+
+					this.activitydata = [];
+					// this.approvedinfo();
 				} else if (index === 2) {
-
-					this.endinfo();
+					console.log("暂未开发完成");
+					this.activitydata = [];
+					// this.endinfo();
 				} else if (index == 3) {
 					console.log("暂未开发完成!");
+					this.activitydata = [];
+				} else if (index == 4) {
+					console.log("暂未开发完成");
 					this.activitydata = [];
 				}
 
@@ -198,5 +252,9 @@
 </script>
 
 <style>
-
+	.button {
+		width: 10px;
+		height: 10px;
+		float: right;
+	}
 </style>

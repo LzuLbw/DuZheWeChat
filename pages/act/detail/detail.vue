@@ -1,7 +1,10 @@
 <template>
 	<view class="main">
 
-		<uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" /><br>
+		<uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" />
+
+
+
 		<image :src="'http://localhost/dev-api' + ActivityData.activityPicUrl"></image><br>
 
 		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title: '进行中'}, {title: '已结束'}]" :active="stepactive"
@@ -92,18 +95,33 @@
 				</view>
 
 				<view class="itemitem">
-					<uni-icons type="" size="20" color="#000000"></uni-icons><text
+					<uni-icons type="help" size="20" color="#000000"></uni-icons><text
 						class="maintitile">活动注意事项和其他说明：</text><text
 						class="maintitilecontent">{{ActivityData.activityMatters}}</text><br />
 				</view>
 
+				<view style="height: 20px;">
 
+				</view>
 
+				<view class="itemitem" v-if="showsugsug">
+					<uni-icons type="closeempty" size="20" color="#550000"></uni-icons><text class="maintitile"
+						style="color: red;">{{ sugtext }}</text>
+					<text class="maintitilecontent">{{ActivityData.activityReviewMessage}}</text><br />
+				</view>
+
+			</view>
+			<view v-if="showsugsugbutton">
+				<button @click="editapplication" class="mini-btn"
+					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;" type="primary"
+					size="mini">重新编辑活动申请信息</button>
 			</view>
 
 		</scroll-view>
+		
 
-		<view class="goods-carts">
+
+		<view class="goods-carts" v-if="showsug">
 			<view>
 				<uni-goods-nav :options="options" :fill="true" :button-group="customButtonGroup1"
 					@buttonClick="onClickSignUp" @click="onClick" />
@@ -117,14 +135,26 @@
 			</uni-popup>
 		</view>
 
+		<!-- 		<view v-if="showsugsug" style=";">
+			<uni-section class="mb-10" title="基础用法" sub-title="副标题"></uni-section>
+		</view> -->
+
 
 	</view>
+
 </template>
 
 <script>
 	export default {
 		data() {
 			return {
+
+				showsug: true,
+				showsugsug: false,
+				showsugsugbutton: false,
+				
+				sugtext :'',
+
 				stepactive: 0,
 
 				checkList: [false, false, false, false, false, false],
@@ -157,6 +187,7 @@
 			}
 		},
 		onLoad: function(e) {
+
 			console.log(e);
 			this.Activityid = e.activityid;
 			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
@@ -173,6 +204,34 @@
 					console.log("对应id活动数据如下：");
 					console.log(res);
 					this.ActivityData = res.data.data;
+
+					if (this.ActivityData.activityAttribution == getApp().globalData.uid) {
+
+						this.showsugsugbutton = true;
+
+					}
+
+					console.log("当前活动的审核情况");
+					if (res.data.data.activityReviewstatus == 0) {
+						// 活动还未审核
+						this.showsug = false;
+						this.showsugsug = true;
+						
+						this.sugtext = '当前活动还未审核'
+						
+					} else if (res.data.data.activityReviewstatus == 1) {
+
+						// 活动已经审核通过
+
+
+					} else if (res.data.data.activityReviewstatus == 2) {
+
+						// 审核未通过
+						this.showsug = false;
+						this.showsugsug = true;
+						this.sugtext = '当前活动审核未通过'
+					}
+
 
 					//初始化步骤条
 					console.log("四个关键时间为:");
@@ -282,6 +341,25 @@
 			});
 		},
 		methods: {
+
+			// 重新编辑活动申请信息
+			editapplication() {
+				console.log("我要重新编辑活动信息" + this.Activityid);
+				
+				uni.navigateTo({
+					url: '../editapplication/editapplication?actid=' + this.Activityid ,
+					success: res => {
+						console.log("打开编辑活动申请页面成功");
+					},
+					fail: () => {
+						console.log("打开编辑活动申请页面失败");
+					},
+					complete: () => {}
+				});
+
+			},
+
+
 			onClickSignUp() {
 				console.log(this.useractstatus);
 
@@ -520,6 +598,16 @@
 </script>
 
 <style lang="scss">
+	// .footerreal {
+	// 	background: #662e8c;
+	// 	margin-top: -200px;
+	// 	height: 50px;
+	// 	color: #fff;
+	// 	position: relative;
+	// 	line-height: 180%;
+	// 	padding: 0 10px@for
+	// }
+
 	.itemitem {
 		margin: 2px 2px;
 	}

@@ -444,7 +444,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/act/editapplication/editapplication",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "重新提交活动申请",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

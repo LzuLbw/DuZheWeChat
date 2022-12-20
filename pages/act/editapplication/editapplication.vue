@@ -132,7 +132,7 @@
 					class="button-text success-text">提交申请</text></button>
 
 			<uni-popup ref="alertDialog" type="dialog">
-				<uni-popup-dialog :type="msgType" cancelText="取消" confirmText="确认" title="请仔细检查信息" content="确定立即申请吗？"
+				<uni-popup-dialog :type="msgType" cancelText="取消" confirmText="确认" title="请仔细检查信息" :content="contentAck"
 					@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
 			</uni-popup>
 
@@ -156,9 +156,12 @@
 	export default {
 		data() {
 			return {
-				
-				uid : '',
-				uname: '',
+
+				contentAck: '当前活动的审核状态',
+
+				activitydata: {},
+
+				actid: 0,
 
 				msgType: 'success',
 				messageText: '申请成功',
@@ -195,22 +198,79 @@
 				matters: "",
 			}
 		},
-		
-		onLoad() {
-			
-			this.uid = getApp().globalData.uid;
-			this.uname = getApp().globalData.name;
-			
-			console.log("==================");
-			console.log("现在正在申请发布新活动的用户id为" + this.uid + "用户名为" + this.uname);
-			
-			
+
+		onLoad: function(e) {
+			console.log("初始化编辑活动申请页面==========================>>>>>>>>>>>>>>>>");
+
+			console.log(e);
+			console.log(e.actid);
+			this.actid = e.actid;
+
+			// 'http://localhost:8080/actActivity/' + this.Activityid
+			uni.request({
+				url: 'http://localhost:8080/actActivity/' + e.actid,
+				method: 'GET',
+				data: {},
+				success: res => {
+					console.log(res.data.data);
+
+					this.activitydata = res.data.data;
+					this.maintitlevalue = this.activitydata.activityMaintitle;
+					this.subtitlevalue = this.activitydata.activitySubtitle;
+
+					this.radiovalue1 = this.activitydata.activityType;
+					this.value2 = this.activitydata.activityDesc;
+
+					this.enterprisevalue = this.activitydata.activityEnterprise;
+					this.datetimesingleRegistrationStartTime = this.activitydata
+						.activityRegistrationstarttime;
+					this.datetimesingleRegistrationEndTime = this.activitydata.activityRegistrationendtime;
+					this.datetimesingleStartTime = this.activitydata.activityStarttime;
+					this.datetimesingleEndTime = this.activitydata.activityEndtime;
+
+					this.picurl = 'http://localhost/dev-api' + this.activitydata.activityPicUrl;
+
+					let listurl = {
+						url: this.picurl
+					}
+
+					this.fileList1.push(listurl);
+
+					this.peoplemax = this.activitydata.activitityNumbernum;
+					this.sponsor = this.activitydata.activitySponsor;
+					this.sponsorContact = this.activitydata.activitySponsorcontact;
+					this.place = this.activitydata.activityPlace;
+
+					this.matters = this.activitydata.activityMatters;
+
+					if (this.activitydata.activityReviewstatus == 1) {
+
+						this.contentAck = "当前活动已通过审核，再次申请需要重新经过审核，确定提交吗？";
+					} else if (this.activitydata.activityReviewstatus == 0) {
+
+						this.contentAck = "确认信息无误了吗？"
+					} else if (this.activitydata.activityReviewstatus == 2) {
+						this.contentAck = "确认信息无误了吗？"
+
+					}
+
+
+
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+
+
 		},
-		
-		
+
 		methods: {
 			submit(ref) {
 				// console.log("点击了提交按钮");
+
+
+
+
 				console.log(this.maintitlevalue);
 				console.log(this.subtitlevalue);
 
@@ -233,33 +293,32 @@
 				console.log(this.place);
 
 				console.log(this.matters);
+				
+				console.log("=====================");
+				console.log(this.actid);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/user/activity',
-					method: 'POST',
+					url: 'http://localhost:8080/actActivity/activity',
+					method: 'PUT',
 					data: {
-							"activityMaintitle": this.maintitlevalue,
-							"activitySubtitle": this.subtitlevalue,
-							"activityType": this.radiovalue1,
-							"activityDesc": this.value2,
-							"activityEnterprise": this.enterprisevalue,
-							"activityStatus": 0,
-							"activityRegistrationstarttime": this.datetimesingleRegistrationStartTime,
-							"activityRegistrationendtime": this.datetimesingleRegistrationEndTime,
-							"activityStarttime": this.datetimesingleStartTime,
-							"activityEndtime": this.datetimesingleEndTime,
-							"activityPicUrl": this.picurl,
-							"activitityNumbernum": this.peoplemax,
-							"activitySponsor": this.sponsor,
-							"activitySponsorcontact": this.sponsorContact,
-							"activityReviewstatus": 0,
-							
-							"activityAttribution": this.uid,
-							"activityAttrusername":this.uname,
-							
-							"activityPlace": this.place,
-							"activityMatters": this.matters,
-							
+						"activityId": this.actid,
+						"activityMaintitle": this.maintitlevalue,
+						"activitySubtitle": this.subtitlevalue,
+						"activityType": this.radiovalue1,
+						"activityDesc": this.value2,
+						"activityEnterprise": this.enterprisevalue,
+						"activityStatus": 0,
+						"activityRegistrationstarttime": this.datetimesingleRegistrationStartTime,
+						"activityRegistrationendtime": this.datetimesingleRegistrationEndTime,
+						"activityStarttime": this.datetimesingleStartTime,
+						"activityEndtime": this.datetimesingleEndTime,
+						"activityPicUrl": this.activitydata.activityPicUrl,
+						"activitityNumbernum": this.peoplemax,
+						"activitySponsor": this.sponsor,
+						"activitySponsorcontact": this.sponsorContact,
+						"activityReviewstatus": 0,
+						"activityPlace": this.place,
+						"activityMatters": this.matters
 					},
 					success: res => {
 						console.log(res.data);
@@ -326,14 +385,14 @@
 							user: 'test'
 						},
 						success: (res) => {
-							
+
 							console.log(res);
 							url = JSON.parse(res.data).fileName;
-							
+
 							// console.log(eval(res.data));
 
 							console.log("要存的url为：" + url);
-							this.picurl = url;
+							this.activitydata.activityPicUrl = url;
 
 							setTimeout(() => {
 								resolve(res.data.data)
