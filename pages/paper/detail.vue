@@ -62,7 +62,7 @@ export default {
 		async loadData(id){
 			const that = this;
 			await uni.request({
-				url:'http://192.168.96.227:8080/home/article/getByid/' + id,
+				url:'http://localhost:8080/article/' + id,
 				method:'GET',
 				success: (res) => {
 					console.log(res.data);

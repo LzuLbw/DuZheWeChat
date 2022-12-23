@@ -60,39 +60,7 @@ export default {
 			distances:[],
 			open: true,
 			storeList:[],
-			markers: [{
-				id:1,
-				title:'读者小站-金城书房',
-				longitude:103.623215,
-				latitude:36.096003,
-				iconPath:'../../static/location.png',
-				width:'20rpx',
-				height:'20rpx'
-			},{
-				id:2,
-				title:'读者小站-金城书房',
-				longitude:103.625845,
-				latitude:36.085497,
-				iconPath:'../../static/location.png',
-				width:'20rpx',
-				height:'20rpx'
-			},{
-				id:3,
-				title:'读者小站（五一菜市场店）',
-				longitude:103.636068,
-				latitude:36.091437,
-				iconPath:'../../static/location.png',
-				width:'20rpx',
-				height:'20rpx'
-			},{
-				id:4,
-				title:'读者小站（中街社区）',
-				longitude:103.605208,
-				latitude:36.099493,
-				iconPath:'../../static/location.png',
-				width:'20rpx',
-				height:'20rpx'
-			}]
+			markers: []
 		}
 	},
 	onLoad:function(options){
@@ -106,7 +74,6 @@ export default {
 					latitude,
 					longitude
 				})
-				that.getViennaList(latitude,longitude)
 			}
 		})
 		
@@ -152,6 +119,7 @@ export default {
 				success: (res) => {
 					var mks = []
 					var point = []
+					console.log(res.data)
 					for (var i = 0; i < res.data.data.length; i++) {
 						mks.push({
 							id:res.data.data[i].id,

@@ -18,7 +18,8 @@
 							"backgroundColor": "rgba(231, 231, 231,.7)",
 							"borderRadius": "16px",
 							"placeholder": "请输入搜索内容 如：海底两万里",
-							"placeholderColor": "#606266"
+							"placeholderColor": "#606266",
+							"disabled": true
 						},
 						"buttons": [{
 								"fontSrc": "/static/yticon.ttf",
@@ -27,19 +28,14 @@
 								"color": "#303133",
 								"float": "left",
 								"background": "rgba(0,0,0,0)"
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": true
 							}
 						]
 					}
 				}
 			}
+		},
+		{
+			"path": "pages/index/HM-search"
 		},
 
 		{

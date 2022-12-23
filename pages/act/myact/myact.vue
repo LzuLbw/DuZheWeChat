@@ -168,7 +168,7 @@
 			signupinfo() {
 				//已经报名
 				uni.request({
-					url: 'http://localhost:8080/actActivity/signup/' + getApp().globalData.uid,
+					url: 'http://123.56.217.170:8080/actActivity/signup/' + getApp().globalData.uid,
 					method: 'GET',
 					data: {},
 					success: res => {

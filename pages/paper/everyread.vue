@@ -25,7 +25,7 @@
 				input:'',
 				list: [],
 				scroller: {},
-				optUp: { auto: true, onScroll: true, page: { size: 2 }, empty: { tip: '暂无文章~' } },
+				optUp: { auto: true, onScroll: true, page: { size: 20 }, empty: { tip: '暂无文章~' } },
 				currentSliderIndex: '',
 				slider: [],
 				totalPage:0
@@ -68,14 +68,20 @@
 					url:'http://localhost:8080/article/list',
 					method:'GET',
 					success: (res) => {
-						that.totalPage = Math.ceil(res.data.tata.length / 10);
+						console.log(res.data)
+						var totalPage = Math.ceil(res.data.data.length / 10);
 						that.list = res.data.data;
 						that.slider = res.data.data.slice(0,10);
+						that.scroller.endByPage(res.data.data.length, totalPage);
+					},
+					fail: res => {
+						that.scroller.endErr();
+					},
+					complete: res => {
+						uni.stopPullDownRefresh();
+						uni.hideLoading();
 					}
 				})
-				this.scroller.endByPage(10, that.totalPage);
-				uni.stopPullDownRefresh();
-				uni.hideLoading();
 			},
 			toPage(id){
 				id = parseInt(id);

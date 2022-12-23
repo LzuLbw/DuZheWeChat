@@ -44,20 +44,19 @@
 				<text class="tit">猜你喜欢</text>
 				<text class="tit2">Guess You Like It</text>
 			</view>
-			<text class="yticon icon-you"></text>
 		</view>
 		
 		<view class="guess-section">
 			<view 
 				v-for="(item, index) in goodsList" :key="index"
 				class="guess-item"
-				@click="navToDetailPage(item)"
+				@click="navToDetailPage(item.id)"
 			>
 				<view class="image-wrapper">
-					<image :src="item.image" mode="aspectFill"></image>
+					<image :src="item.imgUrl" mode="aspectFill"></image>
 				</view>
-				<text class="title clamp">{{item.title}}</text>
-				<text class="price">￥{{item.price}}</text>
+				<text class="title clamp">{{item.name}}</text>
+				<text class="price">￥{{item.nprice}}</text>
 			</view>
 		</view>
 		
@@ -129,7 +128,6 @@
 				await uni.request({
 					url:'http://localhost:8080/swiper/list',
 					method:'GET',
-					//header:["Access-Control-Allow-Origin","*"],
 					success: (res) => {
 						console.log(res.data);
 						that.carouselList = res.data.data;
@@ -137,9 +135,16 @@
 						that.titleNViewBackground = that.carouselList[0].background;
 					}
 				})
-				let goodsList = await this.$api.json('goodsList');
-				this.goodsList = goodsList || [];
-			},
+				await uni.request({
+					url:'http://123.56.217.170:443/api/goods/list',
+					method:'GET',
+					success: (res) => {
+						console.log(res.data.data);
+						that.goodsList = res.data.data || [];
+			
+					}
+				})
+			},	
 			//轮播图切换修改背景色
 			swiperChange(e) {
 				const index = e.detail.current;
@@ -147,11 +152,10 @@
 				this.titleNViewBackground = this.carouselList[index].background;
 			},
 			//详情页
-			navToDetailPage(item) {
+			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
-				let id = item.title;
 				uni.navigateTo({
-					url: `/pages/product/product?id=${id}`
+					url: `/pages/shop/goods/goods?id=` + id
 				})
 			},
 			//getSwiper(){
@@ -169,7 +173,9 @@
 		// #ifndef MP
 		// 标题栏input搜索框点击
 		onNavigationBarSearchInputClicked: async function(e) {
-			this.$api.msg('点击了搜索框');
+			uni.navigateTo({
+				url:'/pages/index/HM-search'
+			})
 		},
 		onNavigationBarSearchInputConfirmed(e){
 		// 搜索框内容 : e.text
@@ -361,66 +367,6 @@
 			height: 100%; 
 		}
 	}
-	/* 秒杀专区 */
-	.seckill-section{
-		padding: 4upx 30upx 24upx;
-		background: #fff;
-		.s-header{
-			display:flex;
-			align-items:center;
-			height: 92upx;
-			line-height: 1;
-			.s-img{
-				width: 140upx;
-				height: 30upx;
-			}
-			.tip{
-				font-size: $font-base;
-				color: $font-color-light;
-				margin: 0 20upx 0 40upx;
-			}
-			.timer{
-				display:inline-block;
-				width: 40upx;
-				height: 36upx;
-				text-align:center;
-				line-height: 36upx;
-				margin-right: 14upx;
-				font-size: $font-sm+2upx;
-				color: #fff;
-				border-radius: 2px;
-				background: rgba(0,0,0,.8);
-			}
-			.icon-you{
-				font-size: $font-lg;
-				color: $font-color-light;
-				flex: 1;
-				text-align: right;
-			}
-		}
-		.floor-list{
-			white-space: nowrap;
-		}
-		.scoll-wrapper{
-			display:flex;
-			align-items: flex-start;
-		}
-		.floor-item{
-			width: 150upx;
-			margin-right: 20upx;
-			font-size: $font-sm+2upx;
-			color: $font-color-dark;
-			line-height: 1.8;
-			image{
-				width: 150upx;
-				height: 150upx;
-				border-radius: 6upx;
-			}
-			.price{
-				color: $uni-color-primary;
-			}
-		}
-	}
 	
 	.f-header{
 		display:flex;
@@ -453,143 +399,7 @@
 			color: $font-color-light;
 		}
 	}
-	/* 团购楼层 */
-	.group-section{
-		background: #fff;
-		.g-swiper{
-			height: 650upx;
-			padding-bottom: 30upx;
-		}
-		.g-swiper-item{
-			width: 100%;
-			padding: 0 30upx;
-			display:flex;
-		}
-		image{
-			width: 100%;
-			height: 460upx;
-			border-radius: 4px;
-		}
-		.g-item{
-			display:flex;
-			flex-direction: column;
-			overflow:hidden;
-		}
-		.left{
-			flex: 1.2;
-			margin-right: 24upx;
-			.t-box{
-				padding-top: 20upx;
-			}
-		}
-		.right{
-			flex: 0.8;
-			flex-direction: column-reverse;
-			.t-box{
-				padding-bottom: 20upx;
-			}
-		}
-		.t-box{
-			height: 160upx;
-			font-size: $font-base+2upx;
-			color: $font-color-dark;
-			line-height: 1.6;
-		}
-		.price{
-			color:$uni-color-primary;
-		}
-		.m-price{
-			font-size: $font-sm+2upx;
-			text-decoration: line-through;
-			color: $font-color-light;
-			margin-left: 8upx;
-		}
-		.pro-box{
-			display:flex;
-			align-items:center;
-			margin-top: 10upx;
-			font-size: $font-sm;
-			color: $font-base;
-			padding-right: 10upx;
-		}
-		.progress-box{
-			flex: 1;
-			border-radius: 10px;
-			overflow: hidden;
-			margin-right: 8upx;
-		}
-	}
-	/* 分类推荐楼层 */
-	.hot-floor{
-		width: 100%;
-		overflow: hidden;
-		margin-bottom: 20upx;
-		.floor-img-box{
-			width: 100%;
-			height:320upx;
-			position:relative;
-			&:after{
-				content: '';
-				position:absolute;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				background: linear-gradient(rgba(255,255,255,.06) 30%, #f8f8f8);
-			}
-		}
-		.floor-img{
-			width: 100%;
-			height: 100%;
-		}
-		.floor-list{
-			white-space: nowrap;
-			padding: 20upx;
-			padding-right: 50upx;
-			border-radius: 6upx;
-			margin-top:-140upx;
-			margin-left: 30upx;
-			background: #fff;
-			box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-			position: relative;
-			z-index: 1;
-		}
-		.scoll-wrapper{
-			display:flex;
-			align-items: flex-start;
-		}
-		.floor-item{
-			width: 180upx;
-			margin-right: 20upx;
-			font-size: $font-sm+2upx;
-			color: $font-color-dark;
-			line-height: 1.8;
-			image{
-				width: 180upx;
-				height: 180upx;
-				border-radius: 6upx;
-			}
-			.price{
-				color: $uni-color-primary;
-			}
-		}
-		.more{
-			display:flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			flex-shrink: 0;
-			width: 180upx;
-			height: 180upx;
-			border-radius: 6upx;
-			background: #f3f3f3;
-			font-size: $font-base;
-			color: $font-color-light;
-			text:first-child{
-				margin-bottom: 4upx;
-			}
-		}
-	}
+	
 	/* 猜你喜欢 */
 	.guess-section{
 		display:flex;
