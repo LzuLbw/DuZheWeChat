@@ -255,6 +255,7 @@
 				}).then((res) => {
 					console.log(res);
 					this.productList = res;
+					console.log(this.productList);
 				}).catch(() => {
 					uni.showToast({
 						title: '请求失败',

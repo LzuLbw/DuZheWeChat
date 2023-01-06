@@ -93,11 +93,11 @@
 			})
 		},
 		onLoad(e) {
+			console.log(e);
 			if(e.type=='select'){
 				this.isSelect = true;
 			}
 			this.userId = e.userId;
-			console.log(this.userId);
 			this.initAddress();
 		},
 		methods:{

@@ -77,6 +77,7 @@ export default {
 			getters.checkedAll ? commit("unCheckAll") : commit("checkAll");
 		},
 		delGoodsFn({commit,state}){
+			console.log(state.selectedList);
 			uni.showModal({
 				content:"确定删除吗？",
 				success: () => {

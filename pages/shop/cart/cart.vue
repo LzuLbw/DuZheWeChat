@@ -131,7 +131,7 @@
 		},
 		methods: {
 			...mapActions(['checkedAllFn','delGoodsFn']),
-			...mapMutations(['selectedItem','initGetData']),
+			...mapMutations(['selectedItem','initGetData','initOrder']),
 			getData() {
 				$http.request({
 					url: "/goods/selectCart",
@@ -168,36 +168,43 @@
 						icon:"none"
 					})
 				}
-				// let newList = [];
-				// console.log(this.goodsList);
-				// this.goodsList.forEach(item=>{
-				// 	this.selectedList.filter(v=>{
-				// 		if(item.id == v){
-				// 			newList.push(item);
-				// 		}
-				// 	})
-				// })
-				// console.log(newList);
-				// $http.request({
-				// 	url: "/goods/addOrder",
-				// 	method:"POST",
-				// 	data:{
-				// 		userId:this.userId,
-				// 		arr:newList
-				// 	}
-				// }).then((res) => {
-				// 	console.log(res);
-				// 	uni.navigateTo({
-				// 		url: '/pages/shop/order/confirmation?userId= '+this.userId+'&detail= '+JSON.stringify(this.selectedList)+''
-				// 	})
-				// }).catch(() => {
-				// 	uni.showToast({
-				// 		title: '请求失败',
-				// 		icon: 'none'
-				// 	})
-				// })
-				uni.navigateTo({
-					url: '/pages/shop/order/confirmation?userId= '+this.userId+'&detail= '+JSON.stringify(this.selectedList)+''
+				let newList = [];
+				let goodsName = [];
+				let goodsPrice = 0;
+				let goodsNum = 0;
+				this.goodsList.forEach(item=>{
+					this.selectedList.filter(v=>{
+						if(item.id == v){
+							newList.push(item);
+						}
+					})
+				})
+				newList.forEach(v => {
+					goodsName.push(v.name);
+					goodsNum += parseInt(v.goods_num);
+					goodsPrice += v.goods_num * v.nprice;
+				})
+				console.log(newList);
+				$http.request({
+					url: "/goods/addOrder",
+					method:"POST",
+					data:{
+						userId:this.userId,
+						goodsName:goodsName,
+						goodsPrice:goodsPrice,
+						goodsNum:goodsNum
+					}
+				}).then((res) => {
+					this.initOrder(res.data[0].order_id);
+					console.log(res);
+					uni.navigateTo({
+						url: '/pages/shop/order/confirmation?userId= '+this.userId+'&detail= '+JSON.stringify(this.selectedList)+''
+					})
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
 				})
 			},
 			changeNumber(value, index,item) {

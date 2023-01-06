@@ -307,7 +307,7 @@
 			//请求商品
 			getData(id){
 				$http.request({
-					url: "/goods/id？=" + id,
+					url: "/goods/id",
 					data:{
 						id:id
 					}

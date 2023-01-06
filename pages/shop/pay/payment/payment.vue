@@ -55,6 +55,10 @@
 </template>
 
 <script>
+	import $http from "@/common/api/request.js"
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -62,6 +66,11 @@
 				orderName:'',
 				paytype:'alipay'//支付类型
 			};
+		},
+		computed: {
+			...mapState({
+				orderNumber: state => state.order.orderNumber,
+			})
 		},
 		onLoad(e) {
 			this.amount = parseFloat(e.amount).toFixed(2);
@@ -81,31 +90,35 @@
 		},
 		methods:{
 			doDeposit(){
-				//模板模拟支付，实际应用请调起微信/支付宝
-				// uni.showLoading({
-				// 	title:'支付中...'
-				// });
-				// setTimeout(()=>{
-				// 	uni.hideLoading();
-				// 	uni.showToast({
-				// 		title:'支付成功'
-				// 	});
-				// 	setTimeout(()=>{
-				// 		uni.redirectTo({
-				// 			url:'../../pay/success/success?amount='+this.amount
-				// 		});
-				// 	},300);
-				// },700)
-				uni.requestPayment({
-				    provider: 'alipay',
-				    orderInfo: '123456', //微信、支付宝订单数据 【注意微信的订单信息，键值应该全部是小写，不能采用驼峰命名】
-				    success: function (res) {
-				        console.log('success:' + JSON.stringify(res));
-				    },
-				    fail: function (err) {
-				        console.log('fail:' + JSON.stringify(err));
-				    }
-				});
+				console.log(this.paytype);
+				$http.request({
+					url: "/shop/payment",
+					method: "POST",
+					data: {
+						orderId:this.orderNumber,
+						price:this.amount,
+						orderName:this.orderName
+					}
+				}).then((res) => {
+					console.log(res);
+					plus.runtime.openURL(res.paymentUrl);
+					setTimeout(()=>{
+						uni.hideLoading();
+						uni.showToast({
+							title:'支付成功'
+						});
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'../../pay/success/success?amount='+this.amount
+							});
+						},300);
+					},700)
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
 			}
 		}
 	}
