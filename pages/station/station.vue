@@ -20,7 +20,7 @@
 		<view class="collapse-area">
 		</view>
 		<scroll-view class="store-list" style="height: calc(100vh - ( collapse ? 180 : 700)rpx);" scroll-y>
-			<view class="store-box" v-for="item in storeList" :key="item.id" v-if="item.distance <= 5.00">
+			<view class="store-box" v-for="item in storeList" :key="item.id">
 				<view class="info-area" @click="toDetail(item.id)" >
 					<view class="name">{{item.name}}</view>
 					<view class="info">{{item.location}}</view>
@@ -115,7 +115,7 @@ export default {
 		fetchStoreList(){
 			var that = this;
 			uni.request({
-				url:'http://localhost:8080/readerstation/list',
+				url:'http://123.56.217.170:8080/readerstation/list',
 				success: (res) => {
 					var mks = []
 					var point = []

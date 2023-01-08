@@ -39,7 +39,7 @@
 		async loadData(id){
 			const that = this;
 			await uni.request({
-				url:'http://localhost:8080/readerstation/' + id,
+				url:'http://123.56.217.170:8080/readerstation/' + id,
 				success: (res) => {
 					console.log(res.data);
 					that.stationDeatil = res.data.data;

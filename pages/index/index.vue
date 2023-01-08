@@ -76,17 +76,7 @@
 				carouselList: [],
 				goodsList: [],
 				navs:[
-					{
-						icon:'/static/icon/study.png',
-						title:'终身学习',
-						path:'/pages/study/study'
-					},
-					{
-						icon:'/static/icon/activity.png',
-						title:'活动中心',
-						path:'/pages/act/act'
-					},
-					{
+				{
 						icon:'/static/icon/book.png',
 						title:'每日阅读',
 						path:'/pages/paper/everyread'
@@ -99,6 +89,11 @@
 					{
 						icon:'/static/icon/station.png',
 						title:'附近小站',
+						path:'/pages/station/station'
+					},
+					{
+						icon:'/static/icon/me.png',
+						title:'个人中心',
 						path:'/pages/station/station'
 					},
 					]
@@ -126,7 +121,7 @@
 			async loadData() {
 				const that = this;
 				await uni.request({
-					url:'http://localhost:8080/swiper/list',
+					url:'http://123.56.217.170:8080/swiper/list',
 					method:'GET',
 					success: (res) => {
 						console.log(res.data);

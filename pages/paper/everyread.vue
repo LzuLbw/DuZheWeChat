@@ -65,7 +65,7 @@
 			getData(){
 				const that = this;
 				uni.request({
-					url:'http://localhost:8080/article/list',
+					url:'http://123.56.217.170:8080/article/list',
 					method:'GET',
 					success: (res) => {
 						console.log(res.data)
