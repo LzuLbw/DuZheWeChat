@@ -54,10 +54,11 @@
 	</view>
 </template>
 <script>
-
+	import { getUserProfile } from "@/api/system/user"
 	export default {
 		data() {
 			return {
+				userId:0,
 				isfirst:true,
 				headerPosition:"fixed",
 				headerTop:null,
@@ -90,6 +91,7 @@
 			}
 		},
 		onLoad() {
+			this.getUser();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
@@ -125,9 +127,17 @@
 			});
 		},
 		methods: {
+			getUser() {
+			  getUserProfile().then(response => {
+			    this.userId = response.data.userId;
+				console.log(this.userId);
+			  })
+			},
 			toOrderList(index){
 				uni.setStorageSync('tbIndex',index);
-				uni.navigateTo({url:'../../shop/order_list/order_list?tbIndex='+index}) 
+				uni.navigateTo({
+					url: '/pages/shop/order_list/order_list?tbIndex= '+index+'&userId= '+this.userId+''
+				})
 			},
 			toSetting(){
 				uni.navigateTo({

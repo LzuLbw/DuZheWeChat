@@ -15,35 +15,34 @@
 						没有相关订单
 					</view>
 				</view>
-				<view class="row" v-for="(row,index) in list" :key="index">
-					<view class="type">{{typeText[row.type]}}</view>
+				<view class="row" v-for="(row,index) in list" :key="index" @tap="toOrderDetail(row)">
+					<view class="type">{{typeText[row.order_status]}}</view>
 					<view class="order-info">
 						<view class="left">
-							<image :src="row.img"></image>
+							<image :src="'/static/image'+ (row.goods_imgUrl).substring(8)"></image>
 						</view>
 						<view class="right">
 							<view class="name">
-								{{row.name}}
+								{{row.goods_name}}
 							</view>
-							<view class="spec">{{row.spec}}</view>
 							<view class="price-number">
-								￥<view class="price">{{row.price}}</view>
-								x<view class="number">{{row.numner}}</view>
+								￥<view class="price">{{row.goods_nprice}}</view>
+								x<view class="number">{{row.goods_num}}</view>
 							</view>
 						</view>
 						
 					</view>
 					<view class="detail">
-						<view class="number">共{{row.numner}}件商品</view><view class="sum">合计￥<view class="price">{{row.payment}}</view></view><view class="nominal">(含运费 ￥{{row.freight}})</view>
+						<view class="number">共{{row.goods_num}}件商品</view><view class="sum">合计￥<view class="price">{{row.goods_nprice*row.goods_num}}</view></view><view class="nominal">(含运费 ￥{{row.freight}})</view>
 					</view>
 					<view class="btns">
-						<block v-if="row.type=='unpaid'"><view class="default" @tap="cancelOrder(row)">取消订单</view><view class="pay" @tap="toPayment(row)">付款</view></block>
-						<block v-if="row.type=='back'"><view class="default" @tap="remindDeliver(row)">提醒发货</view></block>
-						<block v-if="row.type=='unreceived'"><view class="default" @tap="showLogistics(row)">查看物流</view><view class="pay">确认收货</view><view class="pay">我要退货</view></block>
-						<block v-if="row.type=='received'"><view class="default">评价</view><view class="default">再次购买</view></block>
-						<block v-if="row.type=='completed'"><view class="default">再次购买</view></block>
-						<block v-if="row.type=='refunds'"><view class="default">查看进度</view></block>
-						<block v-if="row.type=='cancelled'"><view class="default">已取消</view></block>
+						<block v-if="row.order_status=='1'"><view class="default" @tap="cancelOrder(row)">取消订单</view><view class="pay" @tap="toPayment(row)">付款</view></block>
+						<block v-if="row.order_status=='2'"><view class="default" @tap="remindDeliver(row)">提醒发货</view></block>
+						<block v-if="row.order_status=='3'"><view class="default" @tap="showLogistics(row)">查看物流</view><view class="pay">确认收货</view><view class="pay">我要退货</view></block>
+						<block v-if="row.order_status=='4'"><view class="default">评价</view><view class="default">再次购买</view></block>
+						<block v-if="row.order_status=='7'"><view class="default">再次购买</view></block>
+						<block v-if="row.order_status=='5'"><view class="default">查看进度</view></block>
+						<block v-if="row.order_status=='6'"><view class="default">已取消</view></block>
 					</view>
 				</view>
 			</view>
@@ -51,51 +50,32 @@
 	</view>
 </template>
 <script>
+	import $http from "@/common/api/request.js"
 	export default {
 		data() {
 			return {
+				userId:0,
 				headerPosition:"fixed",
 				headerTop:"0px",
+				// typeText:{
+				// 	unpaid:'等待付款',
+				// 	back:'等待商家发货',
+				// 	unreceived:'商家已发货',
+				// 	received:'等待用户评价',
+				// 	completed:'交易已完成',
+				// 	refunds:'商品退货处理中',
+				// 	cancelled:'订单已取消'
+				// },
 				typeText:{
-					unpaid:'等待付款',
-					back:'等待商家发货',
-					unreceived:'商家已发货',
-					received:'等待用户评价',
-					completed:'交易已完成',
-					refunds:'商品退货处理中',
-					cancelled:'订单已取消'
+					1:'等待付款',
+					2:'等待商家发货',
+					3:'商家已发货',
+					4:'等待用户评价',
+					5:'商品退货处理中',
+					6:'订单已取消',
+					7:'交易已完成',
 				},
 				orderType: ['全部','待付款','待发货','待收货','待评价','退换货'],
-				//订单列表 演示数据
-				orderList:[
-					[
-						{ type:"unpaid",ordersn:0,goods_id: 0, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"unpaid",ordersn:1,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"back",ordersn:2,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"unreceived",ordersn:3,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"received",ordersn:4,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"completed",ordersn:5,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '168.00',payment:168.00,freight:12.00,numner:1 },
-						{ type:"refunds",ordersn:6,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 },
-						{ type:"cancelled",ordersn:7,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 }
-					],
-					[
-						{ type:"unpaid",ordersn:0,goods_id: 0, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 },
-						{ type:"unpaid",ordersn:1,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 }
-					],
-					[
-						//无
-					],
-					[
-						// { type:"unreceived",ordersn:3,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168',payment:168.00,freight:12.00,spec:'规格:S码',numner:1 }
-					],
-					[
-						{ type:"received",ordersn:4,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 }
-					],
-					[
-						{ type:"refunds",ordersn:6,goods_id: 1, img: '/static/image/tb_forest.jpg', name: '三体', price: '￥168',payment:168.00,freight:12.00,numner:1 }
-					]
-					 
-				],
 				list:[],
 				tabbarIndex:0
 			};
@@ -103,8 +83,27 @@
 		onLoad(option) {
 			//option为object类型，会序列化上个页面传递的参数
 			console.log("option: " + JSON.stringify(option));
+			this.userId = option.userId;
 			let tbIndex = parseInt(option.tbIndex)+1;
-			this.list = this.orderList[tbIndex];
+			console.log(this.userId);
+			console.log(tbIndex);
+			$http.request({
+				url: "/shop/selectOrders",
+				method: "POST",
+				data: {
+					userId: this.userId,
+					orderStatus:tbIndex
+				}
+			}).then((res) => {
+				console.log(res);
+				this.list = res;
+				console.log(this.list);
+			}).catch(() => {
+				uni.showToast({
+					title: '请求失败',
+					icon: 'none'
+				})
+			})
 			this.tabbarIndex = tbIndex;
 			//兼容H5下排序栏位置
 			// #ifdef H5
@@ -125,7 +124,43 @@
 		methods: {
 			showType(tbIndex){
 				this.tabbarIndex = tbIndex;
-				this.list = this.orderList[tbIndex];
+				console.log(tbIndex);
+				if(tbIndex==0){
+					$http.request({
+						url: "/shop/selectAllOrders",
+						method: "POST",
+						data: {
+							userId: this.userId
+						}
+					}).then((res) => {
+						this.list = res;
+						console.log(this.list);
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+				}else{
+					$http.request({
+						url: "/shop/selectOrders",
+						method: "POST",
+						data: {
+							userId: this.userId,
+							orderStatus:tbIndex
+						}
+					}).then((res) => {
+						console.log(res);
+						this.list = res;
+						console.log(this.list);
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+					console.log(123);
+				}
 			},
 			showLogistics(row){
 				
@@ -142,7 +177,7 @@
 					success: (res)=>{
 						if (res.confirm) {
 							console.log('用户点击确定');
-							this.doCancelOrder(row.ordersn);
+							this.doCancelOrder(row.order_status);
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -150,14 +185,14 @@
 				});
 			},
 			doCancelOrder(ordersn){
-				let typeNum = this.orderList.length;
+				let typeNum = this.list.length;
 				for(let i=0;i<typeNum;i++){
-					let list = this.orderList[i];
+					let list = this.list[i];
 					let orderNum = list.length;
-					if(orderNum>0 && list[0].type=='unpaid'){
+					if(orderNum>0 && list[0].order_status==1){
 						for(let j=0;j<orderNum;j++){
-							if(this.orderList[i][j].ordersn == ordersn){
-								this.orderList[i][j].type = 'cancelled';
+							if(this.list.order_status == ordersn){
+								this.list.order_status = 6;
 								break;
 							}
 						}
@@ -184,6 +219,17 @@
 						}
 					})
 				},500)
+			},
+			toOrderDetail(item){
+				uni.setStorage({
+					key:'OrderDetail',
+					data:item,
+					success: () => {
+						uni.navigateTo({
+							url:'/pages/shop/order/detail'
+						})
+					}
+				})
 			}
 		}
 	}
