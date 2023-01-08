@@ -1,7 +1,12 @@
 <template>
 	<div class="test-component">
 		<hm-balance-card :options="options"></hm-balance-card>
+		
 	</div>
+	
+	
+	
+	
 </template>
 <script>
 	import {

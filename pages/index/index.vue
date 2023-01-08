@@ -94,7 +94,7 @@
 					{
 						icon:'/static/icon/me.png',
 						title:'个人中心',
-						path:'/pages/station/station'
+						path:'/pages/mine/index'
 					},
 					]
 			};

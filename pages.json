@@ -59,7 +59,41 @@
 			"style": {
 				"navigationBarTitleText": "钱包"
 			}
-		}, {
+		}, 
+		{
+					"path": "pages/mine/wallet/voucher_center_/voucher_center_",
+					"style": {
+						"navigationBarTitleText": "充值中心",
+						"enablePullDownRefresh": true,
+						"backgroundTextStyle": "dark",
+						"app-plus": {
+							"titleView": false
+						}
+					}
+				},{
+					"path": "pages/mine/wallet/account/account",
+					"style": {
+						"navigationBarTitleText": "我的账户"
+					}
+				},
+				{
+				  "path": "pages/mine/member/exchange/goodsinfo",
+				  "style": {
+				    "navigationBarTitleText": "兑换商品详情"
+				  }
+				}, 
+				{
+				  "path": "pages/mine/member/exchange/index",
+				  "style": {
+				    "navigationBarTitleText": "积分兑换商城"
+				  }
+				}, 
+				{
+				  "path": "pages/mine/member/integral/ranklist",
+				  "style": {
+				    "navigationBarTitleText": "积分排行"
+				  }
+				}, {
 			"path": "pages/mine/member/index",
 			"style": {
 				"navigationBarTitleText": "会员中心"
@@ -365,12 +399,13 @@
 			}
 
 		},
+		// {
+		// 	"path": "pages/notice/notice",
+		// 	"style": {
+		// 		"navigationBarTitleText": "通知"
+		// 	}
+		// },
 		{
-			"path": "pages/notice/notice",
-			"style": {
-				"navigationBarTitleText": "通知"
-			}
-		}, {
 			"path": "pages/act/act",
 			"style": {
 				"navigationBarTitleText": "活动中心",

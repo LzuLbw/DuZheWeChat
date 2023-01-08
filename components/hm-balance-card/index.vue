@@ -5,10 +5,13 @@
       <div class="hd">
         <text class="info">{{ options.info }}</text>
         <div class="wrap">
-          <div class="empty" />
-          <image class="zhanghaoguanli" :src="options.zhanghaoguanli" />
+          <!-- <div class="empty" /> -->
+          <image class="zhanghaoguanli" :src="options.zhanghaoguanli"  ></image>
+		  <text class="cvv" @click="handleRecharge">充值</text>
         </div>
+		
       </div>
+	  
       <text class="bd">¥{{ options.bd }}</text>
       <text class="main">{{ options.main }}</text>
       <div class="ft">
@@ -20,7 +23,10 @@
           <text class="cvv">{{ options.cvv }}</text>
           <text class="num">{{ options.num }}</text>
         </div>
-        <image class="largeIcon" :src="options.largeIcon" />
+		
+		
+		
+        <!-- <image class="largeIcon" :src="options.largeIcon" /> -->
       </div>
     </div>
   </div>
@@ -37,6 +43,7 @@ export default {
       type: Object,
       default: function() {
         return {
+		settingurl:'/pages/mine/wallet/voucher_center_/voucher_center_',
           layer:
             './images/img_25821_0_0.png',
           info: '信用卡余额',
@@ -57,7 +64,15 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+	  routerItem(url){
+	  	this.$tab.navigateTo(url)
+	  	
+	  },
+	  handleRecharge() {
+	    this.$tab.navigateTo('voucher_center_/voucher_center_')
+	  }
+  }
 };
 </script>
 <style>
