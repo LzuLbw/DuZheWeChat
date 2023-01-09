@@ -32,9 +32,9 @@
 
 			<!-- 底部信息 -->
 			<view class="footer">
-				<navigator url="forget" open-type="navigate">找回密码</navigator>
+				<navigator url="/pages/forget" open-type="navigate">找回密码</navigator>
 				<text>|</text>
-				<navigator url="regist" open-type="navigate">注册账号</navigator>
+				<navigator url="/pages/regist" open-type="navigate">注册账号</navigator>
 			</view>
 		</view>
 	</view>
