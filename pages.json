@@ -733,7 +733,63 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+			    "path" : "pages/study/article_list/article_list",
+			    "style": {
+			    	"navigationBarTitleText": "文章阅读"
+			    }
+			},
+			{
+				"path": "pages/study/article_details/article_details"
+			},
+			{
+				"path":"pages/study/search/search"
+			},
+				{
+		            "path" : "pages/study/source/source",
+		            "style" :                                                                                    
+		            {
+		                "navigationBarTitleText": "",
+		                "enablePullDownRefresh": false
+		            }
+		        },
+				{
+					"path": "pages/study/sortsearch/sortsearch"
+				},
+				{
+						"path": "pages/study/bookdetails/bookdetails"
+				},
+				{
+					"path": "pages/study/articlesort/articlesort",
+					"style": {
+						"navigationBarTitleText": "分类"
+					}
+				}
+		        ,{
+		            "path" : "pages/study/articleshell/articleshell",
+		            "style" :                                                                                    
+		            {
+		                "navigationBarTitleText": "我的书架",
+		                "enablePullDownRefresh": false
+		            }
+		        }
+		        ,{
+		            "path" : "pages/study/articlesortlist/articlesortlist",
+		            "style" :                                                                                    
+		            {
+		                "navigationBarTitleText": "书本列表"
+		            }
+		        }
+		        ,{
+		            "path" : "pages/study/readddd/readddd",
+		            "style": {
+		            	"navigationStyle": "custom",
+						"app-plus":{
+							"bounce":"none"
+						}
+		            }
+		        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -762,7 +818,7 @@
 				"text": "商城"
 			},
 			{
-				"pagePath": "pages/social/social",
+				"pagePath": "pages/study/article_list/article_list",
 				"iconPath": "static/icon/study.png",
 				"selectedIconPath": "static/icon/study-active.png",
 				"text": "终身学习"
