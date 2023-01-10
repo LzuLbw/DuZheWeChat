@@ -375,7 +375,251 @@
 			}
 		},
 		{
-			"path": "pages/social/social"
+			"path": "pages/social/social",
+			"style": {
+				"navigationBarTitleText": "社交"
+			}
+		},
+		{
+			"path": "pages/social/components/topsearch/topsearch",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/title/title",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/chat/chatlist",
+			"style": {
+				"navigationBarTitleText": "消息",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/chat/person-chat",
+			"style": {
+				"navigationBarTitleText": "私聊",
+				"enablePullDownRefresh": false,
+			"backgroundColor": "#333",
+					"app-plus":{
+						"titleNView":{
+							"buttons": [
+								{
+									"type": "menu"
+								}
+							]
+						}
+				}
+					
+			}
+			    
+		},
+		{
+			"path": "pages/social/components/chat/group-chat",
+			"style" :
+				{
+				    "navigationBarTitleText": "群聊",
+				    "enablePullDownRefresh": false,
+					"app-plus":{
+						"titleNView":{
+							"buttons": [
+								{
+									"type": "menu"
+								}
+							]
+						}
+				}
+			}
+		},
+		{
+		    "path" : "pages/social/addfriend/addfriend",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/info/friend-info",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/info/person-edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑信息",
+		        "enablePullDownRefresh": false
+		    }  
+		},
+		{
+		    "path" : "pages/social/info/group-info",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }  
+		},
+		{
+		    "path" : "pages/social/list/notice-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "通知消息",
+		        "enablePullDownRefresh": false
+		    }  
+		},
+		{
+		    "path" : "pages/social/components/circle/circle",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "读友圈",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+			"path": "pages/social/list/group-list",
+			"style": {
+				"navigationBarTitleText": "读友圈",
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView":{
+						"buttons":[{
+							"text":"+",
+							"float": "right",
+							"fontSize":"25px",
+							"fontWeight": "bold",
+							"color":"black"
+						}]
+					}
+				}
+			}
+		},
+		{
+		    "path" : "pages/social/info/group-edit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "创建读友圈",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/list/member-list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "圈成员",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/circle/circlelist",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "读友圈列表",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/moment",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "动态",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/publishMoment",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "动态发布",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/my-world",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的动态",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/person-world",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "好友动态",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/detail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "好友动态",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/moment/uni-popup",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "弹窗",
+		        "enablePullDownRefresh": false
+		    }
+		},
+		{
+		    "path" : "pages/social/components/find/seat",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "预约位置",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
+		    "path" : "pages/social/components/find/anil-seat",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "预约占座",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
+		    "path" : "pages/social/components/find/seatsuccess",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "预约成功",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
+		    "path" : "pages/social/components/find/nearby",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "附近的人",
+		        "enablePullDownRefresh": false
+		    }
+		},{
+		    "path" : "pages/social/info/person-info",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "个人主页",
+		        "enablePullDownRefresh": false
+		    }
 		},
 		{
 			"path": "pages/me/me"

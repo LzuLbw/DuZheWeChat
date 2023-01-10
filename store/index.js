@@ -10,7 +10,8 @@ const store = new Vuex.Store({
 	  user,
 	  cart,
 	  path,
-	  order
+	  order,
+	  test
 	},
 	getters,
 	state: {
@@ -54,5 +55,5 @@ import order from './modules/shop/order.js'
 // 		order
 // 	}
 // })
-
+import test from './modules/social/test.js'
 export default store

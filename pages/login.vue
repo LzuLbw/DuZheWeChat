@@ -48,6 +48,12 @@
 		getCodeImg
 	} from '@/api/login'
 
+    import userRequest from '@/api/social/user.js';
+    import {mapGetters} from 'vuex';
+    import $store from '@/store/modules/social/test.js';
+    import websocket from '@/api/social/websocket.js';
+    import timeUtil from '@/utils/social/timeUtil.js';
+
 	export default {
 		data() {
 			return {
@@ -135,6 +141,22 @@
 					console.log(res.user.nickName);
 					console.log("当前登录用户的ID为");
 					console.log(res.user.userId);
+					
+					///////社交登录成功的逻辑
+					//console.log(res)
+					//$store.state.token = res.user.token;
+					$store.state.loginUserInfo = res.user;
+					//uni.setStorageSync('TOKEN', res.data.token);
+					uni.setStorageSync('LOGIN_USER_INFO', res.user);
+					//获取好友列表
+					//$store.dispatch('getFriendList');
+					///获取通知消息
+					//$store.dispatch('getNoticeList');
+					//连接websocket
+					websocket.initConnect();
+					// uni.switchTab({
+					// 	url:'/pages/social/social'
+					// })
 					
 					// 设置全局登录用户
 					getApp().globalData.uid = res.user.userId;
