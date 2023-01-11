@@ -1,7 +1,6 @@
 <template>
 	<view class="content">
 		<view class="search-box">
-			<!-- mSearch组件 如果使用原样式，删除组件元素-->
 			<!-- 原样式 如果使用原样式，恢复下方注销代码 -->					
 			<view class="input-box">
 				<input type="text" :adjust-position="true" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
@@ -12,13 +11,13 @@
 		</view>
 		<view class="search-keyword" >
 			<scroll-view class="keyword-list-box" v-show="isShowKeywordList" scroll-y>
-				<block v-for="(row,index) in keywordList" :key="index">
-					<view class="keyword-entry" hover-class="keyword-entry-tap" >
-						<view class="keyword-text" @tap.stop="doSearch(keywordList[index].keyword)">
-							<rich-text :nodes="row.htmlStr"></rich-text>
+				<block v-for="item in keywordList" :key="item.id">
+					<view class="keyword-entry" hover-class="keyword-entry-tap">
+						<view class="keyword-text" @tap.stop="doSearch(keywordList[item.id].keyword)">
+							<rich-text :nodes="item.name" ></rich-text>
 						</view>
-						<view class="keyword-img" @tap.stop="setKeyword(keywordList[index].keyword)">
-							<image src="/static/HM-search/back.png"></image>
+						<view class="keyword-img" @tap.stop="setKeyword(keywordList[item.id].keyword)">
+							<image src="/static/HM-search/back.png" @click="toPage(item.id)"></image>
 						</view>
 					</view>
 				</block>
@@ -85,7 +84,7 @@
 			//加载默认搜索关键字
 			loadDefaultKeyword() {
 				//定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
-				this.defaultKeyword = "默认关键字";
+				this.defaultKeyword = "读者";
 			},
 			//加载历史搜索,自动读取本地Storage
 			loadOldKeyword() {
@@ -114,10 +113,10 @@
 				this.isShowKeywordList = true;
 				//以下示例截取淘宝的关键字，请替换成你的接口
 				uni.request({
-					url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
+					url: 'http://localhost:8080/readerstation/query/' + keyword, //仅为示例
 					success: (res) => {
 						this.keywordList = [];
-						this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
+						this.keywordList = this.drawCorrelativeKeyword(res.data.data, keyword);
 						
 					}
 				});
@@ -169,10 +168,12 @@
 				keyword = keyword===false?this.keyword:keyword;
 				this.keyword = keyword;
 				this.saveKeyword(keyword); //保存为历史 
-				uni.showToast({
-					title: keyword,
-					icon: 'none',
-					duration: 2000
+				uni.request({
+					url: 'http://localhost:8080/readerstation/query/' + keyword,
+					success: (res) => {
+						console.log(res.data.data);
+						this.keywordList = res.data.data;
+					}
 				});
 				//以下是示例跳转淘宝搜索，可自己实现搜索逻辑
 				/*
@@ -183,6 +184,11 @@
 				window.location.href = 'taobao://s.taobao.com/search?q=' + keyword
 				//#endif
 				*/
+			},
+			toPage(id){
+				uni.navigateTo({
+					url:'/pages/station/station-detail?id=' + id
+				})
 			},
 			//保存关键字到历史记录
 			saveKeyword(keyword) {
