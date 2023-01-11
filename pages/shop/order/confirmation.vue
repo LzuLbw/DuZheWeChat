@@ -28,7 +28,7 @@
 			<view class="row" v-for="(row,index) in goodsList" :key="index">
 				<view class="goods-info">
 					<view class="img">
-						<image :src="'/static/image'+ (row.imgUrl).substring(8)"></image>
+						<image :src="row.imgUrl"></image>
 					</view>
 					<view class="info">
 						<view class="title">{{row.name}}</view>

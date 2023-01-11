@@ -19,7 +19,7 @@
 					<view class="type">{{typeText[row.order_status]}}</view>
 					<view class="order-info">
 						<view class="left">
-							<image :src="'/static/image'+ (row.goods_imgUrl).substring(8)"></image>
+							<image :src="row.goods_imgUrl"></image>
 						</view>
 						<view class="right">
 							<view class="name">

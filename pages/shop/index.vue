@@ -21,7 +21,7 @@
 		<view class="category-list">
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/book.png"></image>
+					<image class="category-image" src="/static/image/category/book.png" ></image>
 				</view>
 				<view class="category-text">书籍</view>
 			</view>
@@ -121,7 +121,7 @@
 			</view>
 			<view class="product-list">
 				<view class="product" v-for="(item,index) in productList" :key="index" @tap="toGoods(item.id)">
-					<image class="product-image" :src="'/static/image'+ (item.imgUrl).substring(8)"
+					<image class="product-image" :src="item.imgUrl"
 						:style=" 'height:' + bigH+';'"></image>
 					<view class="goods-name">{{ item.name }}</view>
 					<view class="goods-info">

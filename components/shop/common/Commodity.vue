@@ -2,7 +2,7 @@
 	<view class="commodity">
 		<view class="commodity-item" v-for="(item,index) in dataList" :key="index" :style=" 'width:' +itemW+';'" @tap="goDetails(item.id
 		)">
-			<image class="commodity-img" :src="'/static/image'+ (item.imgUrl).substring(8)" mode="" :style=" 'height:' + bigH+';'">
+			<image class="commodity-img" :src="item.imgUrl" mode="" :style=" 'height:' + bigH+';'">
 			</image>
 			<view class="commodity-content">
 				<text class="commodity-name">

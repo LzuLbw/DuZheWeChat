@@ -21,7 +21,7 @@
 					<!-- 商品信息 -->
 					<view class="goods-info" @tap="toGoods(row)">
 						<view class="img">
-							<image :src="'/static/image'+ (row.imgUrl).substring(8)"></image>
+							<image :src="row.imgUrl"></image>
 						</view>
 						<view class="info">
 							<view class="title">{{row.name}}</view>
