@@ -68,7 +68,7 @@
      var id=e.id;
      console.log(id+'000000000000000000');
     uni.request({
-     url:'http://123.56.217.170:8080/shell/deleteById/'+id,
+     url:'http://localhost:8080/shell/deleteById/'+id,
      method:'DELETE',
      data:{},
      success: (res) => {
