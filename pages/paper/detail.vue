@@ -21,11 +21,8 @@
 				<uni-icons type="hand-up-filled" size="28px" color="#ED9121" v-show="!dzchange"></uni-icons>
 			</button>
 			<!-- #ifndef MP -->
-			<button class="zhuanfa" type="default" size="default" @click="confirmShare">
+			<button class="zhuanfa" type="default" size="default" @click="handleShareImg(articleDetail)">
 				<uni-icons type="redo" size="28px"></uni-icons>
-				<uni-popup ref="popupShare" type="share">
-					<uni-popup-share title="分享到" @select="select"></uni-popup-share>
-				</uni-popup>
 			</button>
 			<!-- #endif -->
 		</view>
@@ -34,7 +31,18 @@
 
 <script>
 import parser from '@/components/parser/parser.vue';
-	export default {
+import UniShare from '@/uni_modules/uni-share/js_sdk/uni-share.js';
+const uniShare = new UniShare();
+export default {
+	onBackPress({from}) {
+	    console.log(from);
+	    if(from=='backbutton'){
+	        this.$nextTick(function(){
+	            uniShare.hide()
+	        })
+	        return uniShare.isShow;
+	    }
+	},
 	components: {
 		parser
 	},
@@ -42,20 +50,19 @@ import parser from '@/components/parser/parser.vue';
 		return {
 			dzchange: true,
 			articleDetail:{},
+			curRoute:{},
 		}
 	},
 	onLoad:function(option){
 		console.log(option.id);
 		this.loadData(parseInt(option.id));
-	},
-	onShow() {
-		
+		this.curRoute = this.$mp.page.route
 	},
 	methods: {
 		async loadData(id){
 			const that = this;
 			await uni.request({
-				url:'http://localhost:8080/home/article/getByid/' + id,
+				url:'http://123.56.217.170:8080/article/' + id,
 				method:'GET',
 				success: (res) => {
 					console.log(res.data);
@@ -78,15 +85,77 @@ import parser from '@/components/parser/parser.vue';
 				})
 				}
 		},
-		confirmShare() {
-			this.$refs.popupShare.open()
-		},
-		select(e) {
-			uni.showToast({
-				title: `您选择了第${e.index+1}项：${e.item.text}`,
-				icon: 'none'
-			})
-		}
+		handleShareImg(e) {
+		    uniShare.show({
+		        content: { //公共的分享参数配置  类型（type）、链接（herf）、标题（title）、summary（描述）、imageUrl（缩略图）
+		            type: 0,
+		            href: 'http://localhost:8081/#' + this.curRoute,
+		            title: e.title,
+		            imageUrl: e.imageUrl
+		        },
+		        menus: [{
+		                "img": "/static/app-plus/sharemenu/wechatfriend.png",
+		                "text": "微信好友",
+		                "share": { //当前项的分享参数配置。可覆盖公共的配置如下：分享到微信小程序，配置了type=5
+		                    "provider": "weixin",
+		                    "scene": "WXSceneSession"
+		                }
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/wechatmoments.png",
+		                "text": "微信朋友圈",
+		                "share": {
+		                    "provider": "weixin",
+		                    "scene": "WXSceneTimeline"
+		                }
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/mp_weixin.png",
+		                "text": "微信小程序",
+		                "share": {
+		                    provider: "weixin",
+		                    scene: "WXSceneSession",
+		                    type: 5,
+		                    miniProgram: {
+		                        id: '123',
+		                        path: '/pages/list/detail',
+		                        webUrl: '/#/pages/list/detail',
+		                        type: 0
+		                    },
+		                }
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/weibo.png",
+		                "text": "微博",
+		                "share": {
+		                    "provider": "sinaweibo"
+		                }
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/qq.png",
+		                "text": "QQ",
+		                "share": {
+		                    "provider": "qq"
+		                }
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/copyurl.png",
+		                "text": "复制",
+		                "share": "copyurl"
+		            },
+		            {
+		                "img": "/static/app-plus/sharemenu/more.png",
+		                "text": "更多",
+		                "share": "shareSystem"
+		            }
+		        ],
+		        cancelText: "取消分享",
+		    }, e => { //callback
+		        console.log(uniShare.isShow);
+		        console.log(e);
+		    })
+		                
+	}
 	}
 };
 </script>

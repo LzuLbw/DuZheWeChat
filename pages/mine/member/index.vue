@@ -143,16 +143,16 @@ import { forever } from "request";
 					{
 						icon: '/static/mine/member/icon_gift.png',
 						name: '积分兑换',
-						url:  '/pages/wallet/index'
+						url:  '/pages/mine/member/exchange/index'
 					},
 					{
 						icon: '/static/mine/member/icon_score.png',
-						name: '会员详情',
-						url:  '/pages/wallet/index'
+						name: '积分排行',
+						url:  '/pages/mine/member/integral/ranklist'
 					},
 					{
 						icon: '/static/mine/member/icon_other.png',
-						name: '其他礼包',
+						name: '其他功能',
 						url:  '/pages/wallet/index'
 					}
 				]

@@ -21,7 +21,7 @@
 					placeholder="登录密码"
 					isShowPass
 				></wInput>
-				<wInput
+				<!-- <wInput
 					v-model="verCode"
 					type="number"
 					maxlength="4"
@@ -30,7 +30,7 @@
 					isShowCode
 					ref="runCode"
 					@setCode="getVerCode()"
-				></wInput>
+				></wInput> -->
 					
 			</view>
 				
@@ -160,14 +160,14 @@
 		            });
 		            return false;
 		        }
-				if (this.verCode.length != 4) {
-				    uni.showToast({
-				        icon: 'none',
-						position: 'bottom',
-				        title: '验证码不正确'
-				    });
-				    return false;
-				}
+				// if (this.verCode.length != 4) {
+				//     uni.showToast({
+				//         icon: 'none',
+				// 		position: 'bottom',
+				//         title: '验证码不正确'
+				//     });
+				//     return false;
+				// }
 				this.submit()
 				_this.isRotate=true
 				setTimeout(function(){

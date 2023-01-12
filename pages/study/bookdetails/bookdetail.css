@@ -1,0 +1,136 @@
+.book-wrap{
+	display: flex;
+	flex-direction: column;
+	padding: 20upx 10upx;
+}
+
+.book-item{
+	display: flex;
+	flex-direction: row;
+	/* border-radius: 15px; */
+	padding: 10px 20upx;
+	background-color: #FFFFFF;
+}
+.book-info{
+	display: flex;
+	flex-direction: column;
+	margin-left: 20upx;
+	width: 420upx;
+	padding: 1px 20upx;
+}
+.book-title{
+	font-size: 16px;
+	font-weight: 800;
+	padding: 10upx 0px;
+}
+.book-desp{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
+	margin-bottom: 10upx;
+	color: #999999;
+}
+.book-author{
+	color: #999999;
+	font-size: 14px;
+	margin-top: 5px;
+}
+.book-img{
+	flex-shrink: 0;
+	width: 86px;
+	height: 106px;
+}
+
+.book-other{
+	display: flex;
+	flex-direction: column;
+	background-color: #FFFFFF;
+	padding: 10upx 20upx;
+}
+.text-title{
+	font-size: 16px;
+	font-weight: bold;
+	
+}
+.bookdesc{
+	color:#666666;
+	font-size: 14px;
+	padding: 10px 0px;
+}
+.redtext{
+	color:#e54d42;
+}
+/* 书籍目录滚动条 */
+.scroll-Y{
+	height: 300px;
+	margin-bottom: 55px;
+}
+.scroll-view-item{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	height: 50px;
+	align-items: center;
+}
+.item-text{
+	font-size: 16px;
+	height: 50px;
+	line-height: 50px;
+	/* 显示省略号 */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+ .you{
+	 /* 对齐方式设置为flex-start后 最后一项居右对齐的方式 */
+	margin-left: auto;
+ 	width: 20px;
+ 	height: 20px;
+ }
+ >>> .line-wrap{
+	 padding: 0;
+ }
+ /* 底部按钮 */
+ .btn-wrap{
+	position: fixed;
+	bottom: 0;
+	width: 730upx;
+	height: 50px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background: #FFFFFF;
+	 
+ }
+ .joinshelf{
+	 background-color: #f37b1d;
+	 color:#FFFFFF;
+	 width: 90px;
+	 height: 30px;
+	 font-size: 14px;
+	 line-height: 30px;
+	 padding: 0 15px;
+	 border-radius: 20px;
+ }
+ .startread{
+	background: #e54d42;
+	color:#FFFFFF;
+	width: 90px;
+	height: 30px;
+	font-size: 14px;
+	line-height: 30px;
+	padding: 0 15px;
+	border-radius: 20px;
+ }
+ .styyyy{
+ 	background: #F08080;
+ 	color:#FFFFFF;
+ 	width: 90px;
+ 	height: 30px;
+ 	font-size: 14px;
+ 	line-height: 30px;
+ 	padding: 0 15px;
+ 	border-radius: 20px;
+ }

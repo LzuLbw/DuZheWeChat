@@ -1,7 +1,5 @@
 <template>
-	<view>
-	个人中心
-	</view>
+	<view>个人中心</view>
 </template>
 
 <script>

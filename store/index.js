@@ -9,7 +9,9 @@ const store = new Vuex.Store({
 	modules: {
 	  user,
 	  cart,
-	  path
+	  path,
+	  order,
+	  test
 	},
 	getters,
 	state: {
@@ -44,11 +46,14 @@ const store = new Vuex.Store({
 import cart from './modules/shop/cart.js'
 //地址管理
 import path from './modules/shop/path.js'
+//订单管理
+import order from './modules/shop/order.js'
 // export default new Vuex.Store({
 // 	modules:{
 // 		cart,
-// 		path
+// 		path,
+// 		order
 // 	}
 // })
-
+import test from './modules/social/test.js'
 export default store
