@@ -22,8 +22,8 @@
 			</view>
 			<view style="width: 65%;">
 				<view style="display: flex;justify-content: center;align-items: center;" class="u-line-1">
-					<u-avatar :src="item.user.avatar" size="65" style="margin-right: 25rpx;"></u-avatar>
-					<text>{{item.user.nickname}}</text>
+					<!-- <u-avatar :src="item.user.avatar" size="65" style="margin-right: 25rpx;"></u-avatar> -->
+					<text style="display: flex;justify-content: center;align-items: center;">{{item.user.nickname}}</text>
 				</view>
 			</view>
 			<view style="width: 25%;display: flex;justify-content: center;align-items: center;"><text>{{item.data}}</text></view>
@@ -62,7 +62,6 @@
 					]
 				}
 			},
-			
 			title_1:{
 				type:String,
 				default:"排名"
