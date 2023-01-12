@@ -141,11 +141,11 @@ export default {
 		  this.score_record.createAt = timer
 		  addScore_record(this.score_record).then(response => {
 			  this.i = response.data
-			  this.handleAddtask_finish(this.i.id,element)
+			  this.handleAddtask_finish(element)
 		                // this.$modal.msgSuccess("新增成功");
 		              });
 	  },
-	  handleAddtask_finish(id,element) {
+	  handleAddtask_finish(element) {
 		  this.form.userId = this.user_score.userId
 		  this.form.taskId = element.id
 		  
@@ -386,7 +386,7 @@ export default {
 	getScore_info_sub(userID){
 				  getUser_score(userID).then(response => {
 				    this.user_score = response.data
-					this.getLevel()
+					// this.getLevel()
 				  })
 	},
 	
