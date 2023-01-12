@@ -40,7 +40,7 @@
 		  },
 		  checkLogin() {
 		    if (!getToken()) {
-		      this.$tab.reLaunch('/pages/login') 
+		      this.$tab.reLaunch('/pages/index/index') 
 		    }
 		  }
 		}
