@@ -113,7 +113,7 @@
 				this.isShowKeywordList = true;
 				//以下示例截取淘宝的关键字，请替换成你的接口
 				uni.request({
-					url: 'http://localhost:8080/readerstation/query/' + keyword, //仅为示例
+					url: 'http://123.56.217.170:8080/readerstation/query/' + keyword, //仅为示例
 					success: (res) => {
 						this.keywordList = [];
 						this.keywordList = this.drawCorrelativeKeyword(res.data.data, keyword);

@@ -54,7 +54,6 @@ export default {
 		}
 	},
 	onLoad:function(option){
-		console.log(option.id);
 		this.loadData(parseInt(option.id));
 		this.curRoute = this.$mp.page.route
 	},

@@ -621,9 +621,9 @@
 		        "enablePullDownRefresh": false
 		    }
 		},
-		{
-			"path": "pages/me/me"
-		},
+		// {
+		// 	"path": "pages/me/me"
+		// },
 		{
 			"path": "pages/station/station",
 			"style": {
@@ -649,12 +649,6 @@
 			}
 
 		},
-		// {
-		// 	"path": "pages/notice/notice",
-		// 	"style": {
-		// 		"navigationBarTitleText": "通知"
-		// 	}
-		// },
 		{
 			"path": "pages/act/act",
 			"style": {
