@@ -649,12 +649,6 @@
 			}
 
 		},
-		// {
-		// 	"path": "pages/notice/notice",
-		// 	"style": {
-		// 		"navigationBarTitleText": "通知"
-		// 	}
-		// },
 		{
 			"path": "pages/act/act",
 			"style": {
@@ -807,8 +801,8 @@
 		"spacing": "-5px",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/icon/home.png",
-				"selectedIconPath": "static/icon/home-active.png",
+				"iconPath": "static/icon/Home.png",
+				"selectedIconPath": "static/icon/Home-active.png",
 				"text": "首页"
 			},
 			{
