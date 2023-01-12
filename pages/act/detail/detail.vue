@@ -77,6 +77,11 @@
 				</view>
 
 				<view class="itemitem">
+					<uni-icons type="personadd" size="20" color="#000000"></uni-icons><text
+						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} / {{actpersonnum}}</text><br />
+				</view>
+
+				<view class="itemitem">
 					<uni-icons type="auth" size="20" color="#000000"></uni-icons><text
 						class="maintitile">活动发起人：</text><text
 						class="maintitilecontent">{{ActivityData.activitySponsor}}</text><br />
@@ -113,12 +118,12 @@
 			</view>
 			<view v-if="showsugsugbutton">
 				<button @click="editapplication" class="mini-btn"
-					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;" type="primary"
-					size="mini">重新编辑活动申请信息</button>
+					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
+					type="primary" size="mini">重新编辑活动申请信息</button>
 			</view>
 
 		</scroll-view>
-		
+
 
 
 		<view class="goods-carts" v-if="showsug">
@@ -152,8 +157,12 @@
 				showsug: true,
 				showsugsug: false,
 				showsugsugbutton: false,
-				
-				sugtext :'',
+
+				sugtext: '',
+
+
+				signnum: 0, // 当前活动已报名人数
+				actpersonnum: 0, // 当前活动允许的总人数
 
 				stepactive: 0,
 
@@ -188,6 +197,22 @@
 		},
 		onLoad: function(e) {
 
+
+			uni.request({
+				url: 'http://localhost:8080/actSignupinfo/signupnum/' + e.activityid,
+				method: 'GET',
+				data: {},
+				success: res => {
+					console.log("当前活动的已报名人数:");
+					console.log(res.data);
+					
+					
+					this.signnum = res.data;
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+
 			console.log(e);
 			this.Activityid = e.activityid;
 			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
@@ -197,13 +222,17 @@
 
 			//获取活动信息
 			uni.request({
-				url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
+				url: 'http://localhost:8080/actActivity/' + this.Activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
 					console.log("对应id活动数据如下：");
 					console.log(res);
 					this.ActivityData = res.data.data;
+
+					this.actpersonnum = this.ActivityData.activitityNumbernum;
+					console.log("当前活动的最大报名人数为：");
+					console.log(this.actpersonnum);
 
 					if (this.ActivityData.activityAttribution == getApp().globalData.uid) {
 
@@ -216,9 +245,9 @@
 						// 活动还未审核
 						this.showsug = false;
 						this.showsugsug = true;
-						
+
 						this.sugtext = '当前活动还未审核'
-						
+
 					} else if (res.data.data.activityReviewstatus == 1) {
 
 						// 活动已经审核通过
@@ -345,9 +374,9 @@
 			// 重新编辑活动申请信息
 			editapplication() {
 				console.log("我要重新编辑活动信息" + this.Activityid);
-				
+
 				uni.navigateTo({
-					url: '../editapplication/editapplication?actid=' + this.Activityid ,
+					url: '../editapplication/editapplication?actid=' + this.Activityid,
 					success: res => {
 						console.log("打开编辑活动申请页面成功");
 					},
