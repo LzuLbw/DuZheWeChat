@@ -1,83 +1,82 @@
 <template>
 <view class="content">
-	<view class="box" v-for="(item,index) in bookData " :key="index">
-		<image style="width: 90px;height: 80px;;" v-if="item.img" :src="'/static/image'+(item.img).substring(8)" @click="gotodetails(item.id)">
-		</image>
-		<view > <text>{{item.name}}</text></view>
-		<button type="primary" size="mini" style="background-color: red;font-size: 10upx;margin-right: 5upx;" @click="deleteee(item)">移除</button>
-		
-	</view>
-	</view>
+ <view class="box" v-for="(item,index) in bookData " :key="index">
+  <image style="width: 90px;height: 80px;;" v-if="item.img" :src="item.img" @click="gotodetails(item.id)">
+  </image>
+  <view > <text>{{item.name}}</text></view>
+  <button type="primary" size="mini" style="background-color: red;font-size: 10upx;margin-right: 5upx;" @click="deleteee(item)">移除</button>
+  
+ </view>
+ </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				bookData:[],
-				bookList:[],
-				//bookId:1
-				
-			}
-		},
-		onLoad:function(){
-			// this.showBook();
-			uni.request({
-				url:'http://localhost:8080/shell/all/',
-				method:'GET',
-				data: {},
-				success: (res) => {
-					//console.log(res);
-					console.log("===============");
-					console.log(res.data );
-				
-					this.bookList=res.data;
-					
-					// for (let i = 0; i < this.bookList.length; i++) {
-					// 	console.log(this.bookList[i].bookId);
-					// }
-					
-					console.log("===========>");
-					console.log(this.bookList[0].bookId);
-					
-					for (var i = 0; i < this.bookList.length; i++) {
-						this.getData(this.bookList[i].bookId);
-					}
-					
-					console.log("==========++++==================");
-					console.log(this.bookData);
-				
-				},
-			});
-			},
-		methods:{
-			getData(bookId){
-				uni.request({
-					url:'http://localhost:8080/book/findList/'+ bookId,
-					method:'GET',
-					data: {},
-					success: (res) => {
-						//console.log(res);
-						console.log("-------------------aaaaaaaa");
-						console.log(res.data );
-						this.bookData.push(res.data[0]);
-					},
-				});
-			},
-			deleteee(e){
-				 var id=e.id;
-				 console.log(id+'000000000000000000');
-				uni.request({
-					url:'http://localhost:8080/shell/deleteById/'+id,
-					method:'DELETE',
-					data:{},
-					success: (res) => {
-						console.log(res.data);
-						
-					}
-				})
-			},
-	
+ export default {
+  data() {
+   return {
+    bookData:[],
+    bookList:[],
+    //bookId:1
+    
+   }
+  },
+  onLoad:function(){
+   // this.showBook();
+   uni.request({
+    url:'http://localhost:8080/shell/all',
+    method:'GET',
+    data: {},
+    success: (res) => {
+     //console.log(res);
+     console.log("===============");
+     console.log(res.data );
+    
+     this.bookList=res.data;
+     
+     for (let i = 0; i < this.bookList.length; i++) {
+      console.log(this.bookList[i].bookId);
+     }
+     
+     console.log("===========>");
+     console.log(this.bookList[0].bookId);
+     
+     for (var i = 0; i < this.bookList.length; i++) {
+      this.getData(this.bookList[i].bookId);
+     }
+     console.log(this.bookData);
+     console.log("==========++++==================");
+    
+    },
+   });
+   },
+  methods:{
+   getData(bookId){
+    uni.request({
+     url:'http://localhost:8080/book/findById/'+ bookId,
+     method:'GET',
+     data: {},
+     success: (res) => {
+      //console.log(res);
+      console.log("-------------------aaaaaaaa");
+      console.log(res.data );
+      this.bookData.push(res.data[0]);
+      
+     },
+    });
+   },
+   deleteee(e){
+     var id=e.id;
+     console.log(id+'000000000000000000');
+    uni.request({
+     url:'http://123.56.217.170:8080/shell/deleteById/'+id,
+     method:'DELETE',
+     data:{},
+     success: (res) => {
+      console.log(res.data);
+      
+     }
+    })
+   },
 			gotodetails(id){
 				console.log('id为=============='+id);
 				// var id=e.id;

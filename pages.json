@@ -621,9 +621,9 @@
 		        "enablePullDownRefresh": false
 		    }
 		},
-		{
-			"path": "pages/me/me"
-		},
+		// {
+		// 	"path": "pages/me/me"
+		// },
 		{
 			"path": "pages/station/station",
 			"style": {
