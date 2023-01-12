@@ -14,7 +14,7 @@
 				<uni-card :cover="'http://localhost/dev-api' + activitydata[index].activityPicUrl">
 
 					<view>
-						<uni-tag :text="activitydata[index].activityReviewstatus"
+						<uni-tag :text="activitydata[index].activityReviewstatus"  v-if="tagtag"
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
 						
@@ -42,6 +42,8 @@
 			return {
 
 				show: false,
+				
+				tagtag: false,
 
 				list: ['已报名的活动', '申请发布的活动'],
 				// 或者如下，也可以配置keyName参数修改对象键名
@@ -105,12 +107,43 @@
 				this.current = index;
 
 				if (index === 0) {
-					console.log("暂未开发完成");
-					this.activitydata = [];
+					this.tagtag = false;
+					
+					// 已报名的活动
 					// this.signupinfo();
+					uni.request({
+						url: 'http://localhost:8080/actActivity/signup/' + getApp().globalData.uid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data);
+							
+							this.activitydata = res.data.data;
+							
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					
+					// 获取报名状态信息
+					uni.request({
+						url: 'http://localhost:8080/actSignupinfo/listActSignUser/' + getApp().globalData.uid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					
+					
 				} else if (index === 1) {
-					console.log("暂未开发完成");
-
+					
+					
+					
+					// console.log("暂未开发完成");
+					this.tagtag = true;
 					console.log(getApp().uid);
 
 					uni.request({
