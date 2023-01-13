@@ -6,7 +6,7 @@
 	</view>
 	<view class="box" v-for="(item,index) in sortList " :key="index">
 		<!-- <image style="width: 90px;height: 80px;;" v-if="item.img" :src="'/static/image'+(item.img).substring(8)" @click="gotodetails"> -->
-		<image style="width: 90px;height: 80px;;" v-if="item.img" :src="'/static/image'+(item.img).substring(8)" @click="gotoolist(item)">
+		<image style="width: 90px;height: 80px;;" v-if="item.img" :src="item.img" @click="gotoolist(item)">
 		</image>
 		<view > <text>{{item.category}}</text></view>
 	</view>

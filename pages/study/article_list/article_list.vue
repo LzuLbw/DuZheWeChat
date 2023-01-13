@@ -21,7 +21,7 @@
 		<br/>
             <view class=" " v-for="(item,index) in itemList" :key="index">
              <view style="font-size: 20px;text-align: center;" @click="godetails(item)">{{item.title}}</view>
-			 <image v-if="item.img" :src="'/static/image'+(item.img).substring(8)" style="width: 100%;height: 150px;" @click="godetails(item)"></image>
+			 <image v-if="item.img" :src="item.img" style="width: 100%;height: 150px;" @click="godetails(item)"></image>
 			 <view style="display: flex;">
 				 <view style="">{{item.creatTime}}</view>
 				 <view style="margin-left: 120upx;display: flex">

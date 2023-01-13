@@ -72,7 +72,7 @@
 			@touchstart="coverTouchStart" @touchend="coverTouchEnd" @touchmove="coverTouchMove" @touchcancel="coverTouchcancel"
 		>
 			
-				<image v-if="item.img" :src="'/static/image'+(item.img).substring(8)"  ></image>
+				<image v-if="item.img" :src="item.img" ></image>
 				
 			<view>
 				{{item.name}}
