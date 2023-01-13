@@ -11,7 +11,7 @@
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
 
-				<uni-card :cover="'http://localhost/dev-api' + activitydata[index].activityPicUrl">
+				<uni-card :cover="activitydata[index].activityPicUrl">
 
 					<view>
 						<uni-tag :text="activitydata[index].activityReviewstatus" v-if="tagtag"
