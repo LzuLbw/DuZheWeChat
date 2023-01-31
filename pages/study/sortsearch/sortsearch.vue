@@ -6,7 +6,7 @@
 	 	</view>
 	<view>
 	<view class="box" v-for="(item,index) in sortsearchlist " :key="index">
-		<image style="width: 90px;height: 80px;;"  v-if="item.img" :src="'/static/image'+(item.img).substring(8)" @click="gotoolist" >
+		<image style="width: 90px;height: 80px;;"  v-if="item.img" :src="item.img" @click="gotoolist(item)" >
 		</image>
 		<view > <text>{{item.category}}</text></view>
 	</view>
@@ -48,21 +48,21 @@
 			
 		},
 		methods:{
-			godetails(e){
+			gotoolist(e){
 				console.log('id为'+e.id);
 				var id=e.id;
 				uni.navigateTo({
-					url:'/pages/study/article_details/article_details?id='+id,
+					url:'/pages/study/articlesortlist/articlesortlist?id='+id,
 					success: (res) => {
 						console.log("打开成功");
 					}
 				})
 			},
-			gotoolist(){
-				uni.navigateTo({
-					url:'/pages/study/articlesortlist/articlesortlist'
-				})
-			},
+			// gotoolist(){
+			// 	uni.navigateTo({
+			// 		url:'/pages/study/articlesortlist/articlesortlist'
+			// 	})
+			// },
 		
 			onClickSearch() {
 			    uni.request({

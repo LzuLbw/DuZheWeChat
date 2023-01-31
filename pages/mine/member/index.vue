@@ -197,7 +197,7 @@ import { forever } from "request";
 			           this.total = response.total;
 					   this.i = 0;
 					   if(this.user_score.totalScore > this.levelscoremapList[this.total-1].totalScore){
-					   			alert('积分已达上限')
+					   			// alert('积分已达上限')
 								getLevelscoremap(this.total-1).then(response => {
 										this.levelrow = response.data
 									});

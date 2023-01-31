@@ -2,7 +2,7 @@
 	<view class="page-fill" >
 		<view class="book-wrap" v-for="(item,index) in bookData" :key="index">
 			<view  class="book-item"  >
-				<image class="book-img" v-if="item.img" :src="'/static/image'+(item.img).substring(8)"></image>
+				<image class="book-img" v-if="item.img" :src="item.img"></image>
 				<!-- <himg  class="book-img" :src="item.img" v-if="item.img" errorSrc="https://images-cdn.shimo.im/H4AX9SIW6W4xGH0M/noimg.jpg__thumbnail"></himg> -->
 				<view class="book-info" >
 					<view class="book-title">标题：{{item.name}}</view>

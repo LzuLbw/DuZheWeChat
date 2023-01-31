@@ -54,7 +54,7 @@
 			orderBy() {
 				//拿到当前对象
 				let obj = this.shopList.data[this.shopList.currentIndex];
-				let val = obj.status == "1" ? "asc" : "desc";
+				let val = obj.status == "1" ? "desc" : "asc";
 				return {
 					[obj.key]: val
 				}

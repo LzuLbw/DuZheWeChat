@@ -11,13 +11,17 @@
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
 
-				<uni-card :cover="'http://localhost/dev-api' + activitydata[index].activityPicUrl">
+				<uni-card :cover="activitydata[index].activityPicUrl">
 
 					<view>
-						<uni-tag :text="activitydata[index].activityReviewstatus"
+						<uni-tag :text="activitydata[index].activityReviewstatus" v-if="tagtag"
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
-						
+
+						<uni-tag :text="signupdata[index].approved" v-if="signtagtag"
+							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
+						</uni-tag>
+
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
 						<text class="uni-body">{{item.activitySubtitle}}</text>
 					</view>
@@ -43,6 +47,12 @@
 
 				show: false,
 
+				tagtag: false,
+
+
+				signtagtag: true,
+
+
 				list: ['已报名的活动', '申请发布的活动'],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
@@ -59,7 +69,8 @@
 
 				activitydata: [],
 
-				actPicUrl: []
+				actPicUrl: [],
+				signupdata: []
 
 			}
 		},
@@ -82,6 +93,8 @@
 
 		onShow() {
 			this.sectionChange(0);
+			console.log(getApp().globalData.uid);
+			console.log(getApp().globalData.name);
 		},
 
 		methods: {
@@ -105,12 +118,71 @@
 				this.current = index;
 
 				if (index === 0) {
-					console.log("暂未开发完成");
-					this.activitydata = [];
-					// this.signupinfo();
-				} else if (index === 1) {
-					console.log("暂未开发完成");
+					this.tagtag = false;
+					this.signtagtag = true;
 
+					// 已报名的活动
+					// this.signupinfo();
+					uni.request({
+						url: 'http://localhost:8080/actActivity/signup/' + getApp().globalData.uid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data);
+
+							this.activitydata = res.data.data;
+							if (res.data.data.length == 0) {
+								this.show = true;
+							} else {
+								this.show = false;
+							}
+
+
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
+					// 获取报名状态信息
+					uni.request({
+						url: 'http://localhost:8080/actSignupinfo/listActSignUser/' + getApp().globalData.uid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data);
+							this.signupdata = res.data.data;
+							
+							
+
+							// console.log(res.data.data[1].approved);
+
+
+
+							for (let i = 0; i < this.signupdata.length; i++) {
+
+								if (this.signupdata[i].approved == 0) {
+									this.signupdata[i].approved = "报名还未审核";
+								} else if (this.signupdata[i].approved == 1) {
+									this.signupdata[i].approved = "报名已通过审核";
+								} else if (this.signupdata[i].approved == 2) {
+									this.signupdata[i].approved = "报名未通过审核 ："  + this.signupdata[i].approvedmessage;
+								}
+							}
+
+
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
+
+				} else if (index === 1) {
+
+					this.tagtag = true;
+					this.signtagtag = false;
+
+					// console.log("暂未开发完成");
+					this.tagtag = true;
 					console.log(getApp().uid);
 
 					uni.request({
@@ -130,7 +202,7 @@
 							this.activitydata = res.data.data;
 
 
-							console.log(res.data.data[0]);
+							// console.log(res.data.data[0]);
 
 							for (let i = 0; i < this.activitydata.length; i++) {
 
@@ -168,7 +240,7 @@
 			signupinfo() {
 				//已经报名
 				uni.request({
-					url: 'http://123.56.217.170:8080/actActivity/signup/' + getApp().globalData.uid,
+					url: 'http://localhost:8080/actActivity/signup/' + getApp().globalData.uid,
 					method: 'GET',
 					data: {},
 					success: res => {

@@ -72,7 +72,7 @@
 			@touchstart="coverTouchStart" @touchend="coverTouchEnd" @touchmove="coverTouchMove" @touchcancel="coverTouchcancel"
 		>
 			
-				<image v-if="item.img" :src="'/static/image'+(item.img).substring(8)"  ></image>
+				<image v-if="item.img" :src="item.img" ></image>
 				
 			<view>
 				{{item.name}}
@@ -220,7 +220,7 @@
 			<view class="menu-top" :style="{height: `${statusBarHeight + 40}px`, top: itemShow ? 0 : `-100%`}" @touchend.stop>
 				<view :style="{height: `${statusBarHeight}px`}"></view>
 				<view class="head">
-					<text class="iconfont back" @click="back">返回</text>
+					<text class="iconfont back" @click="back" style="color: #333;">返回</text>
 				</view>
 			</view>
 			<!-- 菜单主体 -->
@@ -261,7 +261,7 @@
 			
 			<view class="setting" :style="{bottom: settingShow ? 0 : `-100%`}" @touchend.stop>
 				<view class="item">
-					<view class="item-name">字号</view>
+					<view class="item-name" style="color: #333;">字号</view>
 					<view class="icon" @click="bigSize" v-if="fontSize<maxFontSize">A+</view>
 					<view class="icon" style="color: #666; border: #666 solid 1px;" v-else>A+</view>
 					<view class="icon" @click="smallSize" v-if="fontSize>minFontSize">A-</view>
@@ -270,7 +270,7 @@
 					<view class="icon" @click="changeFont(1)" v-else style="border: #FF9900 solid 1px;color: #FF9900">繁體</view>
 				</view>
 				<view class="item" >
-					<view class="item-name">排版</view>
+					<view class="item-name" style="color: #333;">排版</view>
 					<view class="type-setting" :class="{active: lineHeight === 1}" @click="changeLineHeight(1)">
 						<view class="line" :class="{lineActive: lineHeight === 1}" v-for="i in 5" :key="i"></view>
 					</view>
@@ -282,13 +282,13 @@
 					</view>
 				</view>
 				<view class="item">
-					<view class="item-name">翻页</view>
+					<view class="item-name" style="color: #333;">翻页</view>
 					<view class="icon" :class="{active: turnType === 0}" style="padding: 5px 8px;" @click="changeTurnType(0)">覆盖</view>
 					<view class="icon" :class="{active: turnType === 1}" style="padding: 5px 8px;" @click="changeTurnType(1)">左右平移</view>
 					<view class="icon" :class="{active: turnType === 2}" style="padding: 5px 8px;" @click="changeTurnType(2)">上下平移</view>
 				</view>
 				<view class="item">
-					<view class="item-name">背景</view>
+					<view class="item-name" style="color: #333;">背景</view>
 					<view class="icon" style="background: url(../../../static/background1.jpg);" :class="{active: background === 1}" @click="changeBackground(1)"></view>
 					<view class="icon" style="background-color: #000;" :class="{active: background === 2}" @click="changeBackground(2)"></view>
 				</view>
@@ -331,14 +331,15 @@
 					chapterIndex: 0,
 					progress: 0
 				},
-				text:'11111111',
-				directoryList: [],  //目录列表
+				text:'',
+			
+		directoryList: [],  //目录列表
 				currentPage: 0,   //当前页
 				
 				innerHeight: 0,   //截取至整行的最大高度
 				
 				preChapter: {   //上一章数据
-					ready: true,  //是否准备完毕
+					ready: false,  //是否准备完毕
 					chapterIndex: '',
 					chapterName: '',
 					text: '',
@@ -355,7 +356,7 @@
 				},
 				
 				nextChapter: {   //下一章数据
-					ready: true,  //是否准备完毕
+					ready: false,  //是否准备完毕
 					chapterIndex: '',
 					chapterName: '',
 					text: '',
@@ -448,11 +449,12 @@
 				lineHeight: '',   //行高，注意是fontSize的倍数
 				background: '',    //背景
 				colorList: ['#000', '#666'],   //与背景对应的字体颜色
-
+		
 				chapterProgress: 0,   //‘章节进度条’的参数
 				progressTouched: false   //是否正在点击‘章节进度条’
 				
 			}
+		
 		},
 		onLoad:function(e) {
 			console.log(e);
@@ -466,6 +468,8 @@
 					//console.log(res);
 					console.log(res.data );
 					this.alist=res.data;
+					this.text=res.data[0].content;
+					console.log(this.text);
 				},
 			})
 			this.getSystemInfo()
@@ -2161,7 +2165,7 @@
 			position: absolute;
 			left: 0;
 			width: 100%;
-			background-color: #333;
+			background-color: #fff;
 			transition: top .3s;
 			color: #fff;
 			.head{
@@ -2209,7 +2213,7 @@
 			position: absolute;
 			left: 0;
 			width: 100%;
-			background-color: #333;
+			background-color: #fff;
 			transition: bottom .3s;
 			color: #fff;
 			.show-chapter{
@@ -2221,7 +2225,7 @@
 				line-height: 20px;
 				border-radius: 10rpx;
 				font-size: 13px;
-				background-color: #333;
+				background-color: #fff;
 			}
 			.progress-box{
 				display: flex;
@@ -2255,8 +2259,8 @@
 			justify-content: space-around;
 			padding: 10px 20px;
 			width: 100%;
-			color: #fff;
-			background-color: #333;
+			color: #333;
+			background-color: #fff;
 			transition: bottom .3s;
 			.item{
 				display: flex;

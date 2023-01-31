@@ -26,7 +26,7 @@
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
-				<uni-card :cover="'http://localhost/dev-api' + AllActivityData[index].activityPicUrl">
+				<uni-card :cover="AllActivityData[index].activityPicUrl">
 
 					<view>
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>

@@ -28,7 +28,7 @@
 			<view class="row" >
 				<view class="goods-info">
 					<view class="img">
-						<image :src="'/static/image'+ (imgUrl).substring(8)"></image>
+						<image :src="imgUrl"></image>
 					</view>
 					<view class="info">
 						<view class="title">{{goodsName}}</view>

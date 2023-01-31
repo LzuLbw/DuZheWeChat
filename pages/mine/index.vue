@@ -146,7 +146,7 @@
 	  		this.$tab.navigateTo('/pages/act/myact/myact')
 	  },
 	  handleBook() {
-	  		this.$tab.navigateTo('/pages/shop/order/order')
+	  		this.$tab.navigateTo('/pages/study/articleshell/articleshell')
 	  }
     }
   }
