@@ -45,7 +45,7 @@
 	import EmojiUtil from '@/static/social/emoji/replaceEmoji.js';
 	import {mapGetters,mapActions} from 'vuex';
 	import timeUtil from '@/utils/social/timeUtil.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	import userRequest from '@/api/social/user.js';
 	import requestUrl from '@/api/social/url.js';
 	export default {
@@ -93,7 +93,6 @@
 		created() {
 			this.getWindowSize();
 			console.log('聊天页面初始化')
-			//console.log(this.personMessage,this.chattingUserInfo)
 			for(let i=0;i<this.personMessage.length;i++){
 				if(this.personMessage[i].sessionId==this.chattingUserInfo.sessionId){
 					this.s_index = i;
@@ -207,6 +206,7 @@
 			//撤回消息
 			//显示图片showImage
 			showImage(imageString, type){
+				console.log(imageString)
 				let image = JSON.parse(imageString);
 				if(type==='compress') return image.compressUrl;
 				else{
@@ -412,7 +412,7 @@
 	
 </style>
 <style lang="scss" scoped>
-	@import "@/components/messageBox/global.scss";
+	@import "@/components/social/messageBox/global.scss";
 
 	// page{
 	// 	background-color: #333;

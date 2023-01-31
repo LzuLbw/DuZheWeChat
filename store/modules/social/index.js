@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import messageRequest from '@/api/social/message.js';
 import $store from '@/store/modules/social/test.js';
+import $storeApi from '@/store/modules/social';
 import friendRequest from '@/api/social/friend.js';
 import stringUtil from '@/utils/social/stringUtil.js';
 import userRequest from '@/api/social/user.js';
@@ -135,9 +136,10 @@ const store = new Vuex.Store({
 					updateTime:$store.state.groupList[i].update_time
 				}
 				$store.state.totalUnread.message += session.unread
+				session.updateTime=session.updateTime.replace('T', " ")
 				$store.state.sessionList.push(session)
 			}
-			$store.dispatch('sortSessionList')
+			$storeApi.dispatch('sortSessionList')
 		},
 		////////////////统计所有的未读消息
 		countUnreadMessage(){
@@ -163,13 +165,14 @@ const store = new Vuex.Store({
 			let res = await userRequest.getNotice({
 				id:$store.state.loginUserInfo.userId
 			})
-			console.log(res)
+			
 			$store.state.totalUnread.notice = res.data.count
 			$store.state.noticeList = res.data.noticeList
 			//console.log($store.state.noticeInfo)
 		},
 		////////////////////////获取用户聊天记录//////////////////
 		async getPersonMessage(){
+			
 			for(let i=0;i<$store.state.friendList.length;i++){
 				let session = {
 					sessionId: $store.state.friendList[i].session_id,
@@ -188,6 +191,7 @@ const store = new Vuex.Store({
 					pageNum: $store.state.personMessage[i].pageNum,
 					pageSize: $store.state.personMessage[i].pageSize
 				})
+				
 				let data = res.data
 				for(let i=0;i<$store.state.personMessage.length;i++){
 					if($store.state.personMessage[i].sessionId==data.sessionId){
@@ -243,13 +247,14 @@ const store = new Vuex.Store({
 		async getGroupList(){
 			let res = await userRequest.getGroup({id:this.getters.loginUserInfo.userId})
 			$store.state.groupList = res.data;
+			
 			this.dispatch('initSessionList')
 			this.dispatch('getGroupMessage');
 		},
 		///登录之后获取好友列表
 		async getFriendList(){
 			let res = await friendRequest.getList({myId:this.getters.loginUserInfo.userId})
-			//console.log(res)
+			
 			$store.state.friendList = res.data
 			//this.commit('_setFriendList',res.data);
 			this.dispatch('getGroupList');
@@ -270,13 +275,15 @@ const store = new Vuex.Store({
 					url: $store.state.friendList[i].avatar
 				}
 				let num = stringUtil.getFirstLetter($store.state.friendList[i].notation).charCodeAt(0)
-				if(num>=65&&num<=90)
-				{
-					$store.getters.friendListShow[num-63].push(t)
-				}
-				else{
-					$store.state.friendListShow[1].push(t)
-				}
+				
+				$store.state.friendListShow[1].push(t)
+				// if(num>=65&&num<=90)
+				// {
+				// 	$store.getters.friendListShow[num-63].push(t)
+				// }
+				// else{
+				// 	$store.state.friendListShow[1].push(t)
+				// }
 				
 			}
 		},

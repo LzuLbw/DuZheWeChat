@@ -18,12 +18,15 @@
 <script>
 	import timeUtil from '@/utils/social/timeUtil.js';
 	import inputBox from '@/components/social/inputBox/inputBox.vue';
+	import messageBox from '@/components/social/messageBox/messageBox.vue';
 	import {mapActions,mapGetters} from 'vuex';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
+	import $storeState from '@/store/modules/social/test.js';
 	import userRequest from '@/api/social/user.js';
 	export default {
 		components:{
-			inputBox: inputBox
+			inputBox: inputBox,
+			messageBox: messageBox
 		},
 		data() {
 			return {
@@ -33,7 +36,7 @@
 		},
 		onUnload() {
 			console.log('退出聊天窗口')
-			$store.state.chattingUserInfo = null
+			$storeState.state.chattingUserInfo = null
 		},
 		computed:{
 			...mapGetters(['loginUserInfo', 'chattingUserInfo','personMessage','onlineArray'])

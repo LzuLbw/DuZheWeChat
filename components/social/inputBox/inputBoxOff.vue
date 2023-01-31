@@ -29,7 +29,7 @@
 			<image class="input-icon" @tap="openDrawer(5)" src="@/static/social/icon/microphone.png"></image>
 		</view>
 		<view class="emoji-container" v-show="showDrawer===1">
-			<image class="emoji" v-for="(emoji,index) in emojiList" :key="index" @tap="text += emoji.alt" :src="'/static/emoji/big/'+emoji.url"></image>
+			<image class="emoji" v-for="(emoji,index) in emojiList" :key="index" @tap="text += emoji.alt" :src="'/static/social/emoji/big/'+emoji.url"></image>
 			<view style="height: 100rpx;"></view>
 			<view style="position: fixed;z-index: 100;right: 20rpx;bottom: 30rpx;display: flex">
 				<view class="btn">

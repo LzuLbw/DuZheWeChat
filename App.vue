@@ -2,7 +2,8 @@
 	import config from './config'
 	// import store from '@/store'
 	import { getToken } from '@/utils/auth'
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
+	import $storeState from '@/store/modules/social/test.js';
 	import websocket from '@/api/social/websocket.js';
 	export default {
 
@@ -14,6 +15,9 @@
 		  this.initApp()
 		  //连接websocket
 		    	websocket.initConnect();
+				$store.replaceState($storeState.state)
+				console.log($store)
+				
 		    	//获取好友列表
 		    	$store.dispatch('getFriendList');
 		    	///获取通知消息

@@ -43,8 +43,8 @@ export default{
 	//获取用户的基本信息
 	info(data){
 		return request({
-		  url: '/getInfo',
-		  method: 'get',
+		  url: 'ry-vue/user/info',
+		  method: 'POST',
 		  data,
 		  header:{
 			  'content-type': 'application/json',

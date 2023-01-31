@@ -5,7 +5,7 @@
 		</view>
 		
 		<view>
-			<inputBox 
+			<inputBox
 			@sendMessage="handleMessage" 
 			@bottomHeight="handleBottomHeight"
 			@keyboradHeight="handleKeyboradHeight"
@@ -21,7 +21,7 @@
 	import inputBox from '@/components/social/inputBox/inputBox.vue';
 	import {mapActions,mapGetters} from 'vuex';
 	import userRequest from '@/api/social/user.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default {
 		components:{
 			inputBox: inputBox,
@@ -73,9 +73,10 @@
 				let total = res.data.length
 				let memberArr = []
 				res.data.forEach(item=>{
-					memberArr.push(item.id)
+					memberArr.push(Number(item.user_id))
 				})
 				this.onlineArray.forEach(item=>{
+					console.log(Number(item))
 					if(memberArr.indexOf(Number(item))!==-1){
 						count++
 					}
@@ -89,7 +90,6 @@
 					userId: this.loginUserInfo.userId,
 					groupId: this.chattingGroupInfo.sessionId
 				})
-				//console.log(res)
 				for(let i=0;i<$store.state.sessionList.length;i++){
 					if($store.state.sessionList[i].sessionId==this.chattingGroupInfo.sessionId){
 						$store.state.sessionList[i].unread = 0

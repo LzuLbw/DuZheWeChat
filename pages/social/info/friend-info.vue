@@ -119,7 +119,7 @@
 	import userRequest from '@/api/social/user.js';
 	import friendRequest from '@/api/social/friend.js';
 	import {mapGetters} from 'vuex';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default{
 		computed:{
 			...mapGetters(['friendList','loginUserInfo','sessionList'])
@@ -145,7 +145,8 @@
 		},
 		onLoad(options){
 			let id = options.id;
-			this.getPersonInfo(id)
+			this.getPersonInfo(id),
+			console.log(this.personInfo)
 		},
 		methods:{
 			gotoChat(){
@@ -259,7 +260,7 @@
 			},
 			toEit(){
 				uni.navigateTo({
-					url:'/pages/socail/info/person-edit'
+					url:'/pages/social/info/person-edit'
 				})
 			},
 			change(e){

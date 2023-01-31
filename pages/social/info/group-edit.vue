@@ -8,14 +8,11 @@
 			<input v-model="name" placeholder="填写群名称(2-10个字)"/>
 		</view>
 		<view class="divider"></view>
-		<view class="avatar-container">
-			<text>群头像</text>
-			<view class="images">
-				<view>
-					<image :class="upload!==''?'image-selected':'image'" @tap="selectAvatar()" :src="upload==''?'/static/social/img/group/group-add.png':upload"></image>
-				</view>                                                                           
+			<view style="display: flex;justify-content: center;height: 80px;margin: 10px;">
+				<text style="margin-top: 8px;">群头像：</text>
+				<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+					:maxCount="1" :previewFullImage="true" deletable uploadText="群头像"></u-upload>
 			</view>
-		</view>
 		<view class="introduction">
 			<textarea v-model="introduction" placeholder="简单介绍一下这个群吧"></textarea>
 		</view>
@@ -37,6 +34,11 @@
 		},
 		data(){
 			return {
+				
+				fileList1: [],
+				picurl: "",
+				
+				
 				groupId: -1,
 				name:'',
 				upload:'',
@@ -76,6 +78,61 @@
 			}
 		},
 		methods:{
+			
+			
+			// 新增图片
+			async afterRead(event) {
+				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file)
+				let fileListLen = this[`fileList${event.name}`].length
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中'
+					})
+				})
+				for (let i = 0; i < lists.length; i++) {
+					const result = await this.uploadFilePromise(lists[i].url)
+					let item = this[`fileList${event.name}`][fileListLen]
+					this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result
+					}))
+					fileListLen++
+				}
+			},
+			uploadFilePromise(url) {
+				return new Promise((resolve, reject) => {
+					let a = uni.uploadFile({
+						url: 'http://localhost/dev-api/common/upload',
+						filePath: url,
+						name: 'file',
+						formData: {
+							user: 'test'
+						},
+						success: (res) => {
+							
+							console.log(res);
+							url = JSON.parse(res.data).fileName;
+							
+							// console.log(eval(res.data));
+			
+							console.log("要存的url为：" + url);
+							this.picurl = url;
+			
+							setTimeout(() => {
+								resolve(res.data.data)
+							}, 1000)
+						}
+					});
+				})
+			},
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1)
+			},
+			
 			selectAvatar: function() {
 				let that = this;
 				uni.chooseImage({
@@ -178,21 +235,62 @@
 			},
 			
 			operate(){
-				if(this.groupId==-1){
-					this.create()
-				}else{
-					this.edit()
-				}
+				
+				var uid = getApp().globalData.uid;
+				console.log(uid);
+				
+				uni.request({
+					url: 'http://localhost:8080/ry-vue/group/create',
+					method: 'POST',
+					
+					data: {
+						
+						"id" : uid,
+						"name" : this.name,
+						"avatar" : this.picurl,
+						"introduction" : this.introduction,
+						
+					},
+					success: res => {
+						uni.showToast({
+							icon:'success',
+							title:'创建成功'
+						}),
+						uni.navigateTo({
+							url:'/pages/social/list/group-list'
+						}),
+						$store.dispatch('getGroupList')
+						console.log(res);
+						
+					},
+					fail: () => {
+						uni.showToast({
+							icon:'error',
+							title:'创建失败'
+						})
+					},
+					complete: () => {}
+				});
+				
+				
+				
+				
+				
+				// if(this.groupId==-1){
+				// 	this.create()
+				// }else{
+				// 	this.edit()
+				// }
 			},
 			
 			async create(){
-				if(this.upload==''){
-					uni.showToast({
-						title:'请选择头像！',
-						icon:'none'
-					})
-					return;
-				}
+				// if(this.upload==''){
+				// 	uni.showToast({
+				// 		title:'请选择头像！',
+				// 		icon:'none'
+				// 	})
+				// 	return;
+				// }
 				if(this.name.length>10||this.name.length<2){
 					uni.showToast({
 						title:'群名称2~10个字！',
@@ -208,14 +306,14 @@
 					return;
 				}
 				uni.hideKeyboard();
-				if(this.upload==''){
-					uni.showToast({
-						title:'请选择图片',
-						icon:'none',
-						duration:1000
-					});
-					return;
-				}
+				// if(this.upload==''){
+				// 	uni.showToast({
+				// 		title:'请选择图片',
+				// 		icon:'none',
+				// 		duration:1000
+				// 	});
+				// 	return;
+				// }
 				uni.showLoading({
 					title:'正在上传头像···',
 				})

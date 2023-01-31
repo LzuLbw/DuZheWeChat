@@ -24,12 +24,13 @@
 		    :viewNumber="item.viewNum"
 		    :chatNumber="item.commentNum"
 			:isFocusOn="item.isFriend"
+		    :userId="item.userId"
 			:isMySelf="item.userId==loginUserInfo.userId"
-		    @clickDynamic="clickDynamic(item.id)"
+		    @clickDynamic="clickDynamic(item.id,item.userId)"
 		    @clickUser="clickUser(item.userId)"
 		    @clickFocus="clickFocus(item.userId)"
 		    @clickThumbsup="clickThumbsup(item.id,item.isLike)"
-		    @clickChat="clickChat(item.id)">
+		    @clickChat="clickChat(item.id,item.userId)">
 		</Dynamic>
 		<uni-fab
 			:pattern="pattern"
@@ -45,7 +46,7 @@
 	import Dynamic from '@/components/social/qizai-dynamic/Dynamic.vue';
 	let showSelect = uni.getStorageSync('SHOW_SELECT')|0;
 	import worldRequest from '@/api/social/world.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default {
 	    components: {
 	        Dynamic
@@ -94,6 +95,7 @@
 	        }
 	    },
 		created() {
+			
 			this.initArticleList();
 		},
 		onLoad() {
@@ -128,7 +130,6 @@
 					indexId: this.indexId,
 					authority: showSelect
 				})
-				//console.log(res.data)
 				this.articleList = this.articleList.concat(res.data)
 				if(res.data.length<10) this.hasNextPage = false
 				else{
@@ -140,11 +141,12 @@
 				this.indexId = 0
 				let res = await worldRequest.articles({
 					indexId: this.indexId,
-					authority: showSelect
+					authority: showSelect,
+					userId: this.loginUserInfo.userId
 				})
-				//console.log(res)
 				//console.log(this.friendList)
 				this.articleList = res.data
+				console.log(this.articleList)
 				if(res.data.length<10) this.hasNextPage = false
 				else{
 					this.hasNextPage = true
@@ -170,22 +172,21 @@
 					uni.startPullDownRefresh()
 				}
 			},
-	        clickDynamic(articleId){
+	        clickDynamic(articleId, userId){
 	            //console.log('childDynamic');
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 	        },
 	        // 点击用户信息
 	        clickUser(id){
-				console.log(id,this.loginUserInfo.userId)
 	            if(id==this.loginUserInfo.userId){
 					uni.navigateTo({
 						url:'/pages/social/info/person-info'
 					})
 				}else{
 					uni.navigateTo({
-						url:'/pages/socail/info/friend-info?id='+id
+						url:'/pages/social/info/friend-info?id='+id
 					})
 				}
 	        },
@@ -217,11 +218,11 @@
 				}
 	        },
 	        // 点击聊天
-	        clickChat(articleId){
+	        clickChat(articleId, userId){
 	            //console.log(e);
 	            //console.log('clickChat');
 				uni.navigateTo({
-					url:'/pages/socail/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId
 				})
 	        },
 			toPublishMoment(){

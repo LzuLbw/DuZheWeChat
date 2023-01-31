@@ -13,7 +13,7 @@
 						<view class="flex_grow">
 							<view class="flex_col">
 								<view class="flex_grow">{{item.name}}</view>
-								<view class="time">{{timeShowFormat(item.updateTime)}}</view>
+								<view class="time">{{item.updateTime}}</view>
 							</view>
 							<view class="info">{{item.lastMessage}}</view>
 						</view>
@@ -32,7 +32,7 @@
 	import {mapGetters} from 'vuex';
 	import requestUrl from '@/api/social/url.js';
 	import websocket from '@/api/social/websocket.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default{
 		data() {
 			return {

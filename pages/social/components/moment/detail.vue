@@ -13,6 +13,7 @@
 			    :viewNumber="Article.viewNum"
 			    :chatNumber="Article.commentNum"
 				:isFocusOn="Article.isFriend"
+				:userId="Article.userId"
 				:isMySelf="Article.userId==loginUserInfo.userId"
 			    @clickUser="clickUser(Article.userId)"
 			    @clickFocus="clickFocus(Article.userId)"
@@ -74,7 +75,7 @@
 							</view>
 							<view class="comment-main-foot">
 								<view class="foot-time">{{timestampFormat(item.publishTime)}}</view>
-								<view class="foot-btn" @click="reply(item.nickName,item.nickName,item.userId)">回复</view>
+								<view class="foot-btn" @click="reply(item.nickname,item.nickname,item.userId)">回复</view>
 								<view class="foot-btn" v-if="item.userId==loginUserInfo.userId||Article.userId==loginUserInfo.userId" @click="confirmDelete(item.id)">删除</view>
 							</view>
 						</view>
@@ -118,6 +119,8 @@
 	import {mapGetters} from 'vuex';
 	import worldRequest from '@/api/social/world.js';
 	export default {
+		props:{
+		},
 		components:{
 			Dynamic:Dynamic
 		},
@@ -129,6 +132,7 @@
 		},
 		onLoad(params) {
 			this.articleId = params.id
+			this.userId = params.userId
 			this.getArticle();
 			this.getComments();
 		},
@@ -174,7 +178,7 @@
 					})
 				}else{
 					uni.navigateTo({
-						url:'/pages/socail/info/friend-info?id='+id
+						url:'/pages/social/info/friend-info?id='+id
 					})
 				}
 			},
@@ -213,6 +217,7 @@
 			},
 			async getComments(){
 				let res = await worldRequest.comments({
+					userId: this.userId,
 					articleId: this.articleId
 				})
 				this.commentList = res.data
@@ -229,18 +234,18 @@
 			    // console.log('childUser');
 				if(id==this.loginUserInfo.userId){
 					uni.navigateTo({
-						url:'/pages/socail/info/person-info'
+						url:'/pages/social/info/person-info'
 					})
 				}else{
 					uni.navigateTo({
-						url:'/pages/socail/info/friend-info?id='+id
+						url:'/pages/social/info/friend-info?id='+id
 					})
 				}
 			},
 			// 点击关注
 			clickFocus(id){
 			    uni.navigateTo({
-			    	url:'/pages/socail/info/friend-info?id='+id
+			    	url:'/pages/social/info/friend-info?id='+id
 			    })
 			},
 			// 点击打赏
@@ -254,7 +259,8 @@
 			},
 			async getArticle(){
 				let res = await worldRequest.article({
-					articleId: this.articleId
+					articleId: this.articleId,
+					userId: this.userId
 				})
 				this.Article = res.data
 				//console.log(res)
@@ -345,7 +351,9 @@
 					});
 					return
 				}
+				console.log(this.loginUserInfo)
 				let res = await worldRequest.postComment({
+					id:this.loginUserInfo.userId,
 					articleId:this.articleId,
 					content: this.commentReq.content.trim()
 				})

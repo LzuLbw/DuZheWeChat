@@ -59,7 +59,7 @@
 	import URL from '@/api/social/url.js';
 	import {mapGetters} from 'vuex';
 	import worldRequest from '@/api/social/world.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	//let arry=['所有人可见','仅自己可见','不给谁看','给部分人看']
 		var sourceType = [
 			['camera'],
@@ -219,7 +219,8 @@
 				const { content: res } = await worldRequest.publish({
 					authority:this.authority?'0':'1',
 					content:this.text,
-					imgList:this.upload_images.toString()
+					imgList:this.upload_images.toString(),
+					id: $store.state.loginUserInfo.userId
 				});
 				uni.hideLoading();
 				uni.showToast({
@@ -283,16 +284,7 @@
 					}
 				}
 			})
-		},
-		// changeyinsi(){
-		// 	uni.showActionSheet({
-		// 	    itemList: arry,
-		// 	    success:(res)=> {
-		// 	     //   console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
-		// 			this.yinsi=arry[res.tapIndex];
-		// 	    }
-		// 	});
-		// }
+		}
 	}
 }
 	

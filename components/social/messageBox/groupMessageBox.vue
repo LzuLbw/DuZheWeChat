@@ -49,7 +49,7 @@
 	import EmojiUtil from '@/static/social/emoji/replaceEmoji.js';
 	import {mapGetters,mapActions} from 'vuex';
 	import timeUtil from '@/utils/social/timeUtil.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	import requestUrl from '@/api/social/url.js';
 	import userRequest from '@/api/social/user.js';
 	export default {

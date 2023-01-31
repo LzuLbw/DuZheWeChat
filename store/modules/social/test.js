@@ -3,13 +3,13 @@ import $http from "@/api/social/request.js"
 import Vue from 'vue'
 import Vuex from 'vuex'
 import messageRequest from '@/api/social/message.js';
-import $store from '@/store/modules/social/test.js';
+import $store from '@/store/modules/social/index.js';
 import friendRequest from '@/api/social/friend.js';
 import stringUtil from '@/utils/social/stringUtil.js';
 import userRequest from '@/api/social/user.js';
 import { fail } from 'assert';
 Vue.use(Vuex)
-// const store = new Vuex.Store({
+ //const store = new Vuex.Store({
 export default {
 	state: {
 		////关于系统
@@ -89,6 +89,7 @@ export default {
 			return state.title
 		},
 		messageList: state => {
+			console.log("22222222222",state.messageList)
 			return state.messageList
 		},
 		chattingUserInfo: state => {
@@ -292,5 +293,5 @@ export default {
 		}
 	}
 }
-// })
-// export default store
+ //})
+ //export default store

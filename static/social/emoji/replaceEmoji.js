@@ -5,7 +5,7 @@ export default{
 			for (let i = 0; i < emoji_List.length; i++) {
 				let EM = emoji_List[i];
 				if (EM.alt == item) {
-					let Path = '/static/emoji/big/';
+					let Path = '/static/social/emoji/big/';
 					let imgstr = '<img class=\'emoji-text\' src="' + Path + EM.url + '">';
 					return imgstr;
 				}

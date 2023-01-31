@@ -14,6 +14,7 @@ export default{
 	  });
 	},
 	articles(data) {
+		console.log(data)
 	  return request({
 	    url: 'ry-vue/world/articles',
 	    method: 'POST',
@@ -47,6 +48,7 @@ export default{
 	  });
 	},
 	postComment(data) {
+		console.log(data)
 	  return request({
 	    url: 'ry-vue/world/comment/publish',
 	    method: 'POST',

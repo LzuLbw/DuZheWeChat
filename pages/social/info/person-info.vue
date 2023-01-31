@@ -14,7 +14,7 @@
 				<image class="icon" src="/static/social/icon/mail.png"></image>
 				<text selectable="true">{{loginUserInfo.email}}</text>
 				<image class="icon" src="/static/social/icon/calendar.png"></image>
-				<text>{{loginUserInfo.birthday.substring(0,11)}}</text>
+				<text v-if="loginUserInfo.birthday">{{loginUserInfo.birthday.substring(0,11)}}</text>
 			</view>
 			<view class="text">
 				个人简介：
@@ -40,7 +40,7 @@
 	import requestUrl from '@/api/social/url.js';
 	import {mapGetters} from 'vuex';
 	import timeUtil from '@/utils/social/timeUtil.js';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default{
 		computed:{
 			...mapGetters(['loginUserInfo'])

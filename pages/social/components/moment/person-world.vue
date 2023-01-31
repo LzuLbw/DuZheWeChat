@@ -125,25 +125,25 @@
 			clickDynamic(articleId){
 			    //console.log('childDynamic');
 				uni.navigateTo({
-					url:'/pages/socail/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId
 				})
 			},
 			// 点击用户信息
 			clickUser(id){
 			    if(id==this.loginUserInfo.userId){
 					uni.navigateTo({
-						url:'/pages/socail/info/person-info'
+						url:'/pages/social/info/person-info'
 					})
 				}else{
 					uni.navigateTo({
-						url:'/pages/socail/info/friend-info?id='+id
+						url:'/pages/social/info/friend-info?id='+id
 					})
 				}
 			},
 			// 点击关注
 			clickFocus(id){
 			    uni.navigateTo({
-			    	url:'/pages/socail/info/friend-info?id='+id
+			    	url:'/pages/social/info/friend-info?id='+id
 			    })
 			},
 			// 点赞
@@ -172,7 +172,7 @@
 			    //console.log(e);
 			    //console.log('clickChat');
 				uni.navigateTo({
-					url:'/pages/socail/components/moment/detial?id='+articleId
+					url:'/pages/social/components/moment/detial?id='+articleId
 				})
 			}
 		}

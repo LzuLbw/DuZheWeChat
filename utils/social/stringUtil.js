@@ -7,7 +7,10 @@ export default{
 	    if (uni > 40869 || uni < 19968)
 		{
 			let char = ch.charAt(0);
-			if(char>='a'&&char<='z')	return char.toUpperCase();
+			if(char>='a'&&char<='z')	
+			{
+				return char.toUpperCase();
+			}
 			return char;
 		}
 	       

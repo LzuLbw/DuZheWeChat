@@ -1,5 +1,6 @@
 import requestUrl from '@/api/social/url.js';
-import $store from '@/store/modules/social/test.js';
+import $store from '@/store/modules/social';
+import $storeState from '@/store/modules/social/test.js';
 import noticeUtil from '@/utils/social/noticeUtil.js';
 import timeUtil from '@/utils/social/timeUtil.js';
 import userRequest from '@/api/social/user.js';
@@ -9,7 +10,7 @@ export default{
 		uni.closeSocket()  //创建新的socket连接前确保旧的已关闭
 		//创建一个socket连接
 		uni.connectSocket({
-		    url:requestUrl.getWebsokcetUrl()+$store.state.loginUserInfo.userId,
+		    url:requestUrl.getWebsokcetUrl()+$storeState.state.loginUserInfo.userId,
 		    success: res=>{
 			},
 			fail(res){
@@ -49,10 +50,10 @@ export default{
 		//监听socket消息
 		uni.onSocketMessage((res)=>{
 		    let data=JSON.parse(res.data)  //socket信息是字符串，需要先转成json形式再去解析内容
+					
 			switch(data.type){
 				////撤回消息
 				case 'person-withdraw':
-					//console.log(data)
 					for(let i=0;i<$store.state.personMessage.length;i++){
 						if($store.state.personMessage[i].sessionId==data.data.sessionId){
 							for(let j=$store.state.personMessage[i].list.length-1;j>=0;j--){
@@ -255,6 +256,7 @@ export default{
 					case 'group-message':
 						let group_message = data.data
 						/////消息加入消息历史列表
+						console.log($store)
 						for(let i=0;i<$store.state.groupMessage.length;i++){
 							if($store.state.groupMessage[i].groupId==group_message.groupId){
 								$store.state.groupMessage[i].list.push(group_message)
