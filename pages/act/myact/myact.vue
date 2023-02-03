@@ -125,6 +125,7 @@
 						method: 'GET',
 						data: {},
 						success: res => {
+							console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 							console.log(res.data.data);
 
 							this.activitydata = res.data.data;
@@ -146,6 +147,8 @@
 						method: 'GET',
 						data: {},
 						success: res => {
+							
+							console.log("??????????????????????????????????????");
 							console.log(res.data.data);
 							this.signupdata = res.data.data;
 
