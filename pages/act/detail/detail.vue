@@ -5,7 +5,7 @@
 
 
 
-		<image :src="'http://localhost/dev-api' + ActivityData.activityPicUrl"></image><br>
+		<image :src="ActivityData.activityPicUrl"></image><br>
 
 		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title: '进行中'}, {title: '已结束'}]" :active="stepactive"
 			activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>

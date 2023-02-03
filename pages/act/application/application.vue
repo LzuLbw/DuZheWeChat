@@ -235,7 +235,7 @@
 				console.log(this.matters);
 
 				uni.request({
-					url: 'http://123.56.217.170:8080/actActivity/user/activity',
+					url: 'http://localhost:8080/actActivity/user/activity',
 					method: 'POST',
 					data: {
 							"activityMaintitle": this.maintitlevalue,
