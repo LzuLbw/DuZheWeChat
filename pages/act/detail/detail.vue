@@ -150,6 +150,7 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social/test.js';
 	export default {
 		data() {
 			return {
@@ -192,33 +193,107 @@
 				type: 'center',
 				msgType: 'success',
 				messageText: '报名成功',
-				value: ''
+				value: '',
+				currentuname: "",
+				currentuid: 0
 			}
 		},
 		onLoad: function(e) {
-
-
+			
 			uni.request({
 				url: 'http://localhost:8080/actSignupinfo/signupnum/' + e.activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
-					console.log("当前活动的已报名人数:");
-					console.log(res.data);
-					
-					
+					console.log("当前活动的已报名人数:", res.data);
+			
 					this.signnum = res.data;
 				},
 				fail: () => {},
 				complete: () => {}
 			});
 
+			this.$store.dispatch('GetInfo').then(res => {
+				console.log("================++++++++++++++++++++++=======================");
+				console.log("当前登录用户的昵称为：");
+				console.log(res.user.nickName);
+				this.currentuname = res.user.nickName;
+				console.log("当前登录用户的ID为");
+				console.log(res.user.userId);
+				this.currentuid = res.user.userId;
+
+				//初始化报名按钮状态
+				uni.request({
+					url: 'http://localhost:8080/actSignupinfo/' + this.currentuid + "/" + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("==========报名信息审核状态==============" + res.data);
+						this.useractstatus = res.data;
+						console.log("欢迎查看本活动，你的报名状态为 " + this.useractstatus);
+						if (this.useractstatus) {
+							this.customButtonGroup1[0].text = "取消报名";
+						} else {
+							this.customButtonGroup1[0].text = "立即报名";
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
+				//初始化点赞按钮状态
+				uni.request({
+					url: 'http://localhost:8080/actGivelike/' + this.currentuid + "/" + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("======================？？？？？？？？？？？？？？？");
+						console.log("当前活动的点赞状态为" + res.data);
+						this.usergivelikestatus = res.data;
+				
+						if (this.usergivelikestatus) {
+							this.options[0].icon = "hand-up-filled";
+							this.options[0].text = "已点赞";
+						} else {
+							this.options[0].icon = "hand-up";
+							this.options[0].text = "点赞";
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
+				//初始化收藏按钮状态
+				uni.request({
+					url: 'http://localhost:8080/actCollection/' + this.currentuid + "/" + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("当前活动的收藏状态为" + res.data);
+						this.usercollectionstatus = res.data;
+				
+						if (this.usercollectionstatus) {
+							this.options[1].icon = "star-filled";
+							this.options[1].text = "已收藏";
+						} else {
+							this.options[1].icon = "star";
+							this.options[1].text = "收藏";
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+
+			});
+			
+
+
+
+
+
 			console.log(e);
 			this.Activityid = e.activityid;
 			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
-			console.log("当前用户uid = ", getApp().globalData.uid);
-			console.log("当前用户name = ", getApp().globalData.name);
-			console.log("当前活动的id为" + this.Activityid);
 
 			//获取活动信息
 			uni.request({
@@ -234,7 +309,7 @@
 					console.log("当前活动的最大报名人数为：");
 					console.log(this.actpersonnum);
 
-					if (this.ActivityData.activityAttribution == getApp().globalData.uid) {
+					if (this.ActivityData.activityAttribution == this.currentuid) {
 
 						this.showsugsugbutton = true;
 
@@ -251,7 +326,6 @@
 					} else if (res.data.data.activityReviewstatus == 1) {
 
 						// 活动已经审核通过
-
 
 					} else if (res.data.data.activityReviewstatus == 2) {
 
@@ -308,66 +382,11 @@
 				complete: () => {}
 			});
 
-			//初始化报名按钮状态
-			uni.request({
-				url: 'http://localhost:8080/actSignupinfo/' + getApp().globalData.uid + "/" + this.Activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("==========" + res.data);
-					this.useractstatus = res.data;
-					console.log("欢迎查看本活动，你的报名状态为 " + this.useractstatus);
-					if (this.useractstatus) {
-						this.customButtonGroup1[0].text = "取消报名";
-					} else {
-						this.customButtonGroup1[0].text = "立即报名";
-					}
-				},
-				fail: () => {},
-				complete: () => {}
-			});
 
-			//初始化点赞按钮状态
-			uni.request({
-				url: 'http://localhost:8080/actGivelike/' + getApp().globalData.uid + "/" + this.Activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("当前活动的点赞状态为" + res.data);
-					this.usergivelikestatus = res.data;
 
-					if (this.usergivelikestatus) {
-						this.options[0].icon = "hand-up-filled";
-						this.options[0].text = "已点赞";
-					} else {
-						this.options[0].icon = "hand-up";
-						this.options[0].text = "点赞";
-					}
-				},
-				fail: () => {},
-				complete: () => {}
-			});
 
-			//初始化收藏按钮状态
-			uni.request({
-				url: 'http://localhost:8080/actCollection/' + getApp().globalData.uid + "/" + this.Activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("当前活动的收藏状态为" + res.data);
-					this.usercollectionstatus = res.data;
 
-					if (this.usercollectionstatus) {
-						this.options[1].icon = "star-filled";
-						this.options[1].text = "已收藏";
-					} else {
-						this.options[1].icon = "star";
-						this.options[1].text = "收藏";
-					}
-				},
-				fail: () => {},
-				complete: () => {}
-			});
+
 		},
 		methods: {
 
@@ -397,7 +416,7 @@
 					//已经报名了，可进行取消报名的操作
 					console.log("用户点击了取消报名");
 					uni.request({
-						url: "http://localhost:8080/actSignupinfo/" + getApp().globalData.uid + "/" + this
+						url: "http://localhost:8080/actSignupinfo/" + this.currentuid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},
@@ -421,7 +440,7 @@
 						url: 'http://localhost:8080/actSignupinfo',
 						method: 'POST',
 						data: {
-							"userid": getApp().globalData.uid,
+							"userid": this.currentuid,
 							"activityid": this.Activityid
 						},
 						success: res => {
@@ -437,6 +456,7 @@
 
 				}
 			},
+				
 			onClick(e) {
 
 				if (e.content.text === "点赞") {
@@ -452,7 +472,7 @@
 						url: 'http://localhost:8080/actGivelike',
 						method: 'POST',
 						data: {
-							"userid": getApp().globalData.uid,
+							"userid": this.currentuid,
 							"activityid": this.Activityid
 						},
 						success: res => {
@@ -476,7 +496,7 @@
 						url: 'http://localhost:8080/actCollection',
 						method: 'POST',
 						data: {
-							"collectionuserid": getApp().globalData.uid,
+							"collectionuserid": this.currentuid,
 							"collectionactivityid": this.Activityid
 						},
 						success: res => {
@@ -499,8 +519,7 @@
 
 					//发起取消点赞的请求
 					uni.request({
-						url: "http://localhost:8080/actGivelike/" + getApp().globalData.uid + "/" + this
-							.Activityid,
+						url: "http://localhost:8080/actGivelike/" + this.currentuid + "/" + this.Activityid,
 						method: 'DELETE',
 						data: {},
 						success: res => {
@@ -524,7 +543,7 @@
 
 					//发起取消收藏的请求
 					uni.request({
-						url: "http://localhost:8080/actCollection/" + getApp().globalData.uid + "/" + this
+						url: "http://localhost:8080/actCollection/" + this.currentuid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},

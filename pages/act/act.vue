@@ -1,8 +1,9 @@
+<!-- 活动总体页面 Ding Jiaxiong -->
+<!-- 全部活动卡片渲染 -->;
 <template>
-	<!-- <button @click="print">打印所有活动信息</button> -->
-	<!-- 全部活动卡片渲染 -->
+
 	<view>
-		<!-- 组合条件查询 -->
+		<!-- 组合条件查询组件 -->
 		<view style="display: flex;margin-top: 10px;margin-right: 10px;">
 			<w-select style="margin-left: 20rpx;" v-model='chooseValue1' defaultValue="活动地点" :list='list1'
 				valueName='content' @change='change1'>
@@ -19,7 +20,6 @@
 		<view style="margin-top: 5px;margin-left: 5px;margin-right: 5px;">
 			<u-gap height="20" bgColor="#00aaff"></u-gap>
 		</view>
-
 
 
 		<view v-for="(item,index) in AllActivityData">
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social/test.js';
 	export default {
 		data() {
 			return {
@@ -102,13 +103,21 @@
 		},
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
-			
+
 		},
 		onLoad() {
+
+			this.$store.dispatch('GetInfo').then(res => {
+				console.log("当前登录用户的昵称为：",res.user.nickName);
+				console.log("当前登录用户的ID为",res.user.userId);
+
+			})
+
+
 			console.log("当前所在位置：全部活动页面");
-			console.log("当前登录用户id=", getApp().globalData.uid);
-			
-			console.log("当前登录用户昵称=", getApp().globalData.name);
+			// console.log("当前登录用户id=", getApp().globalData.uid);
+
+			// console.log("当前登录用户昵称=", getApp().globalData.name);
 
 			//获取全部活动数据
 			uni.request({
@@ -116,7 +125,7 @@
 				method: 'GET',
 				data: {},
 				success: res => {
-					console.log(res.data.data);
+					// console.log(res.data.data);
 					this.AllActivityData = res.data.data;
 				},
 				fail: () => {},
