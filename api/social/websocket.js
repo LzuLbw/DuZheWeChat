@@ -47,7 +47,7 @@ export default{
 				}, 3000);
 			}
 		})
-		//监听socket消息
+		//监听socket消息，浏览器端接收消息，获得从服务端发送过来的消息
 		uni.onSocketMessage((res)=>{
 		    let data=JSON.parse(res.data)  //socket信息是字符串，需要先转成json形式再去解析内容
 					
@@ -121,7 +121,6 @@ export default{
 					let friend = data.data
 					if(friend.myId==$store.state.loginUserInfo.userId){
 						$store.dispatch('getNoticeList')
-						////
 						console.log('这里需要向好友发送一个消息')
 						let m = {
 							senderId : friend.myId,
@@ -135,7 +134,6 @@ export default{
 							type: 'person-message',
 							data: m
 						}
-
 						uni.sendSocketMessage({
 							data: JSON.stringify(msg),
 							fail() {
