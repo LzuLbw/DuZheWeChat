@@ -121,7 +121,7 @@
 			async loadData() {
 				const that = this;
 				await uni.request({
-					url:'http://123.56.217.170:8080/swiper/list',
+					url:'http://localhost:8080/swiper/list',
 					method:'GET',
 					success: (res) => {
 						console.log(res.data);

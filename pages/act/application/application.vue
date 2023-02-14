@@ -152,12 +152,12 @@
 
 <script>
 	// import * as qiniu from 'qiniu-js';
-
+	import $store from '@/store/modules/social/test.js';
 	export default {
 		data() {
 			return {
 				
-				uid : '',
+				uid : 0,
 				uname: '',
 
 				msgType: 'success',
@@ -198,11 +198,12 @@
 		
 		onLoad() {
 			
-			this.uid = getApp().globalData.uid;
-			this.uname = getApp().globalData.name;
-			
-			console.log("==================");
-			console.log("现在正在申请发布新活动的用户id为" + this.uid + "用户名为" + this.uname);
+			this.$store.dispatch('GetInfo').then(res => {
+				console.log("当前正在申请发布活动的用户名：",res.user.nickName);
+				this.uname = res.user.nickName;
+				console.log("当前正在申请发布活动的用户的ID为",res.user.userId);
+				this.uid = res.user.userId;
+			});
 			
 			
 		},
@@ -235,7 +236,7 @@
 				console.log(this.matters);
 
 				uni.request({
-					url: 'http://123.56.217.170:8080/actActivity/user/activity',
+					url: 'http://localhost:8080/actActivity/user/activity',
 					method: 'POST',
 					data: {
 							"activityMaintitle": this.maintitlevalue,
