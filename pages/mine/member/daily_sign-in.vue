@@ -39,11 +39,11 @@
 </template>
 
 <script>
-	import { listScore_record, getScore_record, delScore_record, addScore_record, updateScore_record } from "@/api/center/score_record";
-	import { listTask_finish, ifSign_in,getTask_finish, delTask_finish, addTask_finish, updateTask_finish } from "@/api/center/task_finish";
+	import { listScore_record, getScore_record, delScore_record, addScore_record, updateScore_record } from "@/api/readerstation-member/score_record";
+	import { listTask_finish, ifSign_in,getTask_finish, delTask_finish, addTask_finish, updateTask_finish } from "@/api/readerstation-member/task_finish";
 	import { getUserProfile } from "@/api/system/user"
-	import { listTask, getTask, delTask, addTask, updateTask } from "@/api/center/task";
-	import { listUser_score, getUser_score, delUser_score, addUser_score, updateUser_score } from "@/api/center/user_score";
+	import { listTask, getTask, delTask, addTask, updateTask } from "@/api/readerstation-member/task";
+	import { listUser_score, getUser_score, delUser_score, addUser_score, updateUser_score } from "@/api/readerstation-member/user_score";
 export default {
   props: {
     checks: {

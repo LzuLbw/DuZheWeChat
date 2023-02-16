@@ -19,7 +19,7 @@
 		delUser_wallet,
 		addUser_wallet,
 		updateUser_wallet
-	} from "@/api/center/user_wallet";
+	} from "@/api/readerstation-member/user_wallet";
 
 	export default {
 
