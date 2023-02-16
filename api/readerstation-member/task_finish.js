@@ -42,3 +42,11 @@ export function delTask_finish(id) {
     method: 'delete'
   })
 }
+
+// 查询今天是否签到
+export function ifSign_in(id) {
+  return request({
+    url: '/readerstation-member/task_finish/if/' + id,
+    method: 'get'
+  })
+}
