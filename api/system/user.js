@@ -46,7 +46,13 @@ export function getMemberProfile() {
 //     method: 'get'
 //   })
 // }
-
+// 查询用户详细
+export function getUser(userId) {
+  return request({
+    url: '/system/user/' + parseStrEmpty(userId),
+    method: 'get'
+  })
+}
 
 // 用户头像上传
 export function uploadAvatar(data) {

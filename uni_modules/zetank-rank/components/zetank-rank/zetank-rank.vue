@@ -2,14 +2,14 @@
 	<view>
 		<view class="contentpaiming">
 			<view style="width: 15%;display: flex;justify-content: center;align-items: center;">
-				<text>{{title_1}}</text>
+				<text>排名</text>
 			</view>
 			<view style="width: 65%;">
 				<view style="display: flex;justify-content: center;align-items: center;">
-					{{title_2}}
+					昵称
 				</view>
 			</view>
-			<view style="width: 25%;display: flex;justify-content: center;align-items: center;">{{title_3}}</view>
+			<view style="width: 25%;display: flex;justify-content: center;align-items: center;">积分</view>
 		</view>
 		
 		<view v-for="(item,index) in rankData":key="index" class="contentpaiming">
@@ -28,15 +28,17 @@
 			</view>
 			<view style="width: 25%;display: flex;justify-content: center;align-items: center;"><text>{{item.data}}</text></view>
 		</view>
+		{{user_scoreList}}
 	</view>
 </template>
 
 <script>
+	import { listUser_score, getUser_score, delUser_score, addUser_score, updateUser_score } from "@/api/readerstation-member/user_score";
 	export default {
 		name:"zetank-rank",
 		data() {
 			return {
-				
+				user_scoreList:[],
 			};
 		},
 		props:{
@@ -62,19 +64,25 @@
 					]
 				}
 			},
-			title_1:{
-				type:String,
-				default:"排名"
-			},
-			title_2:{
-				type:String,
-				default:"昵称"
-			},
-			title_3:{
-				type:String,
-				default:"积分"
-			}
+			
 		},
+		
+		mounted() {},
+		onLoad() {
+			
+			this.getList()
+		},
+		methods: {
+			/** 查询用户积分列表 */
+			    getList() {
+					// alert(1)
+			      listUser_score().then(response => {
+					  // alert(1)
+			        this.user_scoreList = response.rows;
+			        this.totalCount = response.total;
+			      });
+			    },
+		}
 	}
 </script>
 

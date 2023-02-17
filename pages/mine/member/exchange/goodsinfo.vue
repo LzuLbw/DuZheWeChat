@@ -1,13 +1,13 @@
 <template>
 	<view class="content">
-		<image :src="data.img" style="width: 750rpx;" mode="widthFix"></image>
+		<image :src="data.imgUrl" style="width: 750rpx;" mode="widthFix"></image>
 		<view style="width: 720rpx;margin: 8rpx auto;font-size: 32rpx;color: #3c3e41;font-weight: bold;">
 			{{data.title}}
 		</view>
 		<view style="width: 720rpx;display: flex;justify-content: space-between;margin-top: 12rpx;">
 			<view class="">
 				<u-icon name="/static/jifen.png" size="32" label-size="52" :label="data.price" label-color="#1296db"></u-icon>
-				<text style="color: #1296db;font-size: 25rpx;margin-left: 6rpx;">{{data.price}}积分</text>
+				<text style="color: #1296db;font-size: 25rpx;margin-left: 6rpx;">{{data.score}}积分</text>
 			</view>
 		</view>
 		<view style="width: 720rpx;height: 10rpx;background: #e8ebf5;margin: 18rpx auto;"></view>
@@ -21,7 +21,7 @@
 			
 		</view>
 		<view style="width: 700rpx;margin: 8rpx auto;font-size: 28rpx;color: #424346;">
-			{{data.jianjie}}
+			{{data.introduction}}
 		</view>
 		<view style="width: 720rpx;height: 10rpx;background: #e8ebf5;margin: 18rpx auto;"></view>
 		<view style="width: 720rpx;margin: 8rpx auto;display: flex;align-items: center;">
@@ -36,7 +36,7 @@
 		</view>
 		<view style="width: 700rpx;margin: 8rpx auto;font-size: 28rpx;color: #424346;">
 			<u-parse :html="data.info"></u-parse>
-			{{data.info}}
+			{{data.content}}
 		</view>
 		<view style="width: 750rpx;height: 160rpx;">
 			
@@ -53,23 +53,18 @@
 </template>
 
 <script>
+	import { listPrize, getPrize, delPrize, addPrize, updatePrize } from "@/api/readerstation-member/prize";
 	export default {
 		data() {
 			return {
-				data:{
-					img:'/static/mine/member/head.png',
-					title:'读者小站',
-					price:8,
-					jianjie:'读者小站是一个智能线上...',
-					info:'在当下社会，读书成为一个明显的问题，人们都不喜欢阅读。。。'
-				},
+				data:{},
 				userinfo:''
 			}
 		},
 		onLoad(o) {
-			var id = o.id
+			// var id = o.id
 			var that = this
-			this.getgoodinfo(id)
+			this.getgoodinfo(o.id)
 		},
 		onShareAppMessage() {
 			
@@ -147,11 +142,17 @@
 				}
 			},
 			getgoodinfo:function(id){
-				var that = this
-				this.$u.post('getgoodsinfo',{id:id}).then(res=>{
-					console.log(res)
-					that.data = res
-				})
+				// alert(id)
+				getPrize(id).then(response => {
+				        this.data = response.data;
+						// alert(this.data)
+				      });
+				// alert(this.data)
+				// var that = this
+				// // this.$u.post('getgoodsinfo').then(res=>{
+				// 	// console.log(res)
+				// 	that.data = u
+				// })
 			},
 			gomycard:function(){
 				uni.switchTab({

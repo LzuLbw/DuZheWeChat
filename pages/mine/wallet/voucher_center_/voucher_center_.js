@@ -69,6 +69,18 @@
 			this.Refresh();
 		},
 		methods: {
+			
+			toPay() {
+				if(this.money==''){
+				    uni.showToast({title: '充值金额不能为空！',icon: 'none',duration: 2000});
+				   return; 
+				}
+				// console.log(this.userId);
+				uni.navigateTo({
+					url: "/pages/shop/pay/payment/payment?amount=" + this.money
+				})
+			},
+			
 			// 定义动画内容
 			scaleAndScale() {
 				// 定义动画内容
@@ -91,12 +103,14 @@
 			      uni.showToast({title: '充值金额不能为空！',icon: 'none',duration: 2000});
 			     return; 
 			  }
-			  if(this.payType==''){
-			      uni.showToast({title: '充值方式不能为空！',icon: 'none',duration: 2000});
-			     return; 
-			  }
+			  // if(this.payType==''){
+			  //     uni.showToast({title: '充值方式不能为空！',icon: 'none',duration: 2000});
+			  //    return; 
+			  // }
 			
 			},
+			
+			
 			
 			/**
 			* input处理函数
