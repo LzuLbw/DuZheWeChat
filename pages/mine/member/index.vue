@@ -35,21 +35,26 @@
 			</template>
 		</scroll-view>
 
-		<view class="title_line">
+		<!-- <view class="title_line">
 			<text class="title">我的会员</text>
 			<text class="more">查看更多</text>
-		</view>
+		</view> -->
 
-		<view class="welfare">
-			<template v-for="(info,i) in welfare">
-				<view class="item" :key="'welfare_'+i">
-					<view class="border">
-						<image class="img" :src="info.icon" @click="routerItem(info.url)"></image>
+		
+		<!-- 底部菜单 -->
+		<view class="footer">
+			<view class="welfare">
+				<template v-for="(info,i) in welfare">
+					<view class="item" :key="'welfare_'+i">
+						<view class="border">
+							<image class="img" :src="info.icon" @click="routerItem(info.url)"></image>
+						</view>
+						<text class="txt" @click="routerItem(info.url)">{{info.name}}</text>
+						<!-- <text class="btn" @click="routerItem(info.url)" >去完成</text> -->
 					</view>
-					<text class="txt" @click="routerItem(info.url)">{{info.name}}</text>
-					<!-- <text class="btn" @click="routerItem(info.url)" >去完成</text> -->
-				</view>
-			</template>
+				</template>
+			</view>
+			
 		</view>
 	</view>
 </template>
@@ -448,7 +453,7 @@ import { forever } from "request";
 	}
 
 	.welfare {
-		width: 92%;
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -484,6 +489,72 @@ import { forever } from "request";
 				font-size: 10px;
 				font-weight: 300;
 				color: rgba(153, 153, 153, 1);
+			}
+		}
+	}
+	.footer {
+		position: fixed;
+		bottom: 0upx;
+		width: 100%;
+		padding: 0 4%;
+		height: 150upx;
+		border-top: solid 1upx #eee;
+		background-color: #fff;
+		z-index: 2;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	
+		.icons {
+			display: flex;
+			height: 80upx;
+			margin-left: -4%;
+	
+			.box {
+				width: 80upx;
+				height: 80upx;
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+	
+				.icon {
+					font-size: 40upx;
+					color: #828282;
+				}
+	
+				.text {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					font-size: 22upx;
+					color: #666;
+				}
+			}
+		}
+	
+		.btn {
+			height: 80upx;
+			border-radius: 40upx;
+			overflow: hidden;
+			display: flex;
+			margin-right: -2%;
+	
+			.joinCart,
+			.buy {
+				height: 80upx;
+				padding: 0 40upx;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				font-size: 28upx;
+			}
+	
+			.joinCart {
+				background-color: #f0b46c;
+			}
+	
+			.buy {
+				background-color: #f06c7a;
 			}
 		}
 	}

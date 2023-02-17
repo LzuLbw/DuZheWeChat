@@ -25,6 +25,7 @@
 				</view>
 			</view>
 		</view>
+		加载完成...
 	</view>
 </template>
 
@@ -47,8 +48,8 @@
 		onLoad() {
 			var that = this
 			this.getlist_info();
-			this.getUser();
-			this.getindexinfo()
+			// this.getUser();
+			// this.getindexinfo()
 		},
 		onShareAppMessage() {
 			
@@ -87,7 +88,7 @@
 </script>
 <style>
 	page{
-		background: rgb(152, 152, 152);
+		background: rgb(239, 239, 239);
 	}
 </style>
 <style lang="scss" scoped>

@@ -58,7 +58,7 @@
 		data() {
 			return {
 				data:{},
-				userinfo:''
+				userinfo:'1'
 			}
 		},
 		onLoad(o) {
@@ -74,20 +74,21 @@
 			var app = getApp()
 			if(app.globalData.userinfo){
 				this.userinfo = app.globalData.userinfo
-			}else{
-				uni.login({
-					success(res) {
-						var code = res.code
-						that.$u.post('wxuserlogin',{code:code}).then(res=>{
-							console.log(res)
-							if(res){
-								that.userinfo = res
-								app.globalData.userinfo = res
-							}
-						})
-					}
-				})
 			}
+			// else{
+			// 	uni.login({
+			// 		success(res) {
+			// 			var code = res.code
+			// 			that.$u.post('wxuserlogin',{code:code}).then(res=>{
+			// 				console.log(res)
+			// 				if(res){
+			// 					that.userinfo = res
+			// 					app.globalData.userinfo = res
+			// 				}
+			// 			})
+			// 		}
+			// 	})
+			// }
 		},
 		methods: {
 			duihuan:function(){

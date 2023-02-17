@@ -83,7 +83,7 @@ import { getUser } from "@/api/system/user";
 			        this.user_scoreList = response.rows;
 			        this.totalCount = response.total;
 					
-					that.QuserName()
+					// that.QuserName()
 					
 			      });
 				  
