@@ -774,8 +774,29 @@
 		            {
 		                "navigationBarTitleText": "书本列表"
 		            }
-		        }
-		        ,{
+		        },
+				{
+				    "path" : "pages/study/note/note",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "笔记"
+				    }
+				},
+				{
+				    "path" : "pages/study/collection/collection",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "我的收藏"
+				    }
+				},
+				{
+				    "path" : "pages/study/addnote/addnote",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "添加笔记"
+				    }
+				}
+				,{
 		            "path" : "pages/study/readddd/readddd",
 		            "style": {
 		            	"navigationStyle": "custom",
@@ -784,6 +805,15 @@
 						}
 		            }
 		        }
+        ,{
+            "path" : "pages/study/addnote/addnote",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

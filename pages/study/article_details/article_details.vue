@@ -42,7 +42,7 @@
 										<view class="comLogo com2" v-if="index == 1">板凳</view>
 										<view class="comLogo com3" v-if="index == 2">地板</view>
 										<view class="comLogo com4" v-if="index > 2">{{index + 1}}楼</view>
-										<view class="nick-name">{{pUser}}</view>
+										<view class="nick-name">{{item.nickName}}</view>
 										
 									</view>
 									<!-- <view class="zan-box" @click="like(item.id)">
@@ -64,7 +64,7 @@
 								</view>
 								<view class="comment-main-foot">
 									<view class="foot-time">{{item.creatTime}}</view>
-									<view class="foot-btn" @click="reply(nickName,nickname,item.id)">回复</view>
+									<view class="foot-btn" @click="reply(item.nickName,item.nickName,item.id)">回复</view>
 									<view class="foot-btn"  @click="confirmDelete(item.id)">删除</view>
 								</view>
 								<!-- 父评论体-end -->
@@ -125,7 +125,7 @@
 							<view class="btn-click cancel" @click="closeInput">取消</view>
 							<view>
 								<view class="replayTag" v-show="showTag">
-									<view>回复在 {{nickName}} 的评论下</view>
+									<view>回复在 {{pUser}} 的评论下</view>
 									<view @click="tagClose" class="replyTagClose">×</view>
 								</view>
 							</view>
@@ -133,7 +133,7 @@
 								<view class="btn-click" @click="to_push"  >发布</view>
 							</view>
 						</view>
-						<textarea class="textarea" v-model="content" :placeholder="placeholder" :adjust-position="false" :show-confirm-bar="false"
+						<textarea class="textarea" v-model="commentReq.content" :placeholder="placeholder" :adjust-position="false" :show-confirm-bar="false"
 							@blur="blur" @focus="focusOn" :focus="focus" maxlength="800"></textarea>
 					</view>
 				</view>
@@ -147,6 +147,7 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social';
 	
 	// import {yearTime} from '@/pages/article_details/methods.js'
 	// import {appleTime} from '@/pages/article_details/methods.js'
@@ -165,8 +166,6 @@
 		// },
 		data() {
 			return {
-				nickName:'zz',
-				//nickname:'cc',
 				"emptyAvatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABF5JREFUWEfFl11oHFUUx//nbmKwxdJ9qFL7YPEhRJC2gljjF60WG0WsoNkWfSnZ7Jy7FVPF0AoKpmBFqyIG3Jk7G1iIQXHbBz+KbbGtRfBbMe2LseKjiVDoiqIhwZ0jV3fb3cnM7kQCuU+7M+ec/+9+nHPPEJZ50DLrY1EApVJp9fz8/BYRuZ2INgDYWJvAWRE5R0RnZmZmPh4ZGZlPOrFEAMVi8e4gCPYSUZ+IXGGFgiCYIaJpKyQi1yql1orIFgAXARxRSvm5XO67diBtAYwxRQCDAE4RUUkpdWxwcNCKLBiu665TSj0kIpqIbgTgMzO3gmgJYIz5CMB9AIaZ+bXGQMVi8RoRuZeI/lZKHc1ms3/U34+Pj6+cnZ3dC+AggGPMfH8cRCyAMUZqThlmPlwPUCgU0qlUyq7Kww1BrbjHzPsahYwx/QDK9hkzR2pFPjTGnAWwIexkjOkRkRIR3Rozo5Miskdr/VMIxE7mHDPXD+2l1wsA6nseBMHmfD7/dSjQOwB2tTlYC/bddd1blFJfARhj5lyjfxNA7bSfitpz3/d3iYgFaDuUUjeHM8AY8zSAV5VS9+RyudP1IE0Axpj3Aaxk5m1hFc/zPiWiO9uq/2dwiJn3h22NMScB/MnMOxYAjI6Orurq6rpgU0hrXYpw/hFAd0KAD5n5wbCt7/t7ROT1ubm5NUNDQ7/b95dWwHXd7Uqp452dnVcPDAxciACwDlclAbAFynGcdRGr2EtEnwdB0JfP5080ARhjDhLRbY7jbI0SMcZUAKxOAgDgN2ZOx8SxGfEiMz/bBOD7/lgQBCu01o/GOH4PYFNCgElmvinK1vf9X2xxchzHVtfLW2CMOQpgipmHYwBeBtBUaOJgRKSgtX48Js63AH5l5geaADzPe1cpddFxnHyM42YAXyZYAXt+epn557iVFJHzWuudYYDnlFJ9juPcESfi+35JRHa3gdjPzIfibIwxNtPe0Fq/EAZ4hIhcZl4T5+y67nql1CcA1kfZENFnrSZQ6ycqItKvtT4SBthIRJMdHR092WzW5nzk8H1/WEReiQHY4TjOB3G+nuf9qyEim7TW9r65fAjL5fKVlUrlPICXmPnNFquwWym1oFBZ+yAItubz+TMtAJ4gon3pdLo7k8nMNgHYP7ZeE5EWkbuYeaYx0NjY2HXValUDeApAV4zIJIADzPxe+H2hULg+lUp9U6sBl3qLprugXC6nKpXKF0R02nGcZ2wQ3/e3ichOEckQ0aoEWQDbsgF4a3p6eqLeH3qeN0FE3el0ujeTyVTrcaKuY1uIjIg8CaCfiLYnEW1hY4WPi8gEgMeY+e1G27iGxHYxtptZynGYmTPhgK1asqWEiBRfcAjDdMaYpYCIFW8LUMuM54nIsb3/YvbDXskiYtuzA6382n4X1CDWAnCSgNSFa98ETakcWbwWMytjzAoAPUEQ3JBKpXrs75r/VLVanVJK/VC7Uf9KGjfRCiQN9n/slh3gHz9i4jC+FVL5AAAAAElFTkSuQmCC",
 				commentData: [],
 				placeholder: "请输入评论",
@@ -174,7 +173,7 @@
 					parent_comment_id: null, // 评论父id
 					content: null // 评论内容
 				},
-				pUser: getApp().globalData.uname, // 标签-回复人
+				pUser: null, // 标签-回复人
 				showTag: false, // 标签展示与否
 				focus: false, // 输入框自动聚焦
 				submit: false, // 弹出评论
@@ -258,9 +257,9 @@
 						method: 'POST',
 						data: {
 							// creatTime:this.year,
-							content:this.content,
+							content:this.commentReq.content.trim(),
 							articleId:this.id,
-							userId:2
+							userId:$store.state.loginUserInfo.userId
 							// creatTime:this.da.yearTime,
 							
 						},
@@ -296,14 +295,14 @@
 			
 			// 回复评论.
 			reply(pUser, reUser, parent_comment_id) {
-				this.pUser = getApp().globalData.uname;
+				this.pUser = pUser;
 				// this.pUser="王xx",
 				// this.reUser="zzz",
-				this.commentData.parent_comment_id = parent_comment_id;
+				this.commentReq.parent_comment_id = parent_comment_id;
 				//console.log(parent_comment_id+'cxcxcxcxcxc');
 				console.log(pUser,reUser,parent_comment_id)
 				 if (reUser) {
-					this.commentData.content = '@' + reUser + ' ';
+					this.commentReq.content = '@' + reUser + ' ';
 				 } else {
 				 	//this.commentReq.content = '';
 				 }

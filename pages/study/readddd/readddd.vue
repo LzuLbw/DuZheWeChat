@@ -143,7 +143,7 @@
 			<view class="content"   >
 				<view class="inner-box" :style="{height: '${innerHeight}px'}" v-if="curPage.canRead">
 					<view class="book-inner" v-html="curPage.text"
-						:style="{fontSize: '${fontSize}px', lineHeight: '${lineHeight*fontSize}px',color: '${colorList[background - 1]}',
+						:style="{fontSize: fontSize+'px', lineHeight: '${lineHeight*fontSize}px',color: '${colorList[background - 1]}',
 						transform: 'translateY(-${curPage.pageNum*innerHeight}px)'}" 
 					>
 					</view>
@@ -457,19 +457,17 @@
 		
 		},
 		onLoad:function(e) {
-			console.log(e);
+			//console.log(e);
 			this.id=e.id;
-			console.log(this.id+'aaaaaaaaaaaa');
+			//console.log(this.id+'aaaaaaaaaaaa');
 			uni.request({
 				url:'http://localhost:8080/book/findById/'+this.id,
 				method:'GET',
 				data:{},
 				success: (res) => {
 					//console.log(res);
-					console.log(res.data );
 					this.alist=res.data;
 					this.text=res.data[0].content;
-					console.log(this.text);
 				},
 			})
 			this.getSystemInfo()
@@ -604,6 +602,7 @@
 				
 				//可能缓存在前端可能从后端拿，如果是异步注意同步处理
 				this.fontSize = uni.getStorageSync('fontSize')
+				
 				if (typeof this.fontSize !== 'number') {
 					this.fontSize = 16
 				}
@@ -669,7 +668,9 @@
 			* 计算innerHeight，用于截取至整行
 			**/
 			calcHeight() {
+						
 				if (this.contentHeight) {
+					
 					let lineHeight = this.fontSize * this.lineHeight;
 					// #ifdef APP-PLUS || MP-WEIXIN
 						lineHeight = Math.floor(lineHeight*this.pixelRatio)/this.pixelRatio
@@ -709,13 +710,14 @@
 					setTimeout(() => {
 						const query = uni.createSelectorQuery().in(this);
 						query.select('#curChapter').boundingClientRect(data => {
-							let height = data.height;
+							let height = data.height/3;
 							// #ifdef APP-PLUS || MP-WEIXIN
 							
 								height = Math.round(height*this.pixelRatio)/this.pixelRatio
 							// #endif
 							this.curChapter.totalPage = Math.ceil(height/this.innerHeight) || 1
 							this.curChapter.ready = true   //章节准备完毕
+							//console.log(this.curChapter)
 							resolve()
 						}).exec();
 					}, 100)
@@ -732,7 +734,7 @@
 					setTimeout(() => {
 						const query = uni.createSelectorQuery().in(this);
 						query.select('#preChapter').boundingClientRect(data => {
-							let height = data.height;
+							let height = data.height/3;
 							// #ifdef APP-PLUS || MP-WEIXIN
 								height = Math.round(height*this.pixelRatio)/this.pixelRatio
 							// #endif
@@ -766,7 +768,7 @@
 					setTimeout(() => {
 						const query = uni.createSelectorQuery().in(this);
 						query.select('#nextChapter').boundingClientRect(data => {
-							let height = data.height;
+							let height = data.height/3;
 							// #ifdef APP-PLUS || MP-WEIXIN
 								height = Math.round(height*this.pixelRatio)/this.pixelRatio
 							// #endif
@@ -1641,13 +1643,15 @@
 			* 根据页码跳转
 			**/
 			goToPage(page) {
-				
+				let ltext = this.curChapter.text.length
+				let content = this.curChapter.text.substring(ltext/this.curChapter.totalPage*page,
+									ltext/this.curChapter.totalPage*(page+1))
 				this.currentPage = page
 				this.showAnimation = false
 				this.curPage = {
 					ready: this.curChapter.ready,
 					chapterName: this.curChapter.chapterName,
-					text: this.curChapter.text,
+					text: content,
 					pageNum: this.currentPage,
 					totalPage: this.curChapter.totalPage,
 					pageTranslate: [

@@ -17,6 +17,14 @@
 				<image @click="gotoshell" src="../../../static/icon/study_shell.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
 				<view style="margin-left: 50px;">书架</view>
 				</view>
+				<view>
+				<image @click="gotonote" src="../../../static/icon/note.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
+				<view style="margin-left: 50px;">笔记</view>
+				</view>
+				<view>
+				<image @click="gotocollection" src="../../../static/icon/collection.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
+				<view style="margin-left: 50px;">收藏</view>
+				</view>
 			</view>
 		<br/>
             <view class=" " v-for="(item,index) in itemList" :key="index">
@@ -29,6 +37,7 @@
 					 <view style="font-size: 20px;">{{item.viewNum}}</view>
 					 
 				 </view>
+				 <view @click="addcollection(item.id)" style="margin-left: 150px;">收藏</view>
 			 </view>
             </view><br/>
 	    </view>
@@ -36,6 +45,8 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social';
+	
 	// import articleList from '@/components/articleList/articleList.vue'
 	 //import luanqingsearch from '@/components/luanqing-search/luanqing-search.vue'
 	
@@ -107,6 +118,16 @@
 				url:'/pages/study/articleshell/articleshell'
 			})
 		},
+		gotonote(){
+			uni.navigateTo({
+				url:'/pages/study/note/note'
+			})
+		},
+		gotocollection(){
+			uni.navigateTo({
+				url:'/pages/study/collection/collection'
+			})
+		},
 		godetails(e){
 			console.log('id为'+e.id);
 			var id=e.id;
@@ -128,6 +149,34 @@
 				
 			})
 			
+		},
+		addcollection(id){
+			this.id=id;
+				console.log(id+"文章id");
+				uni.request({
+					
+					url:'http://localhost:8080/collection/insert/',
+					method: 'POST',
+					data: {
+						articleId:this.id,
+						userId:$store.state.loginUserInfo.userId,
+					},
+					dataType:'json',
+					success: (res) => {
+						uni.showModal({
+							content:'成功加入',
+							showCancel:false,
+							success:function(res){
+								if(res.confirm){
+									console.log("成功加入");
+								}else if(res.cancel){
+									console.log("没有加入");
+								}
+								
+							}
+						})
+					}
+				});
 		},
 		onClickSearch(){
 			this.$emit('onSearch',{text:this.content});

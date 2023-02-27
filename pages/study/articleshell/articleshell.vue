@@ -11,6 +11,7 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social';
  export default {
   data() {
    return {
@@ -22,8 +23,9 @@
   },
   onLoad:function(){
    // this.showBook();
+   let userId = $store.state.loginUserInfo.userId
    uni.request({
-    url:'http://localhost:8080/shell/all',
+    url:'http://localhost:8080/shell/findUser/' +userId,
     method:'GET',
     data: {},
     success: (res) => {
@@ -33,12 +35,8 @@
     
      this.bookList=res.data;
      
-     for (let i = 0; i < this.bookList.length; i++) {
-      console.log(this.bookList[i].bookId);
-     }
-     
      console.log("===========>");
-     console.log(this.bookList[0].bookId);
+     console.log(this.bookList);
      
      for (var i = 0; i < this.bookList.length; i++) {
       this.getData(this.bookList[i].bookId);

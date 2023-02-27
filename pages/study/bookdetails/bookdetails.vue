@@ -61,6 +61,8 @@
 </template>
 
 <script>
+	import $store from '@/store/modules/social';
+	
 export default {
 
 	data() {
@@ -80,8 +82,8 @@ export default {
 		};
 	},
 	onLoad(e) {
-		console.log(getApp().globalData.uid);
-		console.log(getApp().globalData.name);
+		
+		console.log(getApp())
 		this.show(e);
 		let fid = e.fictionid;
 		this.fictionid = fid;
@@ -137,28 +139,27 @@ export default {
 				method: 'POST',
 				data: {
 					bookId:this.id,
-					userId:getApp().globalData.uid,
+					userId:$store.state.loginUserInfo.userId,
 				},
 				// console.log(getApp().globalData.uid);
 				// console.log(getApp().globalData.name);
 				dataType:'json',
 				success: (res) => {
-					console.log(res.data);
-					console.log("成功");
+					
+					uni.showModal({
+						content:'成功加入书架',
+						showCancel:false,
+						success:function(res){
+							if(res.confirm){
+								console.log("成功加入");
+							}else if(res.cancel){
+								console.log("没有加入");
+							}
+							
+						}
+					})
 				}
 			});
-			uni.showModal({
-				content:'成功加入书架',
-				showCancel:false,
-				success:function(res){
-					if(res.confirm){
-						console.log("成功加入");
-					}else if(res.cancel){
-						console.log("没有加入");
-					}
-					
-				}
-			})
 			// uni.switchTab({
 			// 	url:'/pages/articleshell/articleshell?id='+id,
 			// 	success: (res) => {
