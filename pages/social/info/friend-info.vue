@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="top">
-			<image class="background" style="width: 100%;" mode="aspectFill" @tap="preViewImage(personInfo.background)" src="/static/social/img/duzhe.jpg"></image>
+			<image class="background" style="width: 100%;" mode="aspectFill" @tap="preViewImage(personInfo.background)" src="/static/social/img/reader.jpg"></image>
 			<image class="avatar" @tap="preViewImage(personInfo.avatar)" :src="personInfo.avatar"></image>
 			<view v-show="isFriend" @tap="show1 = true" class="btn">修改备注</view>
 		</view>

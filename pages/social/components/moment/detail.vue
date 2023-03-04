@@ -13,13 +13,12 @@
 			    :viewNumber="Article.viewNum"
 			    :chatNumber="Article.commentNum"
 				:isFocusOn="Article.isFriend"
-				:userId="Article.userId"
 				:isMySelf="Article.userId==loginUserInfo.userId"
 			    @clickUser="clickUser(Article.userId)"
 			    @clickFocus="clickFocus(Article.userId)"
-			    @clickThumbsup="clickThumbsup(Article.id,Article.isLike)"
+			    @clickThumbsup="clickThumbsup(Article.id,Article.isLike,Article.userId)"
 			    @clickGiveReward="clickGiveReward(Article.id)"
-			    @clickChat="clickChat(Article.id)">
+			    @clickChat="clickChat(Article.id,Article.userId)">
 			</Dynamic>
 		</view>
 		<view class="hb-comment">
@@ -56,7 +55,7 @@
 									<view class="comLogo com4" v-if="index > 2">{{index + 1}}楼</view>
 									<view class="nick-name" @tap="gotoPage(item.userId)">{{item.nickname}}</view>
 								</view>
-								<view class="zan-box" @click="like(item.id,item.isLike)">
+								<view class="zan-box" @click="like(item.id,item.isLike,Article.userId)">
 									<span :class="item.isLike ? 'isLike' : 'notLike'">{{item.likeNum == 0 ? '抢首赞' : item.likeNum}}</span>
 									<img style="width: 14px; height: 14px;" v-if="!item.isLike"
 										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAApVJREFUWEfFlz9oFEEUxr93SWEhFkIaBUljo4WgATEaiI0GwVLBQg2EzLd3hSBqLI2lRgWLY+ftSSQgggoWNv5pImLUwjQBg1goqCCIIBqwueSeTLg7Ln9Mcmdub7vdnZnvN9+8fe+toMWXtFgfDQGMjo52zM7OHgMwIyLTg4ODk41upG4A7/0OEbkPYGdFVEQuOOeuNQJRN4CqBvGw+3dm9kZEBsrCPSRf1gvRCIAFETPrjqLodZIkY2Z2SkQmnHMHUgMgOQ8fx3FvJpMZB/CDZEfqACEgi8XidwA/SW5uKkCN2AzJTYscmCTZ1VQA7/2AiNwSkefOuYNBLEmSnJnlATwgebypAKr6CMBRANdJng9i3vu8iORE5Mrc3NyTlQDM7HMul/tYO2bNX0GhUDhRKpXumtlvAPuiKJouOzBuZr117HyBU6sCqOpeAH0AhssiwyQvVwTjOO5va2s7vRaAGtCrJC+GOVUAVb1UTjDVDLd4URHJOuf8WsSWG5MkSbeZTYR3lc+4CpAkyUpWht3fI/m+UfEwL5/Pb2xvb59ZFkBV5zNchazsSBBeYPn/ABQKhZ5SqfQCwBTJXYuPoOkAqnoGwE0Ad0ieTB3Ae39bRPoBDJEcSR1AVd8C2CMifc65p6kCmJkkSfIHwAYAW0h+SxVAVXcDmDSzL1EUbasEc20eaGoQVuoIgMckj6QOoKo3AJwFMEJyqBUAIegOAegnOdYKgK8AtmYyma7aLjqVGPDebxeRDwB+AeggWUzVAVV1ABTAK5L7l+0HVPUTgM7Q7VQGhPJZe99oHagpw4dJPvsXQPixONeoyErzRGTKzB7W9hFLjiA8iOO4M7iw3hDZbLbq6pIeY73F6l1v1Zas3gXrHf8XhhNvMGSmtPYAAAAASUVORK5CYII=" />
@@ -275,11 +274,12 @@
 			// 	// }
 			// 	this.commentData = cmData;
 			// },
-			async clickThumbsup(id,isLike){
-			    //console.log(id,isLike);
+			async clickThumbsup(id,isLike,userId){
+			    // console.log(id,isLike,userId);
 				let res = await worldRequest.likeArticle({
 					type: isLike?'cancel':'like',
-					articleId:id
+					articleId:id,
+					userId:userId
 				})
 				uni.showToast({
 					icon:'none',
@@ -368,11 +368,12 @@
 				//console.log(res)
 			},
 			// 点赞评论
-			async like(commentId,isLike) {
-				//console.log(isLike)
+			async like(commentId,isLike,userId) {
+				console.log(commentId,isLike,userId)
 				let res = await worldRequest.likeComment({
 					type: isLike?'cancel':'like',
-					commentId:commentId
+					commentId:commentId,
+					userId:userId
 				})
 				uni.showToast({
 					icon:'none',

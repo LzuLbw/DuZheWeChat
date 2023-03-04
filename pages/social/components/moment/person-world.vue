@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view style="position: relative;height: 35%;height: 600rpx;">
-			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/duzhe.jpg"></image>
+			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/reader.jpg"></image>
 			<view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;">
 				<view style="text-align: center;line-height: 80rpx;color: #fff;margin-right: 10rpx;font-weight: 600;">{{personInfo.nickName}}</view>
 				<image :src="personInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
@@ -21,11 +21,11 @@
 		    :chatNumber="item.commentNum"
 			:isFocusOn="item.isFriend"
 			:isMySelf="item.userId==loginUserInfo.userId"
-		    @clickDynamic="clickDynamic(item.id)"
+		    @clickDynamic="clickDynamic(item.id,item.userId)"
 		    @clickUser="clickUser(item.userId)"
 		    @clickFocus="clickFocus(item.userId)"
-		    @clickThumbsup="clickThumbsup(item.id,item.isLike)"
-		    @clickChat="clickChat(item.id)"
+		    @clickThumbsup="clickThumbsup(item.id,item.isLike,item.userId)"
+		    @clickChat="clickChat(item.id,item.userId)"
 			>
 		</Dynamic>
 	</view>
@@ -122,10 +122,10 @@
 					this.indexId = res.data[9].id
 				}
 			},
-			clickDynamic(articleId){
+			clickDynamic(articleId,userId){
 			    //console.log('childDynamic');
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 			},
 			// 点击用户信息
@@ -147,11 +147,12 @@
 			    })
 			},
 			// 点赞
-			async clickThumbsup(id,isLike){
+			async clickThumbsup(id,isLike,userId){
 			    //console.log(id,isLike);
 				let res = await worldRequest.likeArticle({
 					type: isLike?'cancel':'like',
-					articleId:id
+					articleId:id,
+					userId:userId
 				})
 				uni.showToast({
 					icon:'none',
@@ -168,11 +169,9 @@
 				}
 			},
 			// 点击聊天
-			clickChat(articleId){
-			    //console.log(e);
-			    //console.log('clickChat');
+			clickChat(articleId,userId){
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detial?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 			}
 		}

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view style="position: relative;height: 35%;height: 600rpx;">
-			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/duzhe.jpg"></image>
+			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/reader.jpg"></image>
 			<view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;">
 				<view style="text-align: center;line-height: 80rpx;color: #333;margin-right: 10rpx;font-weight: 600;">{{loginUserInfo.nickName}}</view>
 				<image :src="loginUserInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
@@ -22,13 +22,13 @@
 			:isFocusOn="item.isFriend"
 			:authority="item.authority"
 			:isMySelf="item.userId==loginUserInfo.userId"
-		    @clickDynamic="clickDynamic(item.id)"
+		    @clickDynamic="clickDynamic(item.id,item.userId)"
 		    @clickUser="clickUser(item.userId)"
 		    @clickFocus="clickFocus(item.userId)"
-		    @clickThumbsup="clickThumbsup(item.id,item.isLike)"
-		    @clickChat="clickChat(item.id)"
-			@changeAuthority="changeAuthority(index,item.id,item.authority)"
-			@deleteArticle="deleteArticle(index,item.id)">
+		    @clickThumbsup="clickThumbsup(item.id,item.isLike,item.userId)"
+		    @clickChat="clickChat(item.id,item.userId)"
+			@changeAuthority="changeAuthority(index,item.id,item.authority,item.userId)"
+			@deleteArticle="deleteArticle(index,item.id,item.userId)">
 		</Dynamic>
 	</view>
 </template>
@@ -70,15 +70,15 @@
 			},600)
 		},
 		methods:{
-			async changeAuthority(index,id){
+			async changeAuthority(index,id,userId){
 				let res = await worldRequest.changeArticle({
 					articleId: id
 				})
 				this.articleList[index].authority = res.data
-				// console.log(res)
+				
 			},
-			deleteArticle(index,id){
-				//console.log(index,id)
+			deleteArticle(index,id,userId){
+				console.log(index,id,userId)
 				let that = this
 				uni.showModal({
 					cancelText:'取消',
@@ -86,12 +86,12 @@
 					title:'确认删除',
 					success(res) {
 						if(res.confirm){
-							that.postDelete(index,id)
+							that.postDelete(index,id,userId)
 						}
 					}
 				})
 			},
-			async postDelete(index,id){
+			async postDelete(index,id,userId){
 				let res = await worldRequest.deleteArticle({
 					articleId:id
 				})
@@ -144,10 +144,10 @@
 					this.indexId = res.data[9].id
 				}
 			},
-			clickDynamic(articleId){
+			clickDynamic(articleId,userId){
 			    //console.log('childDynamic');
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 			},
 			// 点击用户信息
@@ -169,11 +169,12 @@
 			    })
 			},
 			// 点赞
-			async clickThumbsup(id,isLike){
+			async clickThumbsup(id,isLike,userId){
 			    //console.log(id,isLike);
 				let res = await worldRequest.likeArticle({
 					type: isLike?'cancel':'like',
-					articleId:id
+					articleId:id,
+					userId:userId
 				})
 				uni.showToast({
 					icon:'none',
@@ -190,11 +191,11 @@
 				}
 			},
 			// 点击聊天
-			clickChat(articleId){
+			clickChat(articleId,userId){
 			    //console.log(e);
 			    //console.log('clickChat');
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 			}
 		}

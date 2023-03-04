@@ -20,11 +20,11 @@
 					<moment></moment>
 				</scroll-view>
 			</swiper-item>
-			<swiper-item class="swiper-item" :key="3">
+			<!-- <swiper-item class="swiper-item" :key="3">
 				<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
 					<find></find>
 				</scroll-view>
-			</swiper-item>
+			</swiper-item> -->
 		</swiper>
 	</view>
 </template>
@@ -35,7 +35,7 @@
 	import ChatList from './components/chat/chatlist.vue'
 	import Friend from './components/friend/friend.vue'
 	import Moment from './components/moment/moment.vue'
-	import Find from './components/find/find.vue'
+	// import Find from './components/find/find.vue'
 	import { getUserProfile } from "@/api/system/user" 
 	//import userRequest from '@/api/social/user.js'
 	// import websocket from '@/api/social/websocket.js';
@@ -48,7 +48,7 @@
 			ChatList,
 			Friend,
 			Moment,
-			Find
+			// Find
 		},
 		data() {
 			return {
@@ -62,9 +62,9 @@
 				{
 					name: '动态'
 				},
-				{
-					name: '发现'
-				}
+				// {
+				// 	name: '发现'
+				// }
 				],
 				// 因为内部的滑动机制限制，请将tabs组件和swiper组件的current用不同变量赋值
 				current: 0, // tabs组件的current值，表示当前活动的tab选项

@@ -20,10 +20,10 @@ export default{
 		//监听socket打开
 		uni.onSocketOpen(()=>{
 			$store.state.isSocketOpen=true
-		    uni.showToast({
-		    	icon:'success',
-		    	title: '成功连接websocket！'
-		    })
+		    // uni.showToast({
+		    // 	icon:'success',
+		    // 	title: '成功连接websocket！'
+		    // })
 			//连接之后才开始获取数据
 			$store.dispatch('getMessage');
 		})

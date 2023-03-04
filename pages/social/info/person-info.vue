@@ -1,7 +1,8 @@
 <template>
 	<view>
 		<view class="top">
-			<image class="background" style="width: 100%;" mode="aspectFill" @tap="showActionSheetBg(loginUserInfo.background)" :src="loginUserInfo.background"></image>
+			<!-- <image class="background" style="width: 100%;" mode="aspectFill" @tap="showActionSheetBg(loginUserInfo.background)" :src="loginUserInfo.background"></image> -->
+			<image class="background" style="width: 100%;" mode="aspectFill" @tap="preViewImage(personInfo.background)" src="/static/social/img/reader.jpg"></image>
 			<image class="avatar" @tap="showActionSheet(loginUserInfo.avatar)" :src="loginUserInfo.avatar"></image>
 			<view class="btn" @tap="gotoPage(2)">编辑信息</view>
 		</view>

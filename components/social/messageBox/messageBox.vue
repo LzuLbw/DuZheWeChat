@@ -402,7 +402,8 @@
 <style lang="scss">
 	
 	page {
-	  background-color: #E0E0E0  ;
+	  // background-color: #E0E0E0  ;
+	  background-image: url('@/static/social/bg.webp');
 	  font-size: 28rpx;
 	  box-sizing: border-box;
 	  color: #000000;

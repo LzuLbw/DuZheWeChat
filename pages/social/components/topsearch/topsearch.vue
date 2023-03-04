@@ -5,7 +5,7 @@
 			<view class="navigate-bar-left">
 				<!-- <view class="navigate-bar-left-avatar" @tap="showDrawer()"> -->
 				<view class="navigate-bar-left-avatar">
-					<image class="navigate-bar-left-avatar-image" src="/static/social/default.jpg"></image>
+					<image class="navigate-bar-left-avatar-image"></image>
 					<!-- <image class="navigate-bar-left-avatar-image" :src="loginUserInfo.avatar"></image> -->
 					<view v-if="!isSocketOpen" class="navigate-bar-left-avatar-red-dot"></view>
 					<view v-if="isSocketOpen" class="navigate-bar-left-avatar-green-dot"></view>

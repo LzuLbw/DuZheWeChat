@@ -1,17 +1,17 @@
 <template>
 	<view>
 		
-		  <view style="position: relative;height: 35%;height: 100rpx;">
+		  <!-- <view style="position: relative;height: 35%;height: 100rpx;"> -->
 			  <!-- <view class="moment-top" @click='toPublishMoment'>
 			  	<text>来这里分享你的日常吧~</text>
 			  	<image src="/static/icon/video-collect.png" width="80upx" height="80upx" @click='toPublishMoment'> </image>
 			  </view> -->
 <!-- 			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/img/duzhe.jpg"></image> -->
-		    <view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;" @tap="gotoMyWorld()">
+		    <!-- <view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;" @tap="gotoMyWorld()">
 				<view style="text-align: center;line-height: 80rpx;color: #000;margin-right: 10rpx;font-weight: 600;">{{loginUserInfo.nickName}}</view>
 				<image src="/static/social/default.jpg" style="color: #000;border-radius: 50%;width: 80rpx;height: 80rpx;"></image>
- 			</view>
-		</view>
+ 			</view> -->
+		<!-- </view> -->
 		<Dynamic v-for="(item,index) in articleList" :key="index" 
 			:articleId="item.id"
 		    :imgList="toArray(item.imgList)" 
@@ -24,12 +24,11 @@
 		    :viewNumber="item.viewNum"
 		    :chatNumber="item.commentNum"
 			:isFocusOn="item.isFriend"
-		    :userId="item.userId"
 			:isMySelf="item.userId==loginUserInfo.userId"
 		    @clickDynamic="clickDynamic(item.id,item.userId)"
 		    @clickUser="clickUser(item.userId)"
 		    @clickFocus="clickFocus(item.userId)"
-		    @clickThumbsup="clickThumbsup(item.id,item.isLike)"
+		    @clickThumbsup="clickThumbsup(item.id,item.isLike,item.userId)"
 		    @clickChat="clickChat(item.id,item.userId)">
 		</Dynamic>
 		<uni-fab
@@ -197,11 +196,12 @@
 	            })
 	        },
 	        // 点赞
-	        async clickThumbsup(id,isLike){
-	            //console.log(id,isLike);
+	        async clickThumbsup(id,isLike,userId){
+	            console.log(id,isLike,userId);
 				let res = await worldRequest.likeArticle({
 					type: isLike?'cancel':'like',
-					articleId:id
+					articleId:id,
+					userId:userId
 				})
 				uni.showToast({
 					icon:'none',
@@ -219,10 +219,10 @@
 	        },
 	        // 点击聊天
 	        clickChat(articleId, userId){
-	            //console.log(e);
+	            //console.log(userId);
 	            //console.log('clickChat');
 				uni.navigateTo({
-					url:'/pages/social/components/moment/detail?id='+articleId
+					url:'/pages/social/components/moment/detail?id='+articleId+'&userId='+userId
 				})
 	        },
 			toPublishMoment(){

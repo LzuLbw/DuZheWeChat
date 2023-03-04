@@ -1,14 +1,17 @@
 <template>
 	<view class="container">
-		<view style="position: relative;margin-top: 10rpx;margin-left: 1%;">
+		<view style="position: relative;margin-top: 10rpx;margin-left: 1%;justify-content: space-between;display: flex;">
 			<textarea maxlength="600" @keyup.enter="sendText()" auto-height="true" v-model="text" @focus="showKeyBoard()" class="input-area"></textarea>
+			
+			<image @tap="openDrawer(1)" src="@/static/social/icon/emoji.png" style="height: 50rpx;width: 50rpx;margin-right: 68px;">
+			
 			<view @tap="sendText()" :class="[isDisable?'send-btn-disable':'send-btn-able','send-btn']">发送</view> 
 		</view>
 		
 		<view class="icon-container">
-			<image class="input-icon" @tap="openDrawer(1)" src="@/static/social/icon/emoji.png"></image>
-			<image class="input-icon" @tap="selectImage()" src="@/static/social/icon/image.png"></image>
-			<image class="input-icon" @tap="selectVideo()" src="@/static/social/icon/video.png"></image>
+			<!-- <image class="input-icon" @tap="openDrawer(1)" src="@/static/social/icon/emoji.png"></image> -->
+			<!-- <image class="input-icon" @tap="selectImage()" src="@/static/social/icon/image.png"></image>
+			<image class="input-icon" @tap="selectVideo()" src="@/static/social/icon/video.png"></image> -->
 			<!-- #ifdef APP-PLUS -->
 			<lsj-upload
 				style="width: 55rpx;height: 55rpx;hebackground-color: red;margin-left: 0rpx;"
@@ -24,9 +27,9 @@
 			</lsj-upload>
 			<!-- #endif -->
 			<!-- #ifdef H5 -->
-			<image class="input-icon" @tap="selectFile()" src="@/static/social/icon/file.png"></image>
+			<!-- <image class="input-icon" @tap="selectFile()" src="@/static/social/icon/file.png"></image> -->
 			<!-- #endif -->
-			<image class="input-icon" @tap="openDrawer(5)" src="@/static/social/icon/microphone.png"></image>
+			<!-- <image class="input-icon" @tap="openDrawer(5)" src="@/static/social/icon/microphone.png"></image> -->
 		</view>
 		<view class="emoji-container" v-show="showDrawer===1">
 			<image class="emoji" v-for="(emoji,index) in emojiList" :key="index" @tap="text += emoji.alt" :src="'/static/social/emoji/big/'+emoji.url"></image>
@@ -61,12 +64,14 @@
 				</view>
 			 </view>
 		</view>
-		<view class="image-container" v-show="selectedImage!==null">
-			<image @tap="selectImage()" style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedImage"></image>
+		<view class="image-container" v-show="selectedImageimage">
+			<!-- <image @tap="selectImage()" style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedImage"></image> -->
 			<view style="display: flex;position: fixed;width: 90%;margin-left: 4%;bottom: 50rpx;">
 				<u-button @tap="imageCancel()" text="取消"  size="normal"></u-button>
 				<u-button style="margin-left: 2%;" @tap="sendImage()" text="发送"  size="normal" class="send-btn-able" type="primary"></u-button>
 			</view>
+			<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
+				:maxCount="9" :previewFullImage="true" deletable uploadText="图片"></u-upload>
 		</view>
 		<view class="video-container" v-show="selectedVideo!==null">
 			<video style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedVideo"></video>
@@ -181,6 +186,10 @@
 		},
 		data(){
 			return{
+				selectedImageimage: false,
+				fileList1: [],
+				picurl: [],
+				
 				isDisable: true,
 				text: '',
 				showDrawer: 0,
@@ -199,6 +208,60 @@
 			}
 		},
 		methods:{
+			
+			// 新增图片
+			async afterRead(event) {
+				// 当设置 multiple 为 true 时, file 为数组格式，否则为对象格式
+				let lists = [].concat(event.file)
+				let fileListLen = this[`fileList${event.name}`].length
+				lists.map((item) => {
+					this[`fileList${event.name}`].push({
+						...item,
+						status: 'uploading',
+						message: '上传中'
+					})
+				})
+				for (let i = 0; i < lists.length; i++) {
+					const result = await this.uploadFilePromise(lists[i].url)
+					let item = this[`fileList${event.name}`][fileListLen]
+					this[`fileList${event.name}`].splice(fileListLen, 1, Object.assign(item, {
+						status: 'success',
+						message: '',
+						url: result
+					}))
+					fileListLen++
+				}
+			},
+			uploadFilePromise(url) {
+				return new Promise((resolve, reject) => {
+					let a = uni.uploadFile({
+						url: 'http://localhost/dev-api/common/upload',
+						filePath: url,
+						name: 'file',
+						formData: {
+							user: 'test'
+						},
+						success: (res) => {
+							
+							console.log(res);
+							url = JSON.parse(res.data).fileName;
+							
+							// console.log(eval(res.data));
+			
+							console.log("要存的url为：" + url);
+							this.picurl = url;
+			
+							setTimeout(() => {
+								resolve(res.data.data)
+							}, 1000)
+							this.sendImage();
+						}
+					});
+				})
+			},
+			deletePic(event) {
+				this[`fileList${event.name}`].splice(event.index, 1)
+			},
 			showKeyBoard(){
 				this.showDrawer = 0
 			},
@@ -284,13 +347,13 @@
 			//发送图片消息
 			sendImage(){
 				let that = this
-				uni.showLoading({
-					title:'正在上传图片'
-				})
+				// uni.showLoading({
+				// 	title:'正在上传图片'
+				// })
 				uni.uploadFile({
-					url: requestUrl.getUrl()+'ry-vue/image/upload', //图片上传接口
-					filePath: this.selectedImage,
-					name: 'image',
+					// url: requestUrl.getUrl()+'ry-vue/image/upload', //图片上传接口
+					// filePath: this.selectedImage,
+					// name: 'image',
 					success: (res) => {
 						uni.hideLoading();
 						let response = JSON.parse(res.data);
@@ -477,28 +540,33 @@
 				if(this.showDrawer === 4) this.showDrawer = 0;
 			},
 			selectImage(){
-				let that = this
-				uni.chooseImage({
-					count: 1, //默认9
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album','camera'], //从相册选择
-					success: function (res) {
-						//console.log(res.tempFilePaths[0])
-						if(that.maxImageMB*1048576 < res.tempFiles[0].size){
-							uni.showToast({
-								icon:'none',
-								title:'图片请限制在'+that.maxImageMB+'MB以内'
-							})
-						}else{
-							that.showDrawer = 2;
-							that.$nextTick(()=>{
-								that.selectedImage = res.tempFilePaths[0];
-								console.log(that.selectedImage)
-							})	
-						}
+				if(this.selectedImageimage == false){
+					this.selectedImageimage = true;
+				}else{
+					this.selectedImageimage = false;
+				}
+				// let that = this
+				// uni.chooseImage({
+				// 	count: 1, //默认9
+				// 	sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				// 	sourceType: ['album','camera'], //从相册选择
+				// 	success: function (res) {
+				// 		//console.log(res.tempFilePaths[0])
+				// 		if(that.maxImageMB*1048576 < res.tempFiles[0].size){
+				// 			uni.showToast({
+				// 				icon:'none',
+				// 				title:'图片请限制在'+that.maxImageMB+'MB以内'
+				// 			})
+				// 		}else{
+				// 			that.showDrawer = 2;
+				// 			that.$nextTick(()=>{
+				// 				that.selectedImage = res.tempFilePaths[0];
+				// 				console.log(that.selectedImage)
+				// 			})	
+				// 		}
 							
-					}
-				});
+				// 	}
+				// });
 			},
 			selectVideo(){
 				var self = this;
@@ -588,7 +656,7 @@
 		padding: 10rpx;
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
-		width: 79%;
+		width: 72%;
 		max-height: 180rpx;
 		overflow-y: scroll;
 		overflow-x: hidden;
