@@ -34,7 +34,7 @@
 	import $http from "@/common/api/request.js"
 	import Lines from "@/components/shop/common/Lines.vue"
 	export default {
-		mixin: [uniCloud.mixinDatacom],
+		//mixin: [uniCloud.mixinDatacom],
 		data() {
 			return {
 				clentHeight: 0,
@@ -69,6 +69,7 @@
 				$http.request({
 					url: "/goods/category"
 				}).then((res) => {
+					console.log(res);
 					let map = new Map();
 					let trees = [];
 					let arr = res;
