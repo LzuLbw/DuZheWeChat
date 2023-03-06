@@ -71,7 +71,7 @@
 				/* 显示操作弹窗 */
 				showPop: false,
 				/* 弹窗按钮列表 */
-				popButton: ["复制","撤回"],
+				popButton: ["复制","撤回","删除"],
 				/* 弹窗定位样式 */
 				popStyle: "",
 				/* 选择的用户下标 */
@@ -333,6 +333,8 @@
 			},
 			/* 选择菜单 */
 			pickerMenu(e) {
+				
+				console.log(e);
 				let index = Number(e.currentTarget.dataset.index);
 				switch(index){
 					case 0:
@@ -348,10 +350,9 @@
 					break;
 					case 1:
 					this.withdrawMessage();
-					// uni.showToast({
-					// 	title:'暂未开放',
-					// 	icon:'none'
-					// });
+					break;
+					case 2:
+					this.deleteMessage();
 					break;
 				}
 			
@@ -360,6 +361,32 @@
 				 如果行的菜单方法存在异步情况，请在隐藏之前将该值保存，或通过参数传入异步函数中
 				 */
 				this.hidePop();
+			},
+			
+			deleteMessage(){
+				let id =  this.selectedMessage.id
+				// console.log(id+"11111111");
+				let that = this
+				uni.showModal({
+					cancelText:'取消',
+					confirmText:'删除',
+					title:'确认删除',
+					success(res) {
+						if(res.confirm){
+							that.postDelete(id)
+						}
+					}
+				})
+			},
+			async postDelete(id){
+				let res = await userRequest.deleteMessage({
+					id:id,
+				})
+				uni.showToast({
+					title:'删除成功',
+					icon:'success'
+				})
+				$store.dispatch('personMessage')
 			},
 			withdrawMessage(){
 				if(this.selectedMessage.senderId!=this.loginUserInfo.userId){

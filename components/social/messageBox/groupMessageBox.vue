@@ -75,7 +75,7 @@
 				/* 显示操作弹窗 */
 				showPop: false,
 				/* 弹窗按钮列表 */
-				popButton: ["复制","撤回"],
+				popButton: ["复制","撤回","删除"],
 				/* 弹窗定位样式 */
 				popStyle: "",
 				/* 选择的用户下标 */
@@ -389,6 +389,9 @@
 					case 1:
 					this.withdrawMessage();
 					break;
+					case 2:
+					this.deleteGroupMessage();
+					break;
 				}
 			
 				/* 
@@ -396,6 +399,31 @@
 				 如果行的菜单方法存在异步情况，请在隐藏之前将该值保存，或通过参数传入异步函数中
 				 */
 				this.hidePop();
+			},
+			deleteGroupMessage(){
+				let id =  this.selectedMessage.id
+				// console.log(id+"11111111");
+				let that = this
+				uni.showModal({
+					cancelText:'取消',
+					confirmText:'删除',
+					title:'确认删除',
+					success(res) {
+						if(res.confirm){
+							that.postDelete(id)
+						}
+					}
+				})
+			},
+			async postDelete(id){
+				let res = await userRequest.deleteGroupMessage({
+					id:id,
+				})
+				uni.showToast({
+					title:'删除成功',
+					icon:'success'
+				})
+				$store.dispatch('groupMessage')
 			}
 		}
 	}

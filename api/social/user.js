@@ -208,6 +208,30 @@ export default{
 		  }
 		});
 	},
+	//删除消息
+	deleteMessage(data){
+		return request({
+		  url: 'ry-vue/message/delete',
+		  method: 'POST',
+		  data,
+		  header:{
+			  'content-type': 'application/json',
+			  'token': $store.state.token
+		  }
+		});
+	},
+	//删除群聊消息
+	deleteGroupMessage(data){
+		return request({
+		  url: 'ry-vue/group/delete',
+		  method: 'POST',
+		  data,
+		  header:{
+			  'content-type': 'application/json',
+			  'token': $store.state.token
+		  }
+		});
+	},
 	clearUnread(data){
 		return request({
 		  url: 'ry-vue/friend/clearUnread',
