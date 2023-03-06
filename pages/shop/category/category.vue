@@ -17,7 +17,7 @@
 						<view class="list-title">{{k.cat_name}}</view>
 						<view class="right-content">
 							<view class="right-item" v-for="(j,idx) in k.children" :key="idx">
-								<image class="right-img" :src= "'/static/image'+ (j.icon).substring(8)" mode=""></image>
+								<image class="right-img" :src= "'/static/image'+ (j.icon).substring(8)" mode="" @tap="toCatDetail(j.cat_id)"></image>
 								<view class="right-name">{{j.cat_name}}</view>
 							</view>
 						</view>
@@ -37,6 +37,7 @@
 		//mixin: [uniCloud.mixinDatacom],
 		data() {
 			return {
+				userId:0,
 				clentHeight: 0,
 				activeIndex: 0,
 				//左侧数据
@@ -53,8 +54,10 @@
 				}
 			})
 		},
-		onLoad() {
+		onLoad(e) {
 			this.getData();
+			console.log(e.userId);
+			this.userId = e.userId;
 		},
 		components: {
 			Lines
@@ -98,6 +101,7 @@
 						//如果点击的id值相同
 						if(v.cat_id===(this.activeIndex+1)){
 							rightData.push(v.children);
+							console.log(v.children);
 						}
 					})
 					this.leftData = leftData;
@@ -124,6 +128,12 @@
 			changeLeftTab(index, id) {
 				this.getData(id);
 				this.activeIndex = index;
+			},
+			toCatDetail(catId){
+				console.log(catId);
+				uni.navigateTo({
+					url: '/pages/shop/category/catDetail?catId=' + catId + '&userId=' + this.userId + ''
+				})
 			}
 		},
 		//input输入框点击事件

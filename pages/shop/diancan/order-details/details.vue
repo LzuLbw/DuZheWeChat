@@ -64,11 +64,11 @@
 
 	
 	//价格补0 
-	const Price = require('e-commerce_price')
+	//const Price = require('e-commerce_price')
 	export default {
 		data() {
 			return {
-				Price,
+				//Price,
 				overall: 1, //总共多少份
 				other_data: {
 					order_no:'1209307hfe19202',

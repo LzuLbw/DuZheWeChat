@@ -21,21 +21,24 @@
 		<view class="category-list">
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/book.png"></image>
+					<image class="category-image" src="/static/image/category/book.png" @tap="toCategoryDetail(1)">
+					</image>
 				</view>
 				<view class="category-text">书籍</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/stationery.png"></image>
+					<image class="category-image" src="/static/image/category/stationery.png"
+						@tap="toCategoryDetail(2)"></image>
 				</view>
 				<view class="category-text">文具</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/wenchuang.png"></image>
+					<image class="category-image" src="/static/image/category/wenchuang.png" @tap="toCategoryDetail(3)">
+					</image>
 				</view>
 				<view class="category-text">文创产品</view>
 			</view>
@@ -172,8 +175,7 @@
 					hideAlbum: true,
 					success: function(res) {
 						console.log(res.result);
-						void plus.runtime.openURL(res.result, function() {
-						})
+						void plus.runtime.openURL(res.result, function() {})
 					}
 				})
 			}
@@ -246,7 +248,7 @@
 			},
 			toCategoryList() {
 				uni.navigateTo({
-					url: '/pages/shop/category/category'
+					url: '/pages/shop/category/category?userId= ' + this.userId + ''
 				});
 			},
 			toDiancan() {
@@ -278,6 +280,11 @@
 						title: '请求失败',
 						icon: 'none'
 					})
+				})
+			},
+			toCategoryDetail(categoryId) {
+				uni.navigateTo({
+					url: '/pages/shop/category/categoryDetail?categoryId=' + categoryId + '&userId=' + this.userId + ''
 				})
 			}
 		}
