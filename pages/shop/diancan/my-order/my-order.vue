@@ -32,12 +32,12 @@
 	
 	
 	//价格补0 
-	const Price = require('e-commerce_price')
+	//const Price = require('e-commerce_price')
 export default{
 	
 	data() {
 		return {
-			Price,
+			//Price,
 			res_data:[{
 				transac_status:'none',
 				table_number:1,

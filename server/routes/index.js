@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../db/sql.js');
+const alipaySdk = require('../db/alipay.js')
+const { listen } = require('../app.js');
+const AlipayFormData = require('alipay-sdk/lib/form').default;
 
 // 设置允许跨域访问该服务
 router.all('*', function(req, res, next) {
@@ -33,6 +36,28 @@ router.get('/api/goods/id', function(req, res, next) {
 router.get('/api/goods/list', function(req, res, next) {
 	let id = req.query.id;
 	connection.query("select * from goods_search ", function(error, results, fields) {
+		if (error) throw error;
+		res.send({
+			code: "0",
+			data: results
+		});
+	});
+});
+
+router.get('/api/goods/CategoryList', function(req, res, next) {
+	let categoryId = req.query.categoryId;
+	connection.query("select * from goods_search where categoryId = "+categoryId+"", function(error, results, fields) {
+		if (error) throw error;
+		res.send({
+			code: "0",
+			data: results
+		});
+	});
+});
+
+router.get('/api/goods/CatList', function(req, res, next) {
+	let catId = req.query.catId;
+	connection.query("select * from goods_search where cat_id = "+catId+"", function(error, results, fields) {
 		if (error) throw error;
 		res.send({
 			code: "0",
@@ -221,26 +246,51 @@ router.post("/api/goods/addCart", function(req, res, next) {
 //删除购物车数据
 router.post("/api/goods/deleteCart", function(req, res, next) {
 	let goodsId = req.body.goodsId;
-	console.log(goodsId);
-	for (var i = 0; i < goodsId.length; i++) {
-		connection.query('delete from goods_cart where id = ' + goodsId[i] + '',
-			function(error, results, fields) {
-				if (error) throw error;
-				return res.send({
-					data: {
-						success: true
-					}
-				})
-			});
+	let goodsIdList = goodsId.split(",");
+	console.log(goodsIdList);
+	for (var i = 0; i < goodsIdList.length; i++) {
+		connection.query('delete from goods_cart where id = ' + goodsIdList[i] + '',
+			function(error, results) {});
 	}
+	res.send({
+		data: {
+			success: true
+		}
+	})
 });
 
 //生成订单
 router.post("/api/goods/addOrder", function(req, res, next) {
 	let userId = req.body.userId;
-	let goodsArr = req.body.arr;
-	console.log(goodsArr);
-	//生成订单号
+	let goodsName = req.body.goodsName;
+	let goodsPrice = req.body.goodsPrice;
+	let goodsNum = req.body.goodsNum;
+	
+	//生成当前时间
+	function getNowTime() {
+	    let date = new Date();
+	    //年 getFullYear()：四位数字返回年份
+	    let year = date.getFullYear();  //getFullYear()代替getYear()
+	    //月 getMonth()：0 ~ 11
+	    let month = date.getMonth() + 1;
+	    //日 getDate()：(1 ~ 31)
+	    let day = date.getDate();
+	    //时 getHours()：(0 ~ 23)
+	    let hour = date.getHours();
+	    //分 getMinutes()： (0 ~ 59)
+	    let minute = date.getMinutes();
+	    //秒 getSeconds()：(0 ~ 59)
+	    let second = date.getSeconds();
+	    let time = year + '-' + addZero(month) + '-' + addZero(day) + ' ' + addZero(hour) + ':' + addZero(minute) + ':' + addZero(second);
+		return time;
+	}
+	
+	function addZero(s) {
+	    return s < 10 ? ('0' + s) : s;
+	}
+	
+	let createTime = getNowTime();
+	// 生成订单号
 	function setTimeDateFmt(s) {
 		return s < 10 ? '0' + s : s;
 	}
@@ -253,37 +303,178 @@ router.post("/api/goods/addOrder", function(req, res, next) {
 		let hour = setTimeDateFmt(now.getHours());
 		let minutes = setTimeDateFmt(now.getMinutes());
 		let seconds = setTimeDateFmt(now.getSeconds());
-		let orderCode = fullYear + month + day + hour + minutes + seconds + (Math.round(Math.random()* 1000000));
+		let orderCode = fullYear + month + day + hour + minutes + seconds + (Math.round(Math.random() *
+			1000000));
 		return orderCode;
 	}
-	let goodsName = [];
-	let goodsPrice = 0;
-	let goodsNum = 0;
 	let orderId = orderNumber();
-	goodsArr.forEach(v=>{
-		goodsName.push(v.name);
-		goodsNum += parseInt(v.goods_num);
-		goodsPrice += v.goods_num*v.nprice;
-	})
-	console.log(goodsName);
-	console.log(goodsNum);
-	console.log(goodsPrice);
 	console.log(orderId);
 	connection.query(
-		'insert into goods_order (uid,order_id,goods_name,goods_price,goods_num,order_status) values ("' +
-		userId + '","' + orderId + '","' + goodsName + '","' + goodsPrice + '","' + goodsNum + '","false")',
+		'insert into goods_order (uid,order_id,goods_name,goods_price,goods_num,order_status,create_time) values ("' +
+		userId + '","' + orderId + '","' + goodsName + '","' + goodsPrice + '","' + goodsNum + '","1","' + createTime + '")',
+		function(error, results, fields) {
+			connection.query(
+				'select * from goods_order where uid = ' + userId + ' and order_id = ' + orderId + '',
+				function(err, result) {
+					res.send({
+						data: {
+							code: 200,
+							success: true,
+							data: result
+						}
+					})
+				});
+		});
+
+});
+
+//修改全部订单状态
+router.post('/api/shop/submitOrder', function(req, res, next) {
+	//用户id
+	let userId = req.body.userId;
+	//订单编号
+	let orderId = req.body.orderId;
+	//购物车中选中的商品
+	let shopArr = req.body.shopArr;
+	let goodsid = req.body.goodsid;
+	let goodsName = req.body.goodsName;
+	let goodsUrl = req.body.goodsUrl;
+	console.log(goodsUrl);
+	let goodsPrice = req.body.goodsPrice;
+	let goodsNum = req.body.goodsNum;
+	//收货地址
+	let receiverName = req.body.name;
+	let receiverPhone = req.body.tel;
+	let receiverProvince = req.body.province;
+	let receiverCity = req.body.city;
+	let receiverDistrict = req.body.district;
+	let receiverDetail = req.body.detailed;
+	let shopArrList = shopArr.split(",");
+	let goodsidList = goodsid.split(",");
+	let goodsNameList = goodsName.split(",");
+	let goodsUrlList = goodsUrl.split(",");
+	let goodsPriceList = goodsPrice.split(",");
+	let goodsNumList = goodsNum.split(",");
+	
+	//生成当前时间
+	function getNowTime() {
+	    let date = new Date();
+	    //年 getFullYear()：四位数字返回年份
+	    let year = date.getFullYear();  //getFullYear()代替getYear()
+	    //月 getMonth()：0 ~ 11
+	    let month = date.getMonth() + 1;
+	    //日 getDate()：(1 ~ 31)
+	    let day = date.getDate();
+	    //时 getHours()：(0 ~ 23)
+	    let hour = date.getHours();
+	    //分 getMinutes()： (0 ~ 59)
+	    let minute = date.getMinutes();
+	    //秒 getSeconds()：(0 ~ 59)
+	    let second = date.getSeconds();
+	    let time = year + '-' + addZero(month) + '-' + addZero(day) + ' ' + addZero(hour) + ':' + addZero(minute) + ':' + addZero(second);
+		return time;
+	}
+	
+	function addZero(s) {
+	    return s < 10 ? ('0' + s) : s;
+	}
+	
+	let payTime = getNowTime();
+	console.log(payTime);
+	
+	connection.query('select * from goods_order where uId = ' + userId + ' and order_id = ' + orderId + '',
+		function(error, results) {
+			//订单的id
+			let id = results[0].id;
+			connection.query('update goods_order set receiver_name = "'+receiverName+'",receiver_phone ="'+receiverPhone+'",receiver_province = "'+receiverProvince+'",receiver_city = "'+receiverCity+'",receiver_district = "'+receiverDistrict+'",receiver_detail = "'+receiverDetail+'",pay_time = "'+payTime+'" ,order_status = 2 where id = ' +
+				id + '',
+				function() {
+					shopArrList.forEach(v => {
+						console.log(v);
+						connection.query('delete from goods_cart where id = ' + v + '',
+							function() {
+
+							})
+					})
+				});
+			
+		})
+	for(var i=0; i< goodsidList.length;i++){
+		connection.query('insert into goods_order_item (order_id,goods_id,goods_name,goods_imgUrl,goods_nprice,goods_num) values ("' +
+		orderId + '","' + goodsidList[i] + '","' + goodsNameList[i] + '","' + goodsUrlList[i] + '","' + goodsPriceList[i] + '","' + goodsNumList[i] + '")',
+			function() {
+		
+			})
+	}
+	res.send({
+		data: {
+			code: 200,
+			success: true
+		}
+	})
+})
+
+//支付接口
+router.post("/api/shop/payment", function(req, res, next) {
+	const formData = new AlipayFormData();
+	//订单号
+	let orderId = req.body.orderId;
+	let orderName = req.body.orderName;
+	let price = req.body.price;
+	console.log(orderId);
+	const bizContent = {
+		outTradeNo: orderId, //订单号
+		productCode: 'FAST_INSTANT_TRADE_PAY', //写死的
+		totalAmount: price, //金额
+		subject: orderName //商品名称
+	};
+	//调用get方法
+	formData.setMethod('get'),
+		//支付时 的信息
+		formData.addField('bizContent', JSON.stringify(bizContent));
+	//支付成功或者失败打开的页面
+	formData.addField('returnUrl', 'http://www.xuexiluxian.cn/');
+	const result = alipaySdk.exec(
+		'alipay.trade.page.pay', {}, {
+			formData: formData
+		},
+	);
+	result.then(resp => {
+		res.send({
+			data: {
+				code: 200,
+				success: true,
+				paymentUrl: resp
+			}
+		})
+	})
+});
+
+//请求全部订单数据
+router.post("/api/shop/selectAllOrders", function(req, res, next) {
+	let userId = req.body.userId;
+	connection.query('select a.uid,a.receiver_name,a.receiver_phone,a.receiver_province,a.receiver_city,a.receiver_district,a.receiver_detail,a.goods_price,a.order_id,a.order_status,a.create_time,a.pay_time,b.goods_id,b.goods_name,b.goods_imgUrl,b.goods_nprice,b.goods_num from goods_order a join goods_order_item b on a.order_id=b.order_id where a.uid = ' + userId + '',
 		function(error, results, fields) {
 			if (error) throw error;
 			res.send({
-				data:{
-					code:200,
-					success:true,
-					data:results
-				}
-				
-			})
+				code: "0",
+				data: results
+			});
 		});
+});
 
+//请求订单数据
+router.post("/api/shop/selectOrders", function(req, res, next) {
+	let userId = req.body.userId;
+	let orderStatus = req.body.orderStatus;
+	connection.query('select a.uid,a.receiver_name,a.receiver_phone,a.receiver_province,a.receiver_city,a.receiver_district,a.receiver_detail,a.goods_price,a.order_id,a.order_status,a.create_time,a.pay_time,b.goods_id,b.goods_name,b.goods_imgUrl,b.goods_nprice,b.goods_num from goods_order a join goods_order_item b on a.order_id=b.order_id where a.uid = ' + userId + ' and a.order_status = '+orderStatus+'',
+		function(error, results, fields) {
+			if (error) throw error;
+			res.send({
+				code: "0",
+				data: results
+			});
+		});
 });
 
 //请求首页轮播图及推荐图片
