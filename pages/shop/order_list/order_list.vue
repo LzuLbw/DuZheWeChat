@@ -15,11 +15,11 @@
 						没有相关订单
 					</view>
 				</view>
-				<view class="row" v-for="(row,index) in list" :key="index" @tap="toOrderDetail(row)">
+				<view class="row" v-for="(row,index) in list" :key="index">
 					<view class="type">{{typeText[row.order_status]}}</view>
 					<view class="order-info">
 						<view class="left">
-							<image :src="row.goods_imgUrl"></image>
+							<image :src="row.goods_imgUrl" @tap="toOrderDetail(row)"></image>
 						</view>
 						<view class="right">
 							<view class="name">
@@ -163,7 +163,9 @@
 				}
 			},
 			showLogistics(row){
-				
+				uni.navigateTo({
+					url:'/pages/shop/order/logistics'
+				})
 			},
 			remindDeliver(row){
 				uni.showToast({

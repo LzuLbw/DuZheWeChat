@@ -40,6 +40,17 @@
 								<radio :checked="paytype=='wxpay'" color="#f06c7a" />
 							</view>
 					</view>
+					<view class="row" @tap="paytype='pocketpay'">
+							<view class="left">
+								<image src="/static/image/shop/quan.png"></image>
+							</view>
+							<view class="center">
+								我的钱包支付
+							</view>
+							<view class="right">
+								<radio :checked="paytype=='pocketpay'" color="#f06c7a" />
+							</view>
+					</view>
 				</view>
 			</view>
 		</view>

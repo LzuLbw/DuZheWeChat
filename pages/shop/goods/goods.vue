@@ -121,7 +121,8 @@
 					</view>
 				</view>
 				<view class="btn">
-					<view class="button" @tap="addCart" >完成</view>
+					<view class="button" v-if="this.buyOrCart == '0'" @tap="addCart" >完成</view>
+					<view class="button" v-if="this.buyOrCart == '1'" @tap="addCartAndBuy" >立即购买</view>
 				</view>
 			</view>
 		</view>
@@ -230,6 +231,7 @@
 				serviceClass: '', //服务弹窗css类，控制开关动画
 				specClass: '', //规格弹窗css类，控制开关动画
 				shareClass: '', //分享弹窗css类，控制开关动画
+				buyOrCart: 0, //立即购买或者加入购物车
 				// 商品信息
 				goodsContent:{},
 				goodsData: {
@@ -355,6 +357,8 @@
 			},
 			// 加入购物车
 			joinCart() {
+				this.buyOrCart = 0;
+				console.log(this.buyOrCart);
 				if (this.selectSpec == null) {
 					return this.showSpec(() => {
 						uni.showToast({
@@ -368,12 +372,14 @@
 			},
 			//立即购买
 			buy() {
+				this.buyOrCart = 1;
+				console.log(this.buyOrCart);
 				if (this.selectSpec == null) {
 					return this.showSpec(() => {
 						this.toConfirmation();
 					});
 				}
-				this.toConfirmation();
+				//this.toConfirmation();
 			},
 			//商品评论
 			toRatings() {
@@ -382,27 +388,27 @@
 				})
 			},
 			//跳转确认订单页面
-			toConfirmation() {
-				let tmpList = [];
-				let goods = {
-					id: this.goodsData.id,
-					img: '../../static/img/goods/p1.jpg',
-					name: this.goodsData.name,
-					spec: '规格:' + this.goodsData.spec[this.selectSpec],
-					price: this.goodsData.price,
-					number: this.goodsData.number
-				};
-				tmpList.push(goods);
-				uni.setStorage({
-					key: 'buylist',
-					data: tmpList,
-					success: () => {
-						uni.navigateTo({
-							url: '/pages/shop/order/confirmation'
-						})
-					}
-				})
-			},
+			// toConfirmation() {
+			// 	let tmpList = [];
+			// 	let goods = {
+			// 		id: this.goodsData.id,
+			// 		img: '../../static/img/goods/p1.jpg',
+			// 		name: this.goodsData.name,
+			// 		spec: '规格:' + this.goodsData.spec[this.selectSpec],
+			// 		price: this.goodsData.price,
+			// 		number: this.goodsData.number
+			// 	};
+			// 	tmpList.push(goods);
+			// 	uni.setStorage({
+			// 		key: 'buylist',
+			// 		data: tmpList,
+			// 		success: () => {
+			// 			uni.navigateTo({
+			// 				url: '/pages/shop/order/confirmation'
+			// 			})
+			// 		}
+			// 	})
+			// },
 			//跳转评论列表
 			showComments(goodsid) {
 
@@ -524,6 +530,33 @@
 						icon: 'none'
 					})
 				})
+			},
+			//立即购买
+			addCartAndBuy(){
+				let goods = this.goodsContent;
+				this.goodsContent['checked'] = false;
+				this.goodsContent['goods_num'] = this.num;
+				this.addShopCart(goods);
+				console.log(this.goodsContent.id);
+				$http.request({
+					url: "/goods/addCart",
+					method: "POST",
+					data: {
+						userId:this.userId,
+						goodsId:this.goodsContent.id,
+						num:this.num
+					}
+				}).then((res) => {
+					
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+				uni.navigateTo({
+					url: '/pages/shop/cart/cart?userId= ' + this.userId + ''
+				});
 			},
 			toShareWexin(){
 				uni.share({

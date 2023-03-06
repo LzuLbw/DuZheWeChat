@@ -22,14 +22,13 @@
 							"disabled": true
 						},
 						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60d",
-								"fontSize": "26",
-								"color": "#303133",
-								"float": "left",
-								"background": "rgba(0,0,0,0)"
-							}
-						]
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60d",
+							"fontSize": "26",
+							"color": "#303133",
+							"float": "left",
+							"background": "rgba(0,0,0,0)"
+						}]
 					}
 				}
 			}
@@ -65,41 +64,41 @@
 			"style": {
 				"navigationBarTitleText": "钱包"
 			}
-		}, 
+		},
 		{
-					"path": "pages/mine/wallet/voucher_center_/voucher_center_",
-					"style": {
-						"navigationBarTitleText": "充值中心",
-						"enablePullDownRefresh": true,
-						"backgroundTextStyle": "dark",
-						"app-plus": {
-							"titleView": false
-						}
-					}
-				},{
-					"path": "pages/mine/wallet/account/account",
-					"style": {
-						"navigationBarTitleText": "我的账户"
-					}
-				},
-				{
-				  "path": "pages/mine/member/exchange/goodsinfo",
-				  "style": {
-				    "navigationBarTitleText": "兑换商品详情"
-				  }
-				}, 
-				{
-				  "path": "pages/mine/member/exchange/index",
-				  "style": {
-				    "navigationBarTitleText": "积分兑换商城"
-				  }
-				}, 
-				{
-				  "path": "pages/mine/member/integral/ranklist",
-				  "style": {
-				    "navigationBarTitleText": "积分排行"
-				  }
-				}, {
+			"path": "pages/mine/wallet/voucher_center_/voucher_center_",
+			"style": {
+				"navigationBarTitleText": "充值中心",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle": "dark",
+				"app-plus": {
+					"titleView": false
+				}
+			}
+		}, {
+			"path": "pages/mine/wallet/account/account",
+			"style": {
+				"navigationBarTitleText": "我的账户"
+			}
+		},
+		{
+			"path": "pages/mine/member/exchange/goodsinfo",
+			"style": {
+				"navigationBarTitleText": "兑换商品详情"
+			}
+		},
+		{
+			"path": "pages/mine/member/exchange/index",
+			"style": {
+				"navigationBarTitleText": "积分兑换商城"
+			}
+		},
+		{
+			"path": "pages/mine/member/integral/ranklist",
+			"style": {
+				"navigationBarTitleText": "积分排行"
+			}
+		}, {
 			"path": "pages/mine/member/index",
 			"style": {
 				"navigationBarTitleText": "会员中心"
@@ -293,21 +292,19 @@
 		},
 		{
 			"path": "pages/shop/address/edit/edit",
-			"style" : {
-				"navigationBarBackgroundColor":"#FFFFFF",
+			"style": {
+				"navigationBarBackgroundColor": "#FFFFFF",
 				"navigationBarTitleText": "新增地址",
-				"app-plus":{
-					"scrollIndicator":"none",
-					"titleNView":{
-						"buttons":[
-							{
-								"float":"right",
-								"color":"#636263",
-								"text":"保存",
-								"fontSize":"16px",
-								"width":"60px"
-							}
-						]
+				"app-plus": {
+					"scrollIndicator": "none",
+					"titleNView": {
+						"buttons": [{
+							"float": "right",
+							"color": "#636263",
+							"text": "保存",
+							"fontSize": "16px",
+							"width": "60px"
+						}]
 					}
 				}
 			}
@@ -375,6 +372,64 @@
 			}
 		},
 		{
+			"path": "pages/shop/order/detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#f8f8f8",
+				"backgroundColorTop": "#f3f3f3",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/shop/order/logistics",
+			"style": {
+				"navigationBarTitleText": "物流详情",
+				"navigationBarBackgroundColor": "#f8f8f8",
+				"backgroundColorTop": "#f3f3f3",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/shop/diancan/diancan",
+			"style": {
+				"navigationBarTitleText": "读者小站餐吧",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"color": "#989898",
+							"colorPressed": "#FD6801",
+							"float": "right",
+							"fontSize": "22px",
+							"fontSrc": "/static/fonts/iconfont.ttf",
+							"text": "\ue62e"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/shop/diancan/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/diancan/order-details/details",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/diancan/my-order/my-order",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/social/social",
 			"style": {
 				"navigationBarTitleText": "社交"
@@ -413,213 +468,185 @@
 			"style": {
 				"navigationBarTitleText": "私聊",
 				"enablePullDownRefresh": false,
-			"backgroundColor": "#333",
-					"app-plus":{
-						"titleNView":{
-							"buttons": [
-								{
-									"type": "menu"
-								}
-							]
-						}
+				"backgroundColor": "#333",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "menu"
+						}]
+					}
 				}
-					
+
 			}
-			    
+
 		},
 		{
 			"path": "pages/social/components/chat/group-chat",
-			"style" :
-				{
-				    "navigationBarTitleText": "群聊",
-				    "enablePullDownRefresh": false,
-					"app-plus":{
-						"titleNView":{
-							"buttons": [
-								{
-									"type": "menu"
-								}
-							]
-						}
-				}
-			}
-		},
-		{
-		    "path" : "pages/social/addfriend/addfriend",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "添加",
-		        "enablePullDownRefresh": false
-		    }
-		},
-		{
-		    "path" : "pages/social/info/friend-info",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		},
-		{
-		    "path" : "pages/social/info/person-edit",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "编辑信息",
-		        "enablePullDownRefresh": false
-		    }  
-		},
-		{
-		    "path" : "pages/social/info/group-info",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }  
-		},
-		{
-		    "path" : "pages/social/list/notice-list",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "通知消息",
-		        "enablePullDownRefresh": false
-		    }  
-		},
-		{
-		    "path" : "pages/social/components/circle/circle",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "读友圈",
-		        "enablePullDownRefresh": false
-		    }
-		},
-		{
-			"path": "pages/social/list/group-list",
 			"style": {
-				"navigationBarTitleText": "读友圈",
+				"navigationBarTitleText": "群聊",
 				"enablePullDownRefresh": false,
-				"app-plus":{
-					"titleNView":{
-						"buttons":[{
-							"text":"+",
-							"float": "right",
-							"fontSize":"25px",
-							"fontWeight": "bold",
-							"color":"black"
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "menu"
 						}]
 					}
 				}
 			}
 		},
 		{
-		    "path" : "pages/social/info/group-edit",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "创建读友圈",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/addfriend/addfriend",
+			"style": {
+				"navigationBarTitleText": "添加",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/list/member-list",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "圈成员",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/info/friend-info",
+			"style": {
+				"navigationBarTitleText": "",
+		 	"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/circle/circlelist",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "读友圈列表",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/info/person-edit",
+			"style": {
+				"navigationBarTitleText": "编辑信息",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/moment",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "动态",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/info/group-info",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/publishMoment",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "动态发布",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/list/notice-list",
+			"style": {
+				"navigationBarTitleText": "通知消息",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/my-world",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "我的动态",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/components/circle/circle",
+			"style": {
+				"navigationBarTitleText": "读友圈",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/person-world",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "好友动态",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/list/group-list",
+			"style": {
+				"navigationBarTitleText": "读友圈",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "+",
+							"float": "right",
+							"fontSize": "25px",
+							"fontWeight": "bold",
+							"color": "black"
+						}]
+					}
+				}
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/detail",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "好友动态",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/info/group-edit",
+			"style": {
+				"navigationBarTitleText": "创建读友圈",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/moment/uni-popup",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "弹窗",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/list/member-list",
+			"style": {
+				"navigationBarTitleText": "圈成员",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/social/components/find/seat",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "预约位置",
-		        "enablePullDownRefresh": false
-		    }
-		}
-		,{
-		    "path" : "pages/social/components/find/anil-seat",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "预约占座",
-		        "enablePullDownRefresh": false
-		    }
-		}
-		,{
-		    "path" : "pages/social/components/find/seatsuccess",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "预约成功",
-		        "enablePullDownRefresh": false
-		    }
-		}
-		,{
-		    "path" : "pages/social/components/find/nearby",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "附近的人",
-		        "enablePullDownRefresh": false
-		    }
-		},{
-		    "path" : "pages/social/info/person-info",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "个人主页",
-		        "enablePullDownRefresh": false
-		    }
+			"path": "pages/social/components/circle/circlelist",
+			"style": {
+				"navigationBarTitleText": "读友圈列表",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/moment",
+			"style": {
+				"navigationBarTitleText": "动态",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/publishMoment",
+			"style": {
+				"navigationBarTitleText": "动态发布",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/my-world",
+			"style": {
+				"navigationBarTitleText": "我的动态",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/person-world",
+			"style": {
+				"navigationBarTitleText": "好友动态",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/detail",
+			"style": {
+				"navigationBarTitleText": "好友动态",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/moment/uni-popup",
+			"style": {
+				"navigationBarTitleText": "弹窗",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/social/components/find/seat",
+			"style": {
+				"navigationBarTitleText": "预约位置",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/social/components/find/anil-seat",
+			"style": {
+				"navigationBarTitleText": "预约占座",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/social/components/find/seatsuccess",
+			"style": {
+				"navigationBarTitleText": "预约成功",
+				"enablePullDownRefresh": false
+		 }
+		}, {
+			"path": "pages/social/components/find/nearby",
+			"style": {
+				"navigationBarTitleText": "附近的人",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/social/info/person-info",
+			"style": {
+				"navigationBarTitleText": "个人主页",
+				"enablePullDownRefresh": false
+			}
 		},
 		// {
 		// 	"path": "pages/me/me"
@@ -718,103 +745,90 @@
 				"enablePullDownRefresh": false
 			}
 
-		}
-	    ,{
-            "path" : "pages/act/editapplication/editapplication",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "重新提交活动申请",
-                "enablePullDownRefresh": false
-            }
-            
-        },
+		}, {
+			"path": "pages/act/editapplication/editapplication",
+			"style": {
+				"navigationBarTitleText": "重新提交活动申请",
+				"enablePullDownRefresh": false
+			}
+
+		},
 		{
-			    "path" : "pages/study/article_list/article_list",
-			    "style": {
-			    	"navigationBarTitleText": "文章阅读"
-			    }
-			},
-			{
-				"path": "pages/study/article_details/article_details"
-			},
-			{
-				"path":"pages/study/search/search"
-			},
-				{
-		            "path" : "pages/study/source/source",
-		            "style" :                                                                                    
-		            {
-		                "navigationBarTitleText": "",
-		                "enablePullDownRefresh": false
-		            }
-		        },
-				{
-					"path": "pages/study/sortsearch/sortsearch"
-				},
-				{
-						"path": "pages/study/bookdetails/bookdetails"
-				},
-				{
-					"path": "pages/study/articlesort/articlesort",
-					"style": {
-						"navigationBarTitleText": "分类"
-					}
+			"path": "pages/study/article_list/article_list",
+			"style": {
+				"navigationBarTitleText": "文章阅读"
+			}
+		},
+		{
+			"path": "pages/study/article_details/article_details"
+		},
+		{
+			"path": "pages/study/search/search"
+		},
+		{
+			"path": "pages/study/source/source",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/study/sortsearch/sortsearch"
+		},
+		{
+			"path": "pages/study/bookdetails/bookdetails"
+		},
+		{
+			"path": "pages/study/articlesort/articlesort",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		}, {
+			"path": "pages/study/articleshell/articleshell",
+			"style": {
+				"navigationBarTitleText": "我的书架",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/study/articlesortlist/articlesortlist",
+			"style": {
+				"navigationBarTitleText": "书本列表"
+			}
+		},
+		{
+			"path": "pages/study/note/note",
+			"style": {
+				"navigationBarTitleText": "笔记"
+			}
+		},
+		{
+			"path": "pages/study/collection/collection",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
+		},
+		{
+			"path": "pages/study/addnote/addnote",
+			"style": {
+				"navigationBarTitleText": "添加笔记"
+			}
+		}, {
+			"path": "pages/study/readddd/readddd",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none"
 				}
-		        ,{
-		            "path" : "pages/study/articleshell/articleshell",
-		            "style" :                                                                                    
-		            {
-		                "navigationBarTitleText": "我的书架",
-		                "enablePullDownRefresh": false
-		            }
-		        }
-		        ,{
-		            "path" : "pages/study/articlesortlist/articlesortlist",
-		            "style" :                                                                                    
-		            {
-		                "navigationBarTitleText": "书本列表"
-		            }
-		        },
-				{
-				    "path" : "pages/study/note/note",
-				    "style" :                                                                                    
-				    {
-				        "navigationBarTitleText": "笔记"
-				    }
-				},
-				{
-				    "path" : "pages/study/collection/collection",
-				    "style" :                                                                                    
-				    {
-				        "navigationBarTitleText": "我的收藏"
-				    }
-				},
-				{
-				    "path" : "pages/study/addnote/addnote",
-				    "style" :                                                                                    
-				    {
-				        "navigationBarTitleText": "添加笔记"
-				    }
-				}
-				,{
-		            "path" : "pages/study/readddd/readddd",
-		            "style": {
-		            	"navigationStyle": "custom",
-						"app-plus":{
-							"bounce":"none"
-						}
-		            }
-		        }
-        ,{
-            "path" : "pages/study/addnote/addnote",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+			}
+		}, {
+			"path": "pages/study/addnote/addnote",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

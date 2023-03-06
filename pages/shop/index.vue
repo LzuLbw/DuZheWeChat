@@ -21,67 +21,68 @@
 		<view class="category-list">
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/book.png" ></image>
+					<image class="category-image" src="/static/image/category/book.png"></image>
 				</view>
 				<view class="category-text">书籍</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
 					<image class="category-image" src="/static/image/category/stationery.png"></image>
 				</view>
 				<view class="category-text">文具</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
 					<image class="category-image" src="/static/image/category/wenchuang.png"></image>
 				</view>
 				<view class="category-text">文创产品</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/foods.png"></image>
+					<image class="category-image" src="/static/image/category/foods.png" @tap="toDiancan()"></image>
 				</view>
 				<view class="category-text">食品</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/coffee.png"></image>
+					<image class="category-image" src="/static/image/category/coffee.png" @tap="toDiancan()"></image>
 				</view>
 				<view class="category-text">饮料</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/category.png" @tap="toCategoryList()"></image>
+					<image class="category-image" src="/static/image/category/category.png" @tap="toCategoryList()">
+					</image>
 				</view>
 				<view class="category-text">分类</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
 					<image class="category-image" src="/static/image/category/cart.png" @tap="toCart()"></image>
 				</view>
 				<view class="category-text">购物车</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
 					<image class="category-image" src="/static/image/category/address.png" @tap="toAddress()"></image>
 				</view>
 				<view class="category-text">地址</view>
 			</view>
-			
-			<view class="category" >
+
+			<view class="category">
 				<view class="category-img">
 					<image class="category-image" src="/static/image/category/order.png" @tap="toOrder()"></image>
 				</view>
 				<view class="category-text">订单</view>
 			</view>
-			
+
 		</view>
 		<!-- 广告图 -->
 		<view class="banner">
@@ -121,8 +122,7 @@
 			</view>
 			<view class="product-list">
 				<view class="product" v-for="(item,index) in productList" :key="index" @tap="toGoods(item.id)">
-					<image class="product-image" :src="item.imgUrl"
-						:style=" 'height:' + bigH+';'"></image>
+					<image class="product-image" :src="item.imgUrl" :style=" 'height:' + bigH+';'"></image>
 					<view class="goods-name">{{ item.name }}</view>
 					<view class="goods-info">
 						<view class="goods-price">￥{{ item.nprice }}</view>
@@ -138,7 +138,9 @@
 </template>
 
 <script>
-	import { getUserProfile } from "@/api/system/user"
+	import {
+		getUserProfile
+	} from "@/api/system/user"
 	import $http from "@/common/api/request.js"
 	export default {
 		props: {
@@ -164,6 +166,16 @@
 				uni.navigateTo({
 					url: "/pages/shop/search/search"
 				})
+			} else if (e.float == 'right') {
+				uni.scanCode({
+					onlyFromCamera: true,
+					hideAlbum: true,
+					success: function(res) {
+						console.log(res.result);
+						void plus.runtime.openURL(res.result, function() {
+						})
+					}
+				})
 			}
 		},
 		data() {
@@ -176,14 +188,14 @@
 				currentSwiper: 0,
 				Promotion: [],
 				loadingText: '正在加载...',
-				userId:0
+				userId: 0
 			}
 		},
 		methods: {
 			getUser() {
-			  getUserProfile().then(response => {
-			    this.userId = response.data.userId;
-			  })
+				getUserProfile().then(response => {
+					this.userId = response.data.userId;
+				})
 			},
 			//轮播图指示器
 			swiperChange(event) {
@@ -196,11 +208,11 @@
 				});
 			},
 			//分类跳转
-			toCategory(e) {
-				uni.navigateTo({
-					url: '../../goods/goods-list/goods-list?cid=' + e.id + '&name=' + e.name
-				});
-			},
+			// toCategory(e) {
+			// 	uni.navigateTo({
+			// 		url: '../../goods/goods-list/goods-list?cid=' + e.id + '&name=' + e.name
+			// 	});
+			// },
 			//推荐商品跳转
 			toPromotion(e) {
 				uni.showToast({
@@ -212,29 +224,34 @@
 			toGoods(id) {
 				uni.navigateTo({
 					//url: '/pages/shop/goods/goods?id=' + id + ' &userId = '+this.userId
-					url: '/pages/shop/goods/goods?id= '+id+'&userId='+this.userId+''
+					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
 				});
 			},
 			//购物车跳转
-			toCart(){
+			toCart() {
 				uni.navigateTo({
-					url: '/pages/shop/cart/cart?userId= '+this.userId+''
+					url: '/pages/shop/cart/cart?userId= ' + this.userId + ''
 				});
 			},
 			//我的地址跳转
-			toAddress(){
+			toAddress() {
 				uni.navigateTo({
-					url: '/pages/shop/address/address?userId= '+this.userId+''
+					url: '/pages/shop/address/address?userId= ' + this.userId + ''
 				});
 			},
-			toOrder(){
+			toOrder() {
 				uni.navigateTo({
 					url: '/pages/shop/order/order'
 				});
 			},
-			toCategoryList(){
+			toCategoryList() {
 				uni.navigateTo({
 					url: '/pages/shop/category/category'
+				});
+			},
+			toDiancan() {
+				uni.navigateTo({
+					url: '/pages/shop/diancan/diancan'
 				});
 			},
 			initSwiper() {
