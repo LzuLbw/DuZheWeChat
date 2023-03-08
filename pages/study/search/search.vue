@@ -72,12 +72,12 @@
 			// onClickSearch(){
 			// 	this.title=uni.getStorageSync("title");
 			// 	uni.request({
-			// 		url:'http://localhost:8080/article/findByTitle'
+			// 		url:'http://123.56.217.170:8080/article/findByTitle'
 			// 	})
 			// },
 			onClickSearch() {
 			    uni.request({
-					url:'http://localhost:8080/article/findByTitle?title='+this.title,
+					url:'http://123.56.217.170:8080/article/findByTitle?title='+this.title,
 			         success: (res) => {
 			            console.log(res.data);
 			                  this.searchlist =res.data;
@@ -103,7 +103,7 @@
 			// 	console.log('title为'+e.title);
 			// 	var title=e.title;
 			// 	uni.request({
-			// 		url:'http://localhost:8080/article/findByTitle/'+this.title,
+			// 		url:'http://123.56.217.170:8080/article/findByTitle/'+this.title,
 			// 		method:'GET',
 			// 		data:{},
 			// 		success: (res) => {

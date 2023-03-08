@@ -1,6 +1,6 @@
 <template>
 	
-	    <view class="content" style="background: white;"> 
+	    <view class="content" style="background-color: #f1f1f1;"> 
 		<!-- 搜索栏 -->
 			<view class="widget_style" >
 				<input @click="search" placeholder-class="widget_input_placehold" v-model="content" class="widget_input " :style="style1" :placeholder="placehold" />
@@ -17,23 +17,25 @@
 				<image @click="gotoshell" src="../../../static/icon/study_shell.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
 				<view style="margin-left: 50px;">书架</view>
 				</view>
-				<view>
+				<!-- <view>
 				<image @click="gotonote" src="../../../static/icon/note.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
 				<view style="margin-left: 50px;">笔记</view>
-				</view>
+				</view> -->
 				<view>
 				<image @click="gotocollection" src="../../../static/icon/collection.png" style="width: 60upx;height: 60upx;margin-left: 50px;"></image>
 				<view style="margin-left: 50px;">收藏</view>
 				</view>
 			</view>
 		<br/>
-            <view class=" " v-for="(item,index) in itemList" :key="index">
+		<!-- style="padding: 10px 5px" -->
+		
+            <view class=" "  v-for="(item,index) in itemList" :key="index">
              <view style="font-size: 20px;text-align: center;" @click="godetails(item)">{{item.title}}</view>
 			 <image v-if="item.img" :src="item.img" style="width: 100%;height: 150px;" @click="godetails(item)"></image>
 			 <view style="display: flex;">
 				 <view style="">{{item.creatTime}}</view>
 				 <view style="margin-left: 120upx;display: flex">
-					 <image src="../../../static/icon/viewnum.png" style="width: 30px;height: 20px;margin-right: 5px;margin-top: 5upx;"></image>
+					 <image src="../../../static/icon/viewnummmm.png" style="width: 30px;height: 20px;margin-right: 5px;margin-top: 5upx;"></image>
 					 <view style="font-size: 20px;">{{item.viewNum}}</view>
 					 
 				 </view>
@@ -97,7 +99,7 @@
 		methods:{
          getList() {
             uni.request({
-                 url: 'http://localhost:8080/article/all',
+                 url: 'http://123.56.217.170:8080/article/all',
                  success: (res) => {
                     console.log(res.data);
                           this.itemList =res.data;
@@ -155,7 +157,7 @@
 				console.log(id+"文章id");
 				uni.request({
 					
-					url:'http://localhost:8080/collection/insert/',
+					url:'http://123.56.217.170:8080/collection/insert/',
 					method: 'POST',
 					data: {
 						articleId:this.id,
