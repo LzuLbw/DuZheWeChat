@@ -78,8 +78,7 @@
 
 				<view class="itemitem">
 					<uni-icons type="personadd" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} /
-						{{actpersonnum}}</text><br />
+						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} / {{actpersonnum}}</text><br />
 				</view>
 
 				<view class="itemitem">
