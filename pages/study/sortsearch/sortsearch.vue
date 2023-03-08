@@ -66,7 +66,7 @@
 		
 			onClickSearch() {
 			    uni.request({
-					url:'http://localhost:8080/classify/findByCategory?category='+this.category,
+					url:'http://123.56.217.170:8080/classify/findByCategory?category='+this.category,
 			         success: (res) => {
 			            console.log(res.data);
 			                  this.sortsearchlist =res.data;

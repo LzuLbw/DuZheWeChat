@@ -214,7 +214,7 @@
 			console.log(e);
 			this.id=e.id;
 			uni.request({
-				url:'http://localhost:8080/article/getById/'+this.id,
+				url:'http://123.56.217.170:8080/article/getById/'+this.id,
 				method:'GET',
 				data: {},
 				success: (res) => {
@@ -224,7 +224,7 @@
 				},
 			});
 			uni.request({
-							url:'http://localhost:8080/comment/findList/'+this.id,
+							url:'http://123.56.217.170:8080/comment/findList/'+this.id,
 							method:'GET',
 							data: {},
 							success: (res) => {
@@ -242,7 +242,7 @@
 				
 				this.articleId=e.id;
 				uni.request({
-					url:'http://localhost:8080/article/getById/'+this.id,
+					url:'http://123.56.217.170:8080/article/getById/'+this.id,
 					method:'GET',
 					data: {},
 					success: (res) => {
@@ -253,7 +253,7 @@
 				});
 			
 					uni.request({
-						url:'http://localhost:8080/comment/insert/',
+						url:'http://123.56.217.170:8080/comment/insert/',
 						method: 'POST',
 						data: {
 							// creatTime:this.year,
@@ -353,7 +353,7 @@
 					success:function(res){
 						if(res.confirm){
 							uni.request({
-									url:'http://localhost:8080/comment/deleteById/'+id,
+									url:'http://123.56.217.170:8080/comment/deleteById/'+id,
 									method: 'DELETE',
 									data: {},
 									success: (res) => {

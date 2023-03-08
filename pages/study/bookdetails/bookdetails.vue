@@ -46,7 +46,10 @@
 				</scroll-view>
 			</view>
 			<!-- <uni-loading  :status="status" :contentText="contentText" v-else></uni-loading> -->
-			
+			<!-- <input type="number"  v-model="score" placeholder="输入分值" class="intxt" maxlength="5" />
+			<view @click="submitScore"> 提交</view>
+			<view v-model="sum">当前评分：{{average}}</view>
+ -->
 			<!-- 底部固定的按钮 -->
 			<view class="btn-wrap">
 				<button class="joinshelf" @click="addshell(item.id)">加入书架</button>
@@ -67,7 +70,11 @@ export default {
 
 	data() {
 		return {
+			scoreList:{},
+			score:0,
+			average:'',
 			bookData:{},
+			score:'',
 			clist:[],
 			fictionid:'',
 			newchapter:'',
@@ -81,10 +88,29 @@ export default {
 			}
 		};
 	},
+	computed:{
+		sum () {
+			let count=0;
+			console.log(this.scoreList+'******************');
+			for(var i=0;i<this.scoreList.length;i++){
+				if(bookId=this.id){
+				score=score+score[i];
+				count++;
+				return this.score;
+			}
+			let average=this.score/this.count;
+			return average;
+			}
+		    },
+		 // avaerage:function () {
+		 //        return Math.round(this.score/3);
+		 //    }
+	},
 	onLoad(e) {
 		
 		console.log(getApp())
 		this.show(e);
+		this.allscore();
 		let fid = e.fictionid;
 		this.fictionid = fid;
 		uni.setNavigationBarTitle({
@@ -96,6 +122,51 @@ export default {
 	
 	},
 	methods: {
+		
+		allscore(){
+			uni.request({
+				url:'http://123.56.217.170:8080/score/findBookScore/'+this.id,
+				method: 'GET',
+				data: {},
+				success: (res) => {
+				    console.log(res.data);
+				          this.scoreList =res.data;
+						  console.log("===*****=====",this.scoreList);
+						   //console.log(this.itemList[0]);
+						  // console.log(this.itemList[0].id);
+				}
+			})
+		},
+		submitScore(){
+		if(this.score==''){
+			uni.showModal({
+				title:'请输入评分',
+			});
+		}else{
+			uni.request({
+				url:'http://123.56.217.170:8080/score/insert/',
+				method: 'POST',
+				data: {
+					bookId:this.id,
+					//userId:$store.state.loginUserInfo.userId,
+					score:this.score,
+				},
+				// console.log(getApp().globalData.uid);
+				// console.log(getApp().globalData.name);
+				dataType:'json',
+				
+				success: (res) => {
+							console.log("成功");
+							this.sum();
+								this.score=''
+						},
+					
+			})
+		}
+		this.sum();
+			
+		},
+		
 		gotooo(id){
 			this.id=id;
 			console.log(this.id+'qqqqqqq');
@@ -106,7 +177,7 @@ export default {
 				url:'/pages/study/articleshell/articleshell?id='+this.id,
 			});
 			uni.request({
-				url:'http://localhost:8080/shell/all/',
+				url:'http://123.56.217.170:8080/shell/all/',
 				method:'GET',
 				data: {},
 				success: (res) => {
@@ -120,7 +191,7 @@ export default {
 				console.log(e);
 				this.id=e.id;
 				uni.request({
-						url:'http://localhost:8080/book/findById/'+this.id,
+						url:'http://123.56.217.170:8080/book/findById/'+this.id,
 						method:'GET',
 						data: {},
 						success: (res) => {
@@ -135,7 +206,7 @@ export default {
 			console.log(id+"书本id");
 			uni.request({
 				
-				url:'http://localhost:8080/shell/insert/',
+				url:'http://123.56.217.170:8080/shell/insert/',
 				method: 'POST',
 				data: {
 					bookId:this.id,
@@ -168,7 +239,7 @@ export default {
 			// 	}
 			// })
 		// 	uni.request({
-		// 		url:'http://localhost:8080/shell/insert/'+id,
+		// 		url:'http://123.56.217.170:8080/shell/insert/'+id,
 		// 		method: 'POST',
 		// 		data: {
 		// 			bookId:this.id,

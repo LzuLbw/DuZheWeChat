@@ -461,7 +461,7 @@
 			this.id=e.id;
 			//console.log(this.id+'aaaaaaaaaaaa');
 			uni.request({
-				url:'http://localhost:8080/book/findById/'+this.id,
+				url:'http://123.56.217.170:8080/book/findById/'+this.id,
 				method:'GET',
 				data:{},
 				success: (res) => {

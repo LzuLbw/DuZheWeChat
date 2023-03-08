@@ -31,7 +31,7 @@
 					<!-- #endif -->
 					<view class="list" v-for="(item1, index1) in item" :key="index1">
 						<view class="list__item" @tap="gotoFriendInfo(item1.id)">
-							<image v-if="item1.url" class="list__item__avatar" :src="'http://localhost:8080'+item1.url"></image>
+							<image v-if="item1.url" class="list__item__avatar" :src="'http://123.56.217.170:8080'+item1.url"></image>
 							<image v-if="!item1.url" class="list__item__avatar" :src="base64Avatar"></image>
 							
 							<text class="list__item__user-name">{{item1.name}}</text>

@@ -137,7 +137,7 @@
 		uploadFilePromise(url) {
 			return new Promise((resolve, reject) => {
 				let a = uni.uploadFile({
-					url: 'http://localhost/dev-api/common/upload',
+					url: 'http://123.56.217.170/dev-api/common/upload',
 					filePath: url,
 					name: 'file',
 					formData: {
@@ -262,7 +262,7 @@
 				console.log(uid);
 				
 				uni.request({
-					url: 'http://localhost:8080/ry-vue/world/publish',
+					url: 'http://123.56.217.170:8080/ry-vue/world/publish',
 					method: 'POST',
 					
 					data: {

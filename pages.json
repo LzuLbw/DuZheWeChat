@@ -565,7 +565,7 @@
 		{
 			"path": "pages/social/info/friend-info",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "好友主页",
 		 	"enablePullDownRefresh": false
 			}
 		},
@@ -579,7 +579,7 @@
 		{
 			"path": "pages/social/info/group-info",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "读友圈介绍",
 				"enablePullDownRefresh": false
 			}
 		},

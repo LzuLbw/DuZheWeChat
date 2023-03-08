@@ -50,15 +50,16 @@
 			this.id = e.id;
 		
 			uni.request({
-				url: 'http://localhost:8080/note/' + e.id,
+				url: 'http://123.56.217.170:8080/note/findById/' + e.id,
 				method: 'GET',
 				data: {},
 				success: res => {
 					console.log(res.data+'---------------');
 		
 					this.itemList = res.data;
-					this.title = this.itemList.title;
-					this.content = this.itemList.content;
+					console.log(this.itemList);
+					this.title = this.itemList[0].title;
+					this.content = this.itemList[0].content;
 		
 		
 		
@@ -74,7 +75,7 @@
 		methods: {
 			insert(){
 				uni.request({
-					url:'http://localhost:8080/note/insert/',
+					url:'http://123.56.217.170:8080/note/insert/',
 					method: 'POST',
 					data: {
 						userId:$store.state.loginUserInfo.userId,
@@ -92,7 +93,7 @@
 						else{
 							
 						uni.showModal({
-											content: '小主，确认要提交吗？',
+											content: '确认要提交吗？',
 											success: function(res) {
 											if (res.confirm) {
 												console.log('点击了确认')

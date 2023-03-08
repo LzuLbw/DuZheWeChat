@@ -55,7 +55,7 @@
 			console.log(e);
 			this.id=e.id;
 			uni.request({
-				url:'http://localhost:8080/book/findList/'+this.id,
+				url:'http://123.56.217.170:8080/book/findList/'+this.id,
 				method:'GET',
 				data: {},
 				success: (res) => {
