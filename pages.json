@@ -66,6 +66,13 @@
 			}
 		},
 		{
+			"path": "pages/mine/wallet/withdraw/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "余额提现"
+			}
+		},
+		{
 			"path": "pages/mine/wallet/voucher_center_/voucher_center_",
 			"style": {
 				"navigationBarTitleText": "充值中心",
