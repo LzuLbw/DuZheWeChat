@@ -6,7 +6,7 @@
 		<text>
 			{{activitydata}}
 		</text> -->
-		<view v-for="(item,index) in activitydata">
+		<view v-for="(item,index) in activitydata" v-if="tagtag">
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
@@ -14,15 +14,13 @@
 				<uni-card :cover="activitydata[index].activityPicurl">
 
 					<view>
-						<!-- 活动申请是否通过 -->
-						<uni-tag :text="activitydata[index].activityReviewstatus" v-if="tagtag"
+						<uni-tag :text="item.activityReviewstatus"
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
-						
-						<!-- 活动报名是否通过 -->
-						<uni-tag :text="signupdata[index].approved" v-if="signtagtag"
+
+<!-- 						<uni-tag :text="signupdata[index].approved" 
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
-						</uni-tag>
+						</uni-tag> -->
 
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
 						<text class="uni-body">{{item.activitySubtitle}}</text>
@@ -33,6 +31,32 @@
 			</view>
 
 		</view>
+		
+		<view v-for="(item,index) in signupdata" v-if="signtagtag">
+		
+					<view @click="opendetail(item.activityid)" :data-activityid="item.activityid">
+		
+		
+						<uni-card :cover="signupdata[index].activity_picurl">
+		
+							<view>
+		
+								<uni-tag :text="item.approved" v-if="signtagtag"
+									custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
+								</uni-tag>
+		
+								<text class="uni-body">{{item.activity_maintitle}}</text><br>
+								<text class="uni-body">{{item.activity_subtitle}}</text>
+							</view>
+							
+							
+							
+		
+						</uni-card>
+		
+					</view>
+		
+				</view>
 
 		<view style="margin-top: 100px;">
 			<u-empty mode="data" :show="show">
@@ -51,7 +75,7 @@
 				show: false,
 
 				tagtag: false, // 活动申请是否通过
-				signtagtag: true, //
+				signtagtag: false, // 活动报名是否通过
 
 
 				list: ['已报名的活动', '申请发布的活动'],
@@ -135,36 +159,42 @@
 								this.show = true;
 							} else {
 								this.show = false;
+
+								// 获取报名状态信息
+								uni.request({
+									url: 'http://123.56.217.170:8080/actSignupinfo/listActSignUser/' +
+										this.currentuid,
+									method: 'GET',
+									data: {},
+									success: res => {
+
+										// console.log("??????????????????????????????????????");
+										// console.log(res.data.data);
+										this.signupdata = res.data.data;
+										console.log("dingdingdingdddddddddddddddddddddddd");
+										console.log(this.signupdata);
+
+										for (let i = 0; i < this.signupdata.length; i++) {
+
+											if (this.signupdata[i].approved === 0) {
+												this.signupdata[i].approved = "报名还未审核";
+											} else if (this.signupdata[i].approved === 1) {
+												this.signupdata[i].approved = "报名已通过审核";
+											} else if (this.signupdata[i].approved === 2) {
+												this.signupdata[i].approved = "报名未通过审核 ：" + this
+													.signupdata[i]
+													.approvedmessage;
+											}
+										}
+										console.log("=========1111111===============",this.signupdata);
+									},
+									fail: () => {},
+									complete: () => {}
+								});
+
 							}
 
 
-						},
-						fail: () => {},
-						complete: () => {}
-					});
-
-					// 获取报名状态信息
-					uni.request({
-						url: 'http://123.56.217.170:8080/actSignupinfo/listActSignUser/' + this.currentuid,
-						method: 'GET',
-						data: {},
-						success: res => {
-
-							console.log("??????????????????????????????????????");
-							console.log(res.data.data);
-							this.signupdata = res.data.data;
-
-							for (let i = 0; i < this.signupdata.length; i++) {
-
-								if (this.signupdata[i].approved == 0) {
-									this.signupdata[i].approved = "报名还未审核";
-								} else if (this.signupdata[i].approved == 1) {
-									this.signupdata[i].approved = "报名已通过审核";
-								} else if (this.signupdata[i].approved == 2) {
-									this.signupdata[i].approved = "报名未通过审核 ：" + this.signupdata[i]
-										.approvedmessage;
-								}
-							}
 						},
 						fail: () => {},
 						complete: () => {}
@@ -175,7 +205,6 @@
 
 					this.tagtag = true;
 					this.signtagtag = false;
-					this.tagtag = true;
 
 					uni.request({
 						url: 'http://123.56.217.170:8080/actActivity/activity/user/application/' + this.currentuid,
@@ -188,23 +217,26 @@
 								this.show = true;
 							} else {
 								this.show = false;
-							}
-
-							this.activitydata = res.data.data;
 
 
-							// console.log(res.data.data[0]);
+								this.activitydata = res.data.data;
 
-							for (let i = 0; i < this.activitydata.length; i++) {
 
-								if (this.activitydata[i].activityReviewstatus == 0) {
-									this.activitydata[i].activityReviewstatus = "未审核";
-								} else if (this.activitydata[i].activityReviewstatus == 1) {
-									this.activitydata[i].activityReviewstatus = "申请已通过审核";
-								} else if (this.activitydata[i].activityReviewstatus == 2) {
-									this.activitydata[i].activityReviewstatus = "申请未通过审核";
+								// console.log(res.data.data[0]);
+
+								for (let i = 0; i < this.activitydata.length; i++) {
+
+									if (this.activitydata[i].activityReviewstatus === 0) {
+										this.activitydata[i].activityReviewstatus = "活动申请未审核";
+									} else if (this.activitydata[i].activityReviewstatus === 1) {
+										this.activitydata[i].activityReviewstatus = "活动申请已通过审核";
+									} else if (this.activitydata[i].activityReviewstatus === 2) {
+										this.activitydata[i].activityReviewstatus = "活动申请未通过审核";
+									}
 								}
 							}
+
+
 
 
 						},
