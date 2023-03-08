@@ -78,7 +78,8 @@
 
 				<view class="itemitem">
 					<uni-icons type="personadd" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} / {{actpersonnum}}</text><br />
+						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} /
+						{{actpersonnum}}</text><br />
 				</view>
 
 				<view class="itemitem">
@@ -117,6 +118,7 @@
 						class="maintitilecontent">{{ActivityData.activityCity}}</text><br />
 				</view>
 
+
 				<view style="height: 70px;">
 
 				</view>
@@ -127,31 +129,34 @@
 					<text class="maintitilecontent">{{ActivityData.activityReviewMessage}}</text><br />
 				</view>
 
+				<view v-if="showsugsugbutton">
+					<button @click="editapplication" class="mini-btn"
+						style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
+						type="primary" size="mini">重新编辑活动申请信息</button>
+				</view>
+
 			</view>
-			<view v-if="showsugsugbutton">
-				<button @click="editapplication" class="mini-btn"
-					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
-					type="primary" size="mini">重新编辑活动申请信息</button>
-			</view>
+
+			<view style="height: 50px;"></view>
+
 
 		</scroll-view>
 
 		<!-- 活动附件预览 -->
 		<!-- <web-view v-if="fileifshow" :webview-styles="webviewStyles" src="ActivityData.activityAttachment"></web-view> -->
 		<!-- <text v-if="fileifshow">文件预览界面</text> -->
-		
+
 		<!-- <web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view> -->
-		
+
 		<!--  #ifdef  H5 -->
 		<web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view>
 		<!--  #endif -->
-		
-		<!--  #ifdef  APP -->
-		<text v-if="fileifurlshow">正在通过手机内置应用加载附件...请稍后</text>
+
+		<!--  #ifdef  APP-PLUS -->
+		<!-- <web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view> -->
+		<text v-if="fileifurlshow">{{byPhoneIn}}</text>
 		<!--  #endif -->
-		
-		
-		
+
 		<view class="goods-carts" v-if="showsug">
 			<view>
 				<uni-goods-nav :options="options" :fill="true" :button-group="customButtonGroup1"
@@ -180,6 +185,8 @@
 	export default {
 		data() {
 			return {
+
+				byPhoneIn: "正在通过手机内置应用加载附件...请稍后",
 
 				fileifurlshow: false,
 
@@ -251,13 +258,15 @@
 			});
 
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("================++++++++++++++++++++++=======================");
+				// console.log("================++++++++++++++++++++++=======================");
 				console.log("当前登录用户的昵称为：");
 				console.log(res.user.nickName);
 				this.currentuname = res.user.nickName;
 				console.log("当前登录用户的ID为");
 				console.log(res.user.userId);
 				this.currentuid = res.user.userId;
+
+
 
 				//初始化报名按钮状态
 				uni.request({
@@ -324,112 +333,109 @@
 					complete: () => {}
 				});
 
+				//获取活动信息
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("对应id活动数据如下：");
+						console.log(res);
+						this.ActivityData = res.data.data;
+
+						this.actpersonnum = this.ActivityData.activitityNumbernum;
+						// console.log("当前活动的最大报名人数为：");
+						// console.log(this.actpersonnum);
+
+						// console.log("90909099090909", this.ActivityData.activityAttribution);
+						// console.log(this.currentuid);
+
+						if (this.ActivityData.activityAttribution == this.currentuid) {
+							this.showsugsugbutton = true;
+						}
+						// console.log(this.showsugsugbutton);
+						this.fileurlurl = this.ActivityData.activityAttachment;
+
+						console.log("当前活动的审核情况");
+						if (this.ActivityData.activityReviewstatus == 0) {
+							// 活动还未审核
+							this.showsug = false;
+							this.showsugsug = true;
+							this.sugtext = '当前活动还未审核'
+
+						} else if (this.ActivityData.activityReviewstatus == 1) {
+
+							// 活动已经审核通过
+
+						} else if (this.ActivityData.activityReviewstatus == 2) {
+
+							// 审核未通过
+							this.showsug = false;
+							this.showsugsug = true;
+							this.sugtext = '当前活动审核未通过'
+						}
+
+
+						//初始化步骤条
+						console.log("四个关键时间为:");
+						console.log("报名开始时间：", this.ActivityData.activityRegistrationstarttime);
+						console.log("报名结束时间：", this.ActivityData.activityRegistrationendtime);
+						console.log("活动开始时间：", this.ActivityData.activityStarttime);
+						console.log("活动结束时间：", this.ActivityData.activityEndtime);
+
+						//报名开始时间
+						let registrationstarttime = new Date(Date.parse(this.ActivityData
+							.activityRegistrationstarttime));
+						//报名结束时间
+						let registrationendtime = new Date(Date.parse(this.ActivityData
+							.activityRegistrationendtime));
+						//活动开始时间
+						let activityStarttime = new Date(Date.parse(this.ActivityData
+							.activityStarttime));
+						//活动结束时间
+						let activityEndtime = new Date(Date.parse(this.ActivityData
+							.activityEndtime));
+
+						//当前时间
+						let nowtime = new Date();
+
+						//活动未开始
+						if (nowtime < registrationstarttime) {
+							console.log("活动未开始");
+							this.stepactive = 0;
+						} else if (nowtime < registrationendtime && nowtime >
+							registrationstarttime) {
+							console.log("活动报名中");
+							this.stepactive = 1;
+						} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
+							console.log("活动进行中");
+							this.stepactive = 2;
+						} else if (nowtime > activityEndtime) {
+							console.log("活动已结束");
+							this.stepactive = 3;
+						}
+
+
+
+						console.log(registrationstarttime);
+						console.log(new Date() > registrationstarttime);
+
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			});
-
-
-
-
-
 
 			console.log(e);
 			this.Activityid = e.activityid;
 			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
 
-			//获取活动信息
-			uni.request({
-				url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("对应id活动数据如下：");
-					console.log(res);
-					this.ActivityData = res.data.data;
-
-					this.actpersonnum = this.ActivityData.activitityNumbernum;
-					console.log("当前活动的最大报名人数为：");
-					console.log(this.actpersonnum);
-
-					if (this.ActivityData.activityAttribution == this.currentuid) {
-
-						this.showsugsugbutton = true;
-
-					}
-
-					this.fileurlurl = this.ActivityData.activityAttachment;
-
-					console.log("当前活动的审核情况");
-					if (res.data.data.activityReviewstatus == 0) {
-						// 活动还未审核
-						this.showsug = false;
-						this.showsugsug = true;
-
-						this.sugtext = '当前活动还未审核'
-
-					} else if (res.data.data.activityReviewstatus == 1) {
-
-						// 活动已经审核通过
-
-					} else if (res.data.data.activityReviewstatus == 2) {
-
-						// 审核未通过
-						this.showsug = false;
-						this.showsugsug = true;
-						this.sugtext = '当前活动审核未通过'
-					}
-
-
-					//初始化步骤条
-					console.log("四个关键时间为:");
-					console.log("报名开始时间：", this.ActivityData.activityRegistrationstarttime);
-					console.log("报名结束时间：", this.ActivityData.activityRegistrationendtime);
-					console.log("活动开始时间：", this.ActivityData.activityStarttime);
-					console.log("活动结束时间：", this.ActivityData.activityEndtime);
-
-					//报名开始时间
-					let registrationstarttime = new Date(Date.parse(this.ActivityData
-						.activityRegistrationstarttime));
-					//报名结束时间
-					let registrationendtime = new Date(Date.parse(this.ActivityData
-						.activityRegistrationendtime));
-					//活动开始时间
-					let activityStarttime = new Date(Date.parse(this.ActivityData.activityStarttime));
-					//活动结束时间
-					let activityEndtime = new Date(Date.parse(this.ActivityData.activityEndtime));
-
-					//当前时间
-					let nowtime = new Date();
-
-					//活动未开始
-					if (nowtime < registrationstarttime) {
-						console.log("活动未开始");
-						this.stepactive = 0;
-					} else if (nowtime < registrationendtime && nowtime > registrationstarttime) {
-						console.log("活动报名中");
-						this.stepactive = 1;
-					} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
-						console.log("活动进行中");
-						this.stepactive = 2;
-					} else if (nowtime > activityEndtime) {
-						console.log("活动已结束");
-						this.stepactive = 3;
-					}
-
-
-
-					console.log(registrationstarttime);
-					console.log(new Date() > registrationstarttime);
-
-				},
-				fail: () => {},
-				complete: () => {}
-			});
-
-
-
-
-
-
 		},
+
+		onShow() {
+			this.onLoad();
+		},
+
 		methods: {
 
 			// 切换选项卡
@@ -443,26 +449,38 @@
 
 
 					console.log(uni.getSystemInfoSync().platform);
+					console.log(this.ActivityData.activityAttachment);
 
-					switch (uni.getSystemInfoSync().platform) {
-						case 'android':
-							this.fileifurlshow = false;
-							uni.downloadFile({
-								url: this.fileurlurl,
-								success: function(res) {
-									var filePath = res.tempFilePath;
-									uni.openDocument({
-										filePath: filePath,
-										showMenu: true,
-										success: function(res) {
-											console.log('打开文档成功');
-										}
-									});
-								}
-							});
-						case 'windows':
-							this.fileifurlshow = true;
+					if (this.ActivityData.activityAttachment[0] == "当") {
+						console.log("哈哈哈哈");
+						
+						// 弹出一个通知
+						this.messageToggle("当前活动暂无附件");
+						
+						
+					} else {
+						switch (uni.getSystemInfoSync().platform) {
+							case 'android':
+								this.fileifurlshow = false;
+								uni.downloadFile({
+									url: this.fileurlurl,
+									success: function(res) {
+										var filePath = res.tempFilePath;
+										uni.openDocument({
+											filePath: filePath,
+											showMenu: true,
+											success: function(res) {
+												console.log('打开文档成功');
+											}
+										});
+									}
+								});
+							case 'windows':
+								this.fileifurlshow = true;
+						}
 					}
+
+
 
 				} else {
 					// 切换到活动附件预览选项卡
