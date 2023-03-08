@@ -10,10 +10,10 @@
 				<wInput v-model="loginForm.username" type="text" maxlength="11" placeholder="用户名/电话" :focus="isFocus">
 				</wInput>
 				<wInput v-model="loginForm.password" type="password" maxlength="11" placeholder="密码"></wInput>
-				<view class="input-item flex align-center" v-if="captchaEnabled">
+				<!-- <view class="input-item flex align-center" v-if="captchaEnabled">
 					<wInput v-model="loginForm.code" type="number" class="input" placeholder="请输入验证码" maxlength="4" />
 					<image :src="codeUrl" @click="getCode" class="login-code-img"></image>
-				</view>
+				</view> -->
 			</view>
 			<wButton class="wbutton" text="登 录" :rotate="isRotate" @click="handleLogin"></wButton>
 
@@ -63,7 +63,7 @@
 				isRotate: false, //是否加载旋转
 				isFocus: true, // 是否聚焦
 				codeUrl: "",
-				captchaEnabled: true,
+				captchaEnabled: false,
 				globalConfig: getApp().globalData.config,
 				loginForm: {
 					username: "admin",
@@ -114,9 +114,9 @@
 					this.$modal.msgError("请输入您的账号")
 				} else if (this.loginForm.password === "") {
 					this.$modal.msgError("请输入您的密码")
-				} else if (this.loginForm.code === "" && this.captchaEnabled) {
+				} /* else if (this.loginForm.code === "" && this.captchaEnabled) {
 					this.$modal.msgError("请输入验证码")
-				} else {
+				} */ else {
 					this.$modal.loading("登录中，请耐心等待...")
 					this.pwdLogin()
 				}
