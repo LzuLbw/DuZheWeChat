@@ -46,10 +46,10 @@
 				</scroll-view>
 			</view>
 			<!-- <uni-loading  :status="status" :contentText="contentText" v-else></uni-loading> -->
-			<input type="number"  v-model="score" placeholder="输入分值" class="intxt" maxlength="5" />
+			<!-- <input type="number"  v-model="score" placeholder="输入分值" class="intxt" maxlength="5" />
 			<view @click="submitScore"> 提交</view>
 			<view v-model="sum">当前评分：{{average}}</view>
-
+ -->
 			<!-- 底部固定的按钮 -->
 			<view class="btn-wrap">
 				<button class="joinshelf" @click="addshell(item.id)">加入书架</button>
@@ -72,7 +72,7 @@ export default {
 		return {
 			scoreList:{},
 			score:0,
-			average:0,
+			average:'',
 			bookData:{},
 			score:'',
 			clist:[],
@@ -89,7 +89,19 @@ export default {
 		};
 	},
 	computed:{
-		
+		sum () {
+			let count=0;
+			console.log(this.scoreList+'******************');
+			for(var i=0;i<this.scoreList.length;i++){
+				if(bookId=this.id){
+				score=score+score[i];
+				count++;
+				return this.score;
+			}
+			let average=this.score/this.count;
+			return average;
+			}
+		    },
 		 // avaerage:function () {
 		 //        return Math.round(this.score/3);
 		 //    }
@@ -98,6 +110,7 @@ export default {
 		
 		console.log(getApp())
 		this.show(e);
+		this.allscore();
 		let fid = e.fictionid;
 		this.fictionid = fid;
 		uni.setNavigationBarTitle({
@@ -109,25 +122,16 @@ export default {
 	
 	},
 	methods: {
-		sum () {
-			let count=0;
-			for(var i=0;i<this.scoreList.length;i++){
-				if(bookId=this.id){
-				score=score+score[i];
-				count++;
-				return this.score;
-			}
-			let average=this.score/this.count;
-			return average;
-			}
-		    },
+		
 		allscore(){
 			uni.request({
-				url:'http://123.56.217.170:8080/score/all/',
+				url:'http://123.56.217.170:8080/score/findBookScore/'+this.id,
+				method: 'GET',
+				data: {},
 				success: (res) => {
 				    console.log(res.data);
 				          this.scoreList =res.data;
-						  console.log("===",this.scoreList);
+						  console.log("===*****=====",this.scoreList);
 						   //console.log(this.itemList[0]);
 						  // console.log(this.itemList[0].id);
 				}
@@ -159,6 +163,7 @@ export default {
 					
 			})
 		}
+		this.sum();
 			
 		},
 		
