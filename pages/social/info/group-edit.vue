@@ -106,7 +106,7 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://localhost/dev-api/common/upload',
+						url: 'http://localhost/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {

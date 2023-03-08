@@ -7,7 +7,8 @@
 
 使用插件有任何问题欢迎加入QQ讨论群：
 - 群1：701468256（已满）
-- 群2：469580165
+- 群2：469580165（已满）
+- 群3：667530868
 
 若能帮到你请高抬贵手点亮5颗星~
 ------
@@ -22,6 +23,8 @@
 ### hide() APP端webview层级比view高，如不希望触发点击时，应调用hide隐藏控件，反之调用show
 ### 若iOS端跨域服务端同学实在配置不好，可把hybrid下html目录放到服务器去，同源则不存在跨域问题。
 ### 小程序端因hybrid不能使用本地HTML，所以插件提供的是从微信消息列表拉取文件并选择，请知悉。
+### file对象不是object对象，也不能转json字符串，如果你打印file那就是{}，可以打印file.name和file.size。
+### 返回的path是个blob类型，仅供用于文件回显，插件已内置好上传函数，调用上传会自动提交待上传文件，若非要自己拿path去搞上传那你自己处理。
 ------
 
 ## 使用说明
@@ -98,12 +101,13 @@
 	<!-- #ifndef MP-WEIXIN -->
 	<view v-for="(item,index) in files.values()" :key="index">
 		<image style="width: 100rpx;height: 100rpx;" :src="item.path" mode="widthFix"></image>
-		<text>{{item.path}}</text>
+		<text>提示：【path主要用于图片视频类文件回显，他用自行处理】：{{item.path}}</text>
 		<text>{{item.name}}</text>
 		<text style="margin-left: 10rpx;">大小：{{item.size}}</text>
 		<text style="margin-left: 10rpx;">状态：{{item.type}}</text>
 		<text style="margin-left: 10rpx;">进度：{{item.progress}}</text>
-		<!-- <text style="margin-left: 10rpx;" v-if="item.responseText">服务端返回演示：{{item.responseText.code}}</text> -->
+		<text style="margin-left: 10rpx;" v-if="item.responseText">服务端返回演示：{{item.responseText}}</text>
+		<text @click="resetUpload(item.name)" v-if="item.type=='fail'" style="margin-left: 10rpx;padding: 0 10rpx;border: 1rpx solid #007AFF;">重新上传</text>
 		<text @click="clear(item.name)" style="margin-left: 10rpx;padding: 0 10rpx;border: 1rpx solid #007AFF;">删除</text>
 	</view>
 	<!-- #endif -->
@@ -115,7 +119,8 @@
 		<text style="margin-left: 10rpx;">状态：{{item.type}}</text>
 		<text style="margin-left: 10rpx;">进度：{{item.progress}}</text>
 		<view>
-			<button>删除</button>
+			<button @click="resetUpload(item.name)">重新上传</button>
+			<button @click="clear(item.name)">删除</button>
 		</view>
 	</view>
 	<!-- #endif -->
@@ -135,14 +140,15 @@ export default {
 		return {
 			// 上传接口参数
 			option: {
-				// 上传服务器地址，此地址需要替换为你的接口地址
-				url: 'http://hlapi.j56.com/dropbox/document/upload',
+				// 上传服务器地址，需要替换为你的接口地址
+				url: 'http://hl.j56.com/dropbox/document/upload', // 该地址非真实路径，需替换为你项目自己的接口地址
 				// 上传附件的key
 				name: 'file',
-				// 根据你接口需求自定义请求头
+				// 根据你接口需求自定义请求头,默认不要写content-type,让浏览器自适配
 				header: {
+					// 示例参数可删除
 					'Authorization': 'bearer eyJhbGciOiJSUzI1NiIsI',
-					'uid': '27682',
+					'uid': '99',
 					'client': 'app',
 					'accountid': 'DP',
 				},
@@ -152,14 +158,16 @@ export default {
 				}
 			},
 			// 选择文件后是否立即自动上传，true=选择后立即上传
-			instantly: false,
+			instantly: true,
 			// 必传宽高且宽高应与slot宽高保持一致
 			width: '180rpx',
 			height: '180rpx',
-			// 限制允许选择的格式，空串=不限制，默认为空
-			formats: 'png,jpg,mp4',
+			// 限制允许上传的格式，空串=不限制，默认为空
+			formats: '',
 			// 文件上传大小限制
-			size: 10,
+			size: 30,
+			// 文件数量限制
+			count: 2,
 			// 文件回显列表
 			files: new Map(),
 			// 微信小程序Map对象for循环不显示，所以转成普通数组，不要问为什么，我也不知道
@@ -176,7 +184,7 @@ export default {
 	onReady() {
 		setTimeout(()=>{
 			console.log('----演示动态更新参数-----');
-			this.$refs.lsjUpload.setData('formData.orderId','动态设置的参数');
+			this.$refs['lsjUpload'+this.tabIndex].setData('formData.orderId','动态设置的参数'); 
 			
 			console.log('以下注释内容为-动态更新参数更多演示，放开后可查看演示效果');
 			// 修改option对象的name属性
@@ -191,22 +199,20 @@ export default {
 			// option对象的formData新增属性
 			// this.$refs.lsjUpload.setData('formData.newkey','新插入到formData的属性');
 			
+			
 			// ---------演示初始化值，用于已提交后再次编辑时需带入已上传文件-------
 			// 方式1=传入数组
-			let files1 = [{
-					name: '1.png'
-				},
-				{
-					name: '2.png',
-				}];
+			// let files1 = [{name: '1.png'},{name: '2.png',}];
 			
 			// 方式2=传入Map对象
-			let files2 = new Map();
-			files2.set('1.png',{name: '1.png'})
+			// let files2 = new Map();
+			// files2.set('1.png',{name: '1.png'})
 			
-			// 设置初始files列表
-			this.$refs.lsjUpload.setFiles(files1);
+			// 此处调用setFiles设置初始files
+			// this.$refs.lsjUpload.setFiles(files1);
 			
+			// 初始化tab
+			this.onTab(0);
 		},2000)
 	},
 	methods: {
@@ -214,16 +220,17 @@ export default {
 		onuploadEnd(item) {
 			console.log(`${item.name}已上传结束，上传状态=${item.type}`);
 			
-			// 更新当前状态变化的文件
+			// 更新当前窗口状态变化的文件
 			this.files.set(item.name,item);
 			
-			// 演示上传完成后取服务端数据
+			// ---可删除--演示上传完成后取服务端数据
 			if (item['responseText']) {
-				console.log('演示服务器返回的字符串JSON转对象');
+				console.log('演示服务器返回的字符串JSON转Object对象');
 				this.files.get(item.name).responseText = JSON.parse(item.responseText);
 			}
 			
-			// 微信小程序Map对象for循环不显示，所以转成普通数组，不要问为什么，我也不知道
+			// 微信小程序Map对象for循环不显示，所以转成普通数组，
+			// 如果你用不惯Map对象，也可以像这样转普通数组，组件使用Map主要是避免反复文件去重操作
 			// #ifdef MP-WEIXIN
 			this.wxFiles = [...this.files.values()];
 			// #endif
@@ -259,7 +266,8 @@ export default {
 		},
 		// 文件选择回调
 		onChange(files) {
-			// 更新选择的文件
+			console.log('当前选择的文件列表：',JSON.stringify([...files.values()]));
+			// 更新选择的文件 
 			this.files = files;
 			// 强制更新视图
 			this.$forceUpdate();
@@ -268,43 +276,57 @@ export default {
 			// #ifdef MP-WEIXIN
 			this.wxFiles = [...this.files.values()];
 			// #endif
+			
+			// ---可删除--演示重新定位覆盖层控件
+			this.$nextTick(()=>{
+				console.log('演示重新定位');
+				this.$refs.lsjUpload0.show();
+				this.$refs.lsjUpload1.show();
+				this.$refs.lsjUpload2.show();
+			});
+			
 		},
 		// 手动上传
 		upload() {
 			// name=指定文件名，不指定则上传所有type等于waiting和fail的文件
-			this.$refs.lsjUpload.upload();
+			this.$refs['lsjUpload'+this.tabIndex].upload();
+		},
+		// 指定上传某个文件
+		resetUpload(name) {
+			this.$refs['lsjUpload'+this.tabIndex].upload(name);
 		},
 		// 移除某个文件
 		clear(name) {
 			// name=指定文件名，不传name默认移除所有文件
-			this.$refs.lsjUpload.clear(name);
+			this.$refs['lsjUpload'+this.tabIndex].clear(name);
 		},
-		
-		
 		/**
-		 * 以下为演示
+		 * ---可删除--演示在组件上方添加新内容DOM变化
+		 * DOM重排演示，重排后组件内部updated默认会触发show方法,若特殊情况未能触发updated也可以手动调用一次show()
+		 * 什么是DOM重排？自行百度去
 		 */
-		// DOM重排演示，重排后组件内部updated默认会触发show方法,若特殊情况未能触发updated也可以手动调用一次show()
-		// 什么是DOM重排？自行百度去~
 		add() {
 			this.list.push('DOM重排测试');
 		},
-		// 切换视图演示，APP端因为是webview，层级比view高，
-		// 此时若不希望点击触发选择文件，需要手动调用hide()
-		// 手动调用hide后，需要调用show()才能恢复触发面
+		/**
+		 * ---可删除--演示Tab切换时覆盖层是否能被点击
+		 * APP端因为是webview，层级比view高，此时若不希望点击触发选择文件，需要手动调用hide()
+		 * 手动调用hide后，需要调用show()才能恢复覆盖层的点击
+		 */
 		onTab(tabIndex) {
+			this.$refs.lsjUpload0.hide();
+			this.$refs.lsjUpload1.hide();
+			
 			this.tabIndex = tabIndex;
 			
-			if (tabIndex == 0 ) {
-				this.$nextTick(()=>{
-					this.$refs.lsjUpload.show();
-				})
-			}
-			else {
-				this.$refs.lsjUpload.hide();
-			}
+			this.$nextTick(()=>{
+				this.$refs['lsjUpload'+this.tabIndex].show();
+			})
+			
 		},
-		// 打开nvue窗口
+		/**
+		 * 打开nvue窗口查看非跟随窗口滚动效果
+		 */
 		open() {
 			uni.navigateTo({
 				url: '/pages/nvue-demo/nvue-demo'
@@ -323,8 +345,8 @@ export default {
 2. header的Content-Type类型需要与服务端要求一致，否则收不到附件（服务端若没有明文规定则可不写，使用默认匹配）
 3. 服务端不清楚怎么配置跨域可加群咨询，具体百度~
 4. 欢迎加入QQ讨论群：701468256(已满)
-5. 欢迎加入QQ讨论群：469580165
-6. 欢迎加入QQ讨论群：469580165
+5. 欢迎加入QQ讨论群：469580165(已满)
+6. 欢迎加入QQ讨论群：667530868
 7. 若能帮到你还请点亮5颗小星星以作鼓励哈~
 8. 若能帮到你还请点亮5颗小星星以作鼓励哈~
 9. 若能帮到你还请点亮5颗小星星以作鼓励哈~

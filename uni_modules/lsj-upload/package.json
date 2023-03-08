@@ -1,7 +1,7 @@
 {
     "id": "lsj-upload",
     "displayName": "全文件上传选择非原生2.0版",
-    "version": "2.1.9",
+    "version": "2.2.6",
     "description": "文件选择上传-支持APP-H5网页-微信小程序",
     "keywords": [
         "附件",
@@ -12,13 +12,9 @@
     ],
     "repository": "",
     "engines": {
-        "HBuilderX": "^3.2.0"
+        "HBuilderX": "^3.3.7"
     },
     "dcloudext": {
-        "category": [
-            "前端组件",
-            "通用组件"
-        ],
         "sale": {
             "regular": {
                 "price": "0.00"
@@ -35,7 +31,8 @@
             "data": "无",
             "permissions": "无"
         },
-        "npmurl": ""
+        "npmurl": "",
+        "type": "component-vue"
     },
     "uni_modules": {
         "platforms": {

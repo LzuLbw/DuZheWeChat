@@ -11,13 +11,15 @@
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
 
-				<uni-card :cover="activitydata[index].activityPicUrl">
+				<uni-card :cover="activitydata[index].activityPicurl">
 
 					<view>
+						<!-- 活动申请是否通过 -->
 						<uni-tag :text="activitydata[index].activityReviewstatus" v-if="tagtag"
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
-
+						
+						<!-- 活动报名是否通过 -->
 						<uni-tag :text="signupdata[index].approved" v-if="signtagtag"
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
@@ -48,8 +50,8 @@
 
 				show: false,
 
-				tagtag: false,
-				signtagtag: true,
+				tagtag: false, // 活动申请是否通过
+				signtagtag: true, //
 
 
 				list: ['已报名的活动', '申请发布的活动'],
@@ -70,8 +72,8 @@
 
 				actPicUrl: [],
 				signupdata: [],
-				
-				currentuname : "",
+
+				currentuname: "",
 				currentuid: 0
 
 			}
@@ -81,14 +83,14 @@
 		onLoad() {
 
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("当前登录用户的昵称为：",res.user.nickName);
+				console.log("当前登录用户的昵称为：", res.user.nickName);
 				this.currentuname = res.user.nickName;
-				console.log("当前登录用户的ID为",res.user.userId);
+				console.log("当前登录用户的ID为", res.user.userId);
 				this.currentuid = res.user.userId;
-				
+
 				this.sectionChange(1);
 			});
-			
+
 		},
 
 		onShow() {
@@ -121,7 +123,7 @@
 					// 已报名的活动
 					// this.signupinfo();
 					uni.request({
-						url: 'http://localhost:8080/actActivity/signup/' + this.currentuid,
+						url: 'http://123.56.217.170:8080/actActivity/signup/' + this.currentuid,
 						method: 'GET',
 						data: {},
 						success: res => {
@@ -143,11 +145,11 @@
 
 					// 获取报名状态信息
 					uni.request({
-						url: 'http://localhost:8080/actSignupinfo/listActSignUser/' + this.currentuid,
+						url: 'http://123.56.217.170:8080/actSignupinfo/listActSignUser/' + this.currentuid,
 						method: 'GET',
 						data: {},
 						success: res => {
-							
+
 							console.log("??????????????????????????????????????");
 							console.log(res.data.data);
 							this.signupdata = res.data.data;
@@ -176,7 +178,7 @@
 					this.tagtag = true;
 
 					uni.request({
-						url: 'http://localhost:8080/actActivity/activity/user/application/' + this.currentuid,
+						url: 'http://123.56.217.170:8080/actActivity/activity/user/application/' + this.currentuid,
 						method: 'GET',
 						data: {},
 						success: res => {
@@ -229,7 +231,7 @@
 			signupinfo() {
 				//已经报名
 				uni.request({
-					url: 'http://localhost:8080/actActivity/signup/' + this.currentuid,
+					url: 'http://123.56.217.170:8080/actActivity/signup/' + this.currentuid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -252,7 +254,7 @@
 			approvedinfo() {
 				//已经审核通过的活动信息
 				uni.request({
-					url: 'http://localhost:8080/actActivity/approved/' + this.currentuid,
+					url: 'http://123.56.217.170:8080/actActivity/approved/' + this.currentuid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -275,7 +277,7 @@
 			endinfo() {
 				//历史参加的活动信息
 				uni.request({
-					url: 'http://localhost:8080/actActivity/end/' + this.currentuid,
+					url: 'http://123.56.217.170:8080/actActivity/end/' + this.currentuid,
 					method: 'GET',
 					data: {},
 					success: res => {

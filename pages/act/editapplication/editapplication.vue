@@ -208,7 +208,7 @@
 
 			// 'http://localhost:8080/actActivity/' + this.Activityid
 			uni.request({
-				url: 'http://localhost:8080/actActivity/' + e.actid,
+				url: 'http://123.56.217.170:8080/actActivity/' + e.actid,
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -228,7 +228,7 @@
 					this.datetimesingleStartTime = this.activitydata.activityStarttime;
 					this.datetimesingleEndTime = this.activitydata.activityEndtime;
 
-					this.picurl = 'http://localhost/dev-api' + this.activitydata.activityPicUrl;
+					this.picurl = this.activitydata.activityPicUrl;
 
 					let listurl = {
 						url: this.picurl
@@ -298,7 +298,7 @@
 				console.log(this.actid);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/activity',
+					url: 'http://123.56.217.170:8080/actActivity/activity',
 					method: 'PUT',
 					data: {
 						"activityId": this.actid,
@@ -378,7 +378,7 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://localhost/dev-api/common/upload',
+						url: 'http://123.56.217.170/dev-api/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {

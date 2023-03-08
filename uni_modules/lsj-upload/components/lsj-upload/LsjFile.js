@@ -44,8 +44,16 @@ export class LsjFile {
 				}
 				dom.onchange = event => {
 					for (let file of event.target.files) {
+						if (this.files.size >= this.prohibited.count) {
+							this.toast(`只允许上传${this.prohibited.count}个文件`);
+							this.dom.value = '';
+							break;
+						}
 						this.addFile(file);
 					}
+					
+					this._uploadAfter();
+					
 					this.dom.value = '';
 				};
 				this.dom = dom;
@@ -53,10 +61,10 @@ export class LsjFile {
 		
 			// #ifdef APP-PLUS
 				let styles = {
-					top: '-500px',
+					top: '-200px',
 					left: 0,
 					width: '1px',
-					height: '1px',
+					height: '200px',
 					background: 'transparent' 
 				};
 				let extras = {
@@ -72,41 +80,6 @@ export class LsjFile {
 		}
 	}
 	
-	copyObject(obj) {
-		if (typeof obj !== "undefined") {
-			return JSON.parse(JSON.stringify(obj));
-		} else {
-			return obj;
-		}
-	}
-	
-	/**
-	 * 自动根据字符串路径设置对象中的值 支持.和[]
-	 * @param	{Object} dataObj 数据源
-	 * @param	{String} name 支持a.b 和 a[b]
-	 * @param	{String} value 值
-	 * setValue(dataObj, name, value);
-	 */
-	setValue(dataObj, name, value) {
-		// 通过正则表达式  查找路径数据
-		let dataValue;
-		if (typeof value === "object") {
-			dataValue = this.copyObject(value);
-		} else {
-			dataValue = value;
-		}
-		let regExp = new RegExp("([\\w$]+)|\\[(:\\d)\\]", "g");
-		const patten = name.match(regExp);
-		// 遍历路径  逐级查找  最后一级用于直接赋值
-		for (let i = 0; i < patten.length - 1; i++) {
-			let keyName = patten[i];
-			if (typeof dataObj[keyName] !== "object") dataObj[keyName] = {};
-			dataObj = dataObj[keyName];
-		}
-		// 最后一级
-		dataObj[patten[patten.length - 1]] = dataValue;
-		this.debug&&console.log('参数更新后',JSON.stringify(this.option));
-	}
 	
 	/**
 	 * 设置上传参数
@@ -118,7 +91,7 @@ export class LsjFile {
 			Object.assign(this.option,name);
 		}
 		else {
-			this.setValue(this.option,name,value);
+			this._setValue(this.option,name,value);
 		}
 		
 		this.debug&&console.log(JSON.stringify(this.option));
@@ -156,7 +129,7 @@ export class LsjFile {
 	}
 	
 	// 选择文件change
-	addFile(file) {
+	addFile(file,isCallChange) {
 		
 		let name = file.name;
 		this.debug&&console.log('文件名称',name,'大小',file.size);
@@ -166,6 +139,12 @@ export class LsjFile {
 			let path = '';
 			let suffix = name.substring(name.lastIndexOf(".")+1).toLowerCase();
 			let formats = this.prohibited.formats.toLowerCase();
+			// #ifndef MP-WEIXIN
+				path = URL.createObjectURL(file);
+			// #endif
+			// #ifdef MP-WEIXIN
+				path = file.path;
+			// #endif
 			if (formats&&!formats.includes(suffix)) {
 				this.toast(`不支持上传${suffix.toUpperCase()}格式文件`);
 				return false;
@@ -175,22 +154,8 @@ export class LsjFile {
 				this.toast(`附件大小请勿超过${this.prohibited.size}M`)
 				return false;
 			}
-			// #ifndef MP-WEIXIN
-			path = URL.createObjectURL(file);
-			// #endif
-			// #ifdef MP-WEIXIN
-			path = file.path;
-			// #endif
 			this.files.set(file.name,{file,path,name: file.name,size: file.size,progress: 0,type: 'waiting'});
-			
-			// #ifndef MP-WEIXIN
-			this.onchange(this.files);
-			this.instantly&&this.upload();
-			// #endif
-			
-			// #ifdef MP-WEIXIN
 			return true;
-			// #endif
 		}
 	}
 	
@@ -233,16 +198,55 @@ export class LsjFile {
 			type: type,
 			success: ({ tempFiles }) => {
 				for (let file of tempFiles) {
-					let next = this.addFile(file);
-					if (!next) {return}
+					this.addFile(file);
 				}
-				this.onchange(this.files);
-				this.instantly&&this.upload();
+				this._uploadAfter();
 			},
 			fail: () => {
 				this.toast(`打开失败`);
 			}
 		})
+	}
+	
+	_copyObject(obj) {
+		if (typeof obj !== "undefined") {
+			return JSON.parse(JSON.stringify(obj));
+		} else {
+			return obj;
+		}
+	}
+	
+	/**
+	 * 自动根据字符串路径设置对象中的值 支持.和[]
+	 * @param	{Object} dataObj 数据源
+	 * @param	{String} name 支持a.b 和 a[b]
+	 * @param	{String} value 值
+	 * setValue(dataObj, name, value);
+	 */
+	_setValue(dataObj, name, value) {
+		// 通过正则表达式  查找路径数据
+		let dataValue;
+		if (typeof value === "object") {
+			dataValue = this._copyObject(value);
+		} else {
+			dataValue = value;
+		}
+		let regExp = new RegExp("([\\w$]+)|\\[(:\\d)\\]", "g");
+		const patten = name.match(regExp);
+		// 遍历路径  逐级查找  最后一级用于直接赋值
+		for (let i = 0; i < patten.length - 1; i++) {
+			let keyName = patten[i];
+			if (typeof dataObj[keyName] !== "object") dataObj[keyName] = {};
+			dataObj = dataObj[keyName];
+		}
+		// 最后一级
+		dataObj[patten[patten.length - 1]] = dataValue;
+		this.debug&&console.log('参数更新后',JSON.stringify(this.option));
+	}
+	
+	_uploadAfter() {
+		this.onchange(this.files);
+		this.instantly&&this.upload();
 	}
 	
 	_overrideUrlLoading() {
