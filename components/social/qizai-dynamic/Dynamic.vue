@@ -4,7 +4,7 @@
 			<view class="user__header-warp">
 				<!-- 头像组 -->
 				<view class="user__header" @click.stop="clickUser()">
-					<image v-if="avatar" class="user__header-image" mode="aspectFill" :src="'http://localhost:8080'+avatar"></image>
+					<image v-if="avatar" class="user__header-image" mode="aspectFill" :src="'http://123.56.217.170:8080'+avatar"></image>
 					<image v-if="!avatar" class="user__header-image" mode="aspectFill" :src="base64Avatar"></image>
 				</view>
 			</view>

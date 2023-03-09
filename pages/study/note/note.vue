@@ -37,7 +37,7 @@
 		 // this.showBook();
 		 let userId = $store.state.loginUserInfo.userId
 		 uni.request({
-		  url:'http://localhost:8080/note/findUser/' +userId,
+		  url:'http://123.56.217.170:8080/note/findUser/' +userId,
 		  method:'GET',
 		  data: {},
 		  success: (res) => {
@@ -113,7 +113,7 @@
 				console.log("删除")
 				console.log(id+"000000000")
 				uni.request({
-				 url:'http://localhost:8080/note/deleteById/'+id,
+				 url:'http://123.56.217.170:8080/note/deleteById/'+id,
 				 method:'DELETE',
 				 data:{},
 				 success: (res) => {

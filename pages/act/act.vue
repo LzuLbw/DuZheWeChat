@@ -26,7 +26,7 @@
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
 
-				<uni-card :cover="AllActivityData[index].activityPicUrl">
+				<uni-card :cover="AllActivityData[index].activityPicurl">
 
 					<view>
 						<text class="uni-body">{{item.activityMaintitle}}</text><br>
@@ -121,7 +121,7 @@
 
 			//获取全部活动数据
 			uni.request({
-				url: 'http://localhost:8080/actActivity',
+				url: 'http://123.56.217.170:8080/actActivity',
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -133,6 +133,21 @@
 			});
 
 		},
+		
+		onShow() {
+			uni.request({
+				url: 'http://123.56.217.170:8080/actActivity',
+				method: 'GET',
+				data: {},
+				success: res => {
+					// console.log(res.data.data);
+					this.AllActivityData = res.data.data;
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
+		
 		methods: {
 
 
@@ -190,7 +205,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/condition/',
+					url: 'http://123.56.217.170:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 
@@ -215,7 +230,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/condition/',
+					url: 'http://123.56.217.170:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 
@@ -238,7 +253,7 @@
 				console.log('活动发起人', this.chooseValue3);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/condition/',
+					url: 'http://123.56.217.170:8080/actActivity/condition/',
 					method: 'POST',
 					data: {
 

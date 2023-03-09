@@ -85,7 +85,7 @@
 			},
 			showsort(){
 				uni.request({
-					url:'http://localhost:8080/classify/all',
+					url:'http://123.56.217.170:8080/classify/all',
 					success: (res) => {
 					    console.log(res.data);
 					          this.sortList =res.data;

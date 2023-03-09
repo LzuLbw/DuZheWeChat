@@ -34,7 +34,7 @@
    // this.showBook();
    let userId = $store.state.loginUserInfo.userId
    uni.request({
-    url:'http://localhost:8080/collection/findUser/' +userId,
+    url:'http://123.56.217.170:8080/collection/findUser/' +userId,
     method:'GET',
     data: {},
     success: (res) => {
@@ -59,7 +59,7 @@
   methods:{
    getData(articleId){
     uni.request({
-     url:'http://localhost:8080/article/findById/'+ articleId,
+     url:'http://123.56.217.170:8080/article/findById/'+ articleId,
      method:'GET',
      data: {},
      success: (res) => {
@@ -85,7 +85,7 @@
      var id=e.id;
      console.log(id+'000000000000000000');
     uni.request({
-     url:'http://localhost:8080/collection/deleteById/'+id,
+     url:'http://123.56.217.170:8080/collection/deleteById/'+id,
      method:'DELETE',
      data:{},
      success: (res) => {

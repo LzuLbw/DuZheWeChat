@@ -5,7 +5,7 @@
 			<view class="item-container" v-for="(item,index) in memberList" :key="index">
 				<u-row @tap="gotoPage('group', item.user_id)" customStyle="margin-bottom: auto;margin-top:auto;">
 				    <u-col span="2">
-				         <image v-if="item.avatar" class="group-avatar" :src="'http://localhost:8080'+item.avatar"></image>
+				         <image v-if="item.avatar" class="group-avatar" :src="'http://123.56.217.170:8080'+item.avatar"></image>
 						 <image v-if="!item.avatar" class="group-avatar" :src="base64Avatar"></image>
 				    </u-col>
 				    <u-col span="10">

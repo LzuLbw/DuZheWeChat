@@ -66,6 +66,13 @@
 			}
 		},
 		{
+			"path": "pages/mine/wallet/withdraw/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "余额提现"
+			}
+		},
+		{
 			"path": "pages/mine/wallet/voucher_center_/voucher_center_",
 			"style": {
 				"navigationBarTitleText": "充值中心",
@@ -514,14 +521,14 @@
 			"path": "pages/social/components/chat/chatlist",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/chat/person-chat",
 			"style": {
 				"navigationBarTitleText": "私聊",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"backgroundColor": "#333",
 				"app-plus": {
 					"titleNView": {
@@ -538,7 +545,7 @@
 			"path": "pages/social/components/chat/group-chat",
 			"style": {
 				"navigationBarTitleText": "群聊",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -558,43 +565,43 @@
 		{
 			"path": "pages/social/info/friend-info",
 			"style": {
-				"navigationBarTitleText": "",
-		 	"enablePullDownRefresh": false
+				"navigationBarTitleText": "好友主页",
+		 	"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/info/person-edit",
 			"style": {
 				"navigationBarTitleText": "编辑信息",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/info/group-info",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "读友圈介绍",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/list/notice-list",
 			"style": {
 				"navigationBarTitleText": "通知消息",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/circle/circle",
 			"style": {
 				"navigationBarTitleText": "读友圈",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/list/group-list",
 			"style": {
 				"navigationBarTitleText": "读友圈",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
@@ -612,56 +619,56 @@
 			"path": "pages/social/info/group-edit",
 			"style": {
 				"navigationBarTitleText": "创建读友圈",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/list/member-list",
 			"style": {
 				"navigationBarTitleText": "圈成员",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/circle/circlelist",
 			"style": {
 				"navigationBarTitleText": "读友圈列表",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/moment/moment",
 			"style": {
 				"navigationBarTitleText": "动态",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/moment/publishMoment",
 			"style": {
 				"navigationBarTitleText": "动态发布",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/moment/my-world",
 			"style": {
 				"navigationBarTitleText": "我的动态",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/moment/person-world",
 			"style": {
 				"navigationBarTitleText": "好友动态",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/moment/detail",
 			"style": {
 				"navigationBarTitleText": "好友动态",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -737,14 +744,14 @@
 				"navigationBarTitleText": "活动中心",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "我的活动",
-							"fontSize": "15",
-							"color": "#55aaff",
-							"type": "favorite",
+							// "float": "left",
+							"text": "我的",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}
@@ -757,14 +764,14 @@
 				"navigationBarTitleText": "活动详情",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "我的活动",
-							"fontSize": "15",
-							"color": "#55aaff",
-							"type": "favorite",
+							// "float": "left",
+							"text": "我的",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}
@@ -777,14 +784,14 @@
 				"navigationBarTitleText": "我的活动",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "申请发布活动 +",
-							"fontSize": "15",
-							"color": "#550000",
-							"type": "favorite",
+							// "float": "left",
+							"text": "申请+",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}

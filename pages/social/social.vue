@@ -4,7 +4,7 @@
 		<view>
 			<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false" swiperWidth="750" style="background-color:whitesmoke;"></u-tabs-swiper>
 		</view>
-		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish" style="width:100% ;height:1000rpx">
+		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish" style="width:100% ;height:3000rpx">
 			<swiper-item class="swiper-item"  :key="0">
 				<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
 					<ChatList></ChatList>

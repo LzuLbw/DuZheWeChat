@@ -82,7 +82,7 @@
 		</view>
 		<view class="file-container" v-show="selectedFile!==null">
 			<view>
-				<image style="width: 100rpx;height: 100rpx;margin-top: 60rpx;" src="@/static/social/icon/clip.png"></image>
+				<!-- <image style="width: 100rpx;height: 100rpx;margin-top: 60rpx;" src="@/static/social/icon/clip.png"></image> -->
 				<view style="display: block;">
 					<view>{{selectedFile===null?'':selectedFile.name}}</view>
 					<view>{{selectedFile===null?'':(selectedFile.size/1048576).toFixed(2)+'MB'}}</view>
@@ -235,7 +235,7 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://localhost/dev-api/common/upload',
+						url: 'http://123.56.217.170/dev-api/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {

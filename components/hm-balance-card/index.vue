@@ -6,8 +6,10 @@
         <text class="info">{{ options.info }}</text>
         <div class="wrap">
           <!-- <div class="empty" /> -->
-          <image class="zhanghaoguanli" :src="options.zhanghaoguanli"  ></image>
-		  <text class="cvv" @click="handleRecharge">充值</text>
+          <!-- <image class="zhanghaoguanli" :src="options.zhanghaoguanli"  ></image> -->
+		  <text class="cvv" @click="handleRecharge"> 充值 </text>|
+		  <text class="cvv" @click="handleTixian"> 提现 </text>
+		  
         </div>
 		
       </div>
@@ -71,7 +73,11 @@ export default {
 	  },
 	  handleRecharge() {
 	    this.$tab.navigateTo('voucher_center_/voucher_center_')
+	  },
+	  handleTixian() {
+	    this.$tab.navigateTo('withdraw/index')
 	  }
+	  
   }
 };
 </script>

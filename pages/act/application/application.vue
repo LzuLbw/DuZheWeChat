@@ -12,14 +12,16 @@
 			<!-- 活动主标题 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动主标题：</text>
-				<u--input placeholder="请输入活动主标题" border="surround" v-model="maintitlevalue" @change="change" clearable>
+				<u--input prefixIcon="star-fill" placeholder="请输入活动主标题" border="surround" v-model="maintitlevalue"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
 			<!-- 活动副标题 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动副标题：</text>
-				<u--input placeholder="请输入活动副标题" border="surround" v-model="subtitlevalue" @change="change" clearable>
+				<u--input prefixIcon="tags-fill" placeholder="请输入活动副标题" border="surround" v-model="subtitlevalue"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
@@ -47,8 +49,8 @@
 			<!-- 活动企业名称 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动企业名称：</text>
-				<u--input placeholder="请输入活动企业名称" border="surround" v-model="enterprisevalue" @change="change"
-					clearable>
+				<u--input prefixIcon="home-fill" placeholder="请输入活动企业名称" border="surround" v-model="enterprisevalue"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
@@ -92,30 +94,35 @@
 			<!-- 活动人数 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动人数：</text>
-				<u--input placeholder="请输入活动人数上限" border="surround" v-model="peoplemax" @change="change" clearable>
+				<u--input prefixIcon="plus-people-fill" placeholder="请输入活动人数上限" border="surround" v-model="peoplemax"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
 			<!-- 活动发起人 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动发起人：</text>
-				<u--input placeholder="请输入活动发起人姓名" border="surround" v-model="sponsor" @change="change" clearable>
+				<u--input prefixIcon="account-fill" placeholder="请输入活动发起人姓名" border="surround" v-model="sponsor"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
 			<!-- 活动发起人联系方式 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
-				<text style="margin-top: 8px;">活动发起人联系方式：</text>
-				<u--input placeholder="请输入活动发起人联系方式" border="surround" v-model="sponsorContact" @change="change"
-					clearable>
+				<text style="margin-top: 8px;">发起人联系方式：</text>
+				<u--input prefixIcon="phone-fill" placeholder="请输入活动发起人联系方式" border="surround" v-model="sponsorContact"
+					@change="change" clearable>
 				</u--input>
 			</view>
 
-			<!-- 活动地点 -->
+			<!-- 活动详细举办地点 -->
 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
-				<text style="margin-top: 8px;">活动地点：</text>
-				<u--input placeholder="请输入活动地点" border="surround" v-model="place" @change="change" clearable>
+				<text style="margin-top: 8px;">活动详细举办地点：</text>
+				<u--input prefixIcon="map-fill" placeholder="请输入活动详细举办地点" border="surround" v-model="realplace"
+					@change="change" clearable>
 				</u--input>
+
+				<!--  -->
 			</view>
 
 			<!-- 活动注意事项 -->
@@ -123,6 +130,48 @@
 			<view style="display: flex;justify-content: center;margin: 10px;">
 				<text style="margin-top: 8px;margin-right: 10px;">活动注意事项：</text>
 				<u--textarea v-model="matters" placeholder="请输入活动注意事项" count autoHeight></u--textarea>
+			</view>
+
+			<!-- 			活动附件【难点】
+			<view style="display: flex;justify-content: center;height: 80px;margin: 10px;">
+				<text style="margin-top: 8px;">活动附件：</text><br />
+				<uni-file-picker limit="5" file-mediatype="all" title="最多选择5个文件"></uni-file-picker>
+				https://blog.csdn.net/weixin_57844432/article/details/126757467
+
+			</view> -->
+
+			<!-- 活动归属小站 -->
+			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动归属小站：</text>
+				<uni-data-select v-model="belongtostation" :localdata="range" @change="change"></uni-data-select>
+			</view>
+
+
+			<!-- 			活动归属小站
+			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动归属小站：</text>
+				<u--input placeholder="请输入活动地点" border="surround" v-model="belongtostation" @change="change" clearable>
+				</u--input>
+			</view> -->
+
+
+			<!-- 活动举办省市 -->
+<!-- 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动举办省市：</text>
+				<u--input placeholder="请输入举办省市" border="surround" v-model="city" @change="change" clearable>
+				</u--input>
+			</view> -->
+
+			<view style="margin-bottom: 10px;">
+				<view style="display: flex;">
+					<text>活动举办省市：</text>
+					<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion">
+						<text style="background-color:darkmagenta; color: aliceblue;">点击选择</text>
+					</pick-regions>
+				</view>
+				<view style="margin-top: 10px;margin-bottom: 10px">
+					<text style="margin-top: 100px;">当前选择省市区为: {{regionName}}</text>
+				</view>
 			</view>
 
 
@@ -153,19 +202,33 @@
 <script>
 	// import * as qiniu from 'qiniu-js';
 	import $store from '@/store/modules/social/test.js';
+	import pickRegions from '@/components/pick-regions/pick-regions.vue'
 	export default {
+		components: {
+			pickRegions
+		},
 		data() {
 			return {
-				
-				uid : 0,
+
+				region: [],
+				defaultRegion: ['甘肃省', '兰州市', '榆中县'],
+				defaultRegionCode: '620123',
+
+				range: [],
+
+				uid: 0,
 				uname: '',
 
 				msgType: 'success',
 				messageText: '申请成功',
 
 
-				text1: '发布活动注意事项',
+				text1: '当前版本暂不支持附件文件类型上传, 如需上传，请联系管理员',
+
+
+				// 活动主标题
 				maintitlevalue: "",
+				// 活动副标题
 				subtitlevalue: "",
 				radiolist1: [{
 						name: '线上活动',
@@ -179,88 +242,159 @@
 				// u-radio-group的v-model绑定的值如果设置为某个radio的name，就会被默认选中
 				radiovalue1: '线上活动',
 
+				// 活动描述
 				value2: '',
+				// 公司名
 				enterprisevalue: '',
+
+				// 四个时间
 				datetimesingleRegistrationStartTime: '',
 				datetimesingleRegistrationEndTime: '',
 				datetimesingleStartTime: '',
 				datetimesingleEndTime: '',
 
 				fileList1: [],
+				fileList2: [],
 				picurl: "",
 				peoplemax: "",
 				sponsor: "",
 				sponsorContact: "",
+				realplace: "",
 				place: "",
 				matters: "",
+
+				belongtostation: "",
+				city: "",
+				stations: []
 			}
 		},
-		
+
+		computed: {
+			regionName() {
+				// 转为字符串
+				return this.region.map(item => item.name).join(' ')
+			}
+		},
+
 		onLoad() {
-			
+
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("当前正在申请发布活动的用户名：",res.user.nickName);
+				console.log("当前正在申请发布活动的用户名：", res.user.nickName);
 				this.uname = res.user.nickName;
-				console.log("当前正在申请发布活动的用户的ID为",res.user.userId);
+				console.log("当前正在申请发布活动的用户的ID为", res.user.userId);
 				this.uid = res.user.userId;
 			});
-			
-			
+
+			// 初始化小站列表
+			console.log("当前所有已有小站名单: ");
+			uni.request({
+				url: 'http://123.56.217.170:8080/actActivity/belongto/station',
+				method: 'GET',
+				data: {},
+				success: res => {
+					// console.log(res.data);
+					console.log(res.data.data);
+
+					this.stations = res.data.data;
+
+					for (let i = 0; i < this.stations.length; i++) {
+						console.log(this.stations[i]);
+
+						// 放入准备好的range数组
+						let item = {
+							value: this.stations[i],
+							text: this.stations[i]
+						};
+						this.range.push(item);
+					}
+
+					console.log(this.range);
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+
+
 		},
-		
-		
+
+		onShow() {
+
+		},
+
+
 		methods: {
+
+			// 获取选择的地区
+			handleGetRegion(region) {
+				this.region = region;
+				console.log(region);
+				// this.city = region;
+				
+				var res = "";
+				for (let i = 0; i < region.length; i++) {
+					console.log(region[i].name);
+					res += region[i].name;
+					res += " ";
+				}
+				
+				console.log(res);
+				this.city = res;
+			},
+
+
 			submit(ref) {
 				// console.log("点击了提交按钮");
-				console.log(this.maintitlevalue);
-				console.log(this.subtitlevalue);
+				// console.log(this.maintitlevalue);
+				// console.log(this.subtitlevalue);
 
-				console.log(this.radiovalue1);
-				console.log(this.value2);
+				// console.log(this.radiovalue1);
+				// console.log(this.value2);
 
-				console.log(this.enterprisevalue);
+				// console.log(this.enterprisevalue);
 
-				console.log(this.datetimesingleRegistrationStartTime);
-				console.log(this.datetimesingleRegistrationEndTime);
-				console.log(this.datetimesingleStartTime);
-				console.log(this.datetimesingleEndTime);
+				// console.log(this.datetimesingleRegistrationStartTime);
+				// console.log(this.datetimesingleRegistrationEndTime);
+				// console.log(this.datetimesingleStartTime);
+				// console.log(this.datetimesingleEndTime);
 
-				console.log(this.picurl);
-				console.log(this.peoplemax);
-				console.log(this.sponsor);
+				// console.log(this.picurl);
+				// console.log(this.peoplemax);
+				// console.log(this.sponsor);
 
-				console.log(this.sponsorContact);
+				// console.log(this.sponsorContact);
 
-				console.log(this.place);
+				// console.log(this.place);
 
-				console.log(this.matters);
+				// console.log(this.matters);
 
 				uni.request({
-					url: 'http://localhost:8080/actActivity/user/activity',
+					url: 'http://123.56.217.170:8080/actActivity/user/activity',
 					method: 'POST',
 					data: {
-							"activityMaintitle": this.maintitlevalue,
-							"activitySubtitle": this.subtitlevalue,
-							"activityType": this.radiovalue1,
-							"activityDesc": this.value2,
-							"activityEnterprise": this.enterprisevalue,
-							"activityStatus": 0,
-							"activityRegistrationstarttime": this.datetimesingleRegistrationStartTime,
-							"activityRegistrationendtime": this.datetimesingleRegistrationEndTime,
-							"activityStarttime": this.datetimesingleStartTime,
-							"activityEndtime": this.datetimesingleEndTime,
-							"activityPicUrl": this.picurl,
-							"activitityNumbernum": this.peoplemax,
-							"activitySponsor": this.sponsor,
-							"activitySponsorcontact": this.sponsorContact,
-							"activityReviewstatus": 0,
-							
-							"activityAttribution": this.uid,
-							"activityAttrusername":this.uname,
-							
-							"activityPlace": this.place,
-							"activityMatters": this.matters,
-							
+						"activityId": null,
+						"activityMaintitle": this.maintitlevalue,
+						"activitySubtitle": this.subtitlevalue,
+						"activityType": this.radiovalue1,
+						"activityDesc": this.value2,
+						"activityEnterprise": this.enterprisevalue,
+						"activityStatus": 0,
+						"activityRegistrationstarttime": this.datetimesingleRegistrationStartTime,
+						"activityRegistrationendtime": this.datetimesingleRegistrationEndTime,
+						"activityStarttime": this.datetimesingleStartTime,
+						"activityEndtime": this.datetimesingleEndTime,
+						"activityPicurl": this.picurl,
+						"activitityNumbernum": this.peoplemax,
+						"activitySponsor": this.sponsor,
+						"activitySponsorcontact": this.sponsorContact,
+						"activityPlace": this.realplace,
+						"activityReviewstatus": 0,
+						"activityMatters": this.matters,
+						"activityAttachment": "当前版本暂不支持手机端上传附件，请联系管理员",
+						"activityAttribution": this.uid,
+						"activityAttrusername": this.uname,
+						"activityBelongtostation": this.belongtostation,
+						"activityCity": this.city,
+
 					},
 					success: res => {
 						console.log(res.data);
@@ -320,17 +454,17 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://localhost/dev-api/common/upload',
+						url: 'http://123.56.217.170:8080/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {
 							user: 'test'
 						},
 						success: (res) => {
-							
+
 							console.log(res);
 							url = JSON.parse(res.data).fileName;
-							
+
 							// console.log(eval(res.data));
 
 							console.log("要存的url为：" + url);

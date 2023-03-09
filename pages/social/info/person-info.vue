@@ -174,7 +174,7 @@
 					break;
 					case 2:
 					uni.navigateTo({
-						url:'/pages/social/info/person-edit'
+						url:'/pages/mine/info/edit'
 					})
 					break;
 				}

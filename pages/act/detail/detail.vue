@@ -1,18 +1,24 @@
 <template>
 	<view class="main">
 
-		<uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" />
+		<!-- <uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" /> -->
+		<view style="height: 20px;"></view>
+<!-- 		<view class="u-demo-block">
+			<view class="u-demo-block__content">
+				<u-notice-bar :text="ActivityData.activityMatters" color="#ffffff" bgColor="#f56c6c"></u-notice-bar>
+			</view>
+		</view> -->
 
-
-
-		<image :src="ActivityData.activityPicUrl"></image><br>
+		<image :src="ActivityData.activityPicurl"></image><br>
 
 		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title: '进行中'}, {title: '已结束'}]" :active="stepactive"
 			activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>
 
 		<br />
 
-		<scroll-view scroll-y="true" class="content">
+		<u-subsection :list="list" :current="current" @change="sectionChange"></u-subsection>
+
+		<scroll-view scroll-x="true" scroll-y="true" class="content" v-if="fileshow">
 
 			<view class="bgcontent">
 
@@ -105,7 +111,20 @@
 						class="maintitilecontent">{{ActivityData.activityMatters}}</text><br />
 				</view>
 
-				<view style="height: 20px;">
+				<view class="itemitem">
+					<uni-icons type="tune" size="20" color="#000000"></uni-icons><text
+						class="maintitile">活动归属小站：</text><text
+						class="maintitilecontent">{{ActivityData.activityBelongtostation}}</text><br />
+				</view>
+
+				<view class="itemitem">
+					<uni-icons type="map-pin" size="20" color="#000000"></uni-icons><text
+						class="maintitile">活动举办省市：</text><text
+						class="maintitilecontent">{{ActivityData.activityCity}}</text><br />
+				</view>
+
+
+				<view style="height: 70px;">
 
 				</view>
 
@@ -115,16 +134,33 @@
 					<text class="maintitilecontent">{{ActivityData.activityReviewMessage}}</text><br />
 				</view>
 
+				<view v-if="showsugsugbutton">
+					<button @click="editapplication" class="mini-btn"
+						style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
+						type="primary" size="mini">重新编辑活动申请信息</button>
+				</view>
+
 			</view>
-			<view v-if="showsugsugbutton">
-				<button @click="editapplication" class="mini-btn"
-					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
-					type="primary" size="mini">重新编辑活动申请信息</button>
-			</view>
+
+			<view style="height: 50px;"></view>
+
 
 		</scroll-view>
 
+		<!-- 活动附件预览 -->
+		<!-- <web-view v-if="fileifshow" :webview-styles="webviewStyles" src="ActivityData.activityAttachment"></web-view> -->
+		<!-- <text v-if="fileifshow">文件预览界面</text> -->
 
+		<!-- <web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view> -->
+
+		<!--  #ifdef  H5 -->
+		<web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view>
+		<!--  #endif -->
+
+		<!--  #ifdef  APP-PLUS -->
+		<!-- <web-view v-if="fileifurlshow" style="height:350px; margin-top: 400px;" :src="fileurlurl"></web-view> -->
+		<text v-if="fileifurlshow">{{byPhoneIn}}</text>
+		<!--  #endif -->
 
 		<view class="goods-carts" v-if="showsug">
 			<view>
@@ -154,6 +190,19 @@
 	export default {
 		data() {
 			return {
+
+				byPhoneIn: "正在通过手机内置应用加载附件...请稍后",
+
+				fileifurlshow: false,
+
+				fileurlurl: "",
+
+				fileifshow: false,
+
+				fileshow: true,
+
+				list: ['活动相关信息', '活动附件预览'],
+				current: 0,
 
 				showsug: true,
 				showsugsug: false,
@@ -199,14 +248,14 @@
 			}
 		},
 		onLoad: function(e) {
-			
+
 			uni.request({
-				url: 'http://localhost:8080/actSignupinfo/signupnum/' + e.activityid,
+				url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + e.activityid,
 				method: 'GET',
 				data: {},
 				success: res => {
 					console.log("当前活动的已报名人数:", res.data);
-			
+
 					this.signnum = res.data;
 				},
 				fail: () => {},
@@ -214,7 +263,7 @@
 			});
 
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("================++++++++++++++++++++++=======================");
+				// console.log("================++++++++++++++++++++++=======================");
 				console.log("当前登录用户的昵称为：");
 				console.log(res.user.nickName);
 				this.currentuname = res.user.nickName;
@@ -222,9 +271,12 @@
 				console.log(res.user.userId);
 				this.currentuid = res.user.userId;
 
+
+
 				//初始化报名按钮状态
 				uni.request({
-					url: 'http://localhost:8080/actSignupinfo/' + this.currentuid + "/" + this.Activityid,
+					url: 'http://123.56.217.170:8080/actSignupinfo/' + this.currentuid + "/" + this
+						.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -240,17 +292,18 @@
 					fail: () => {},
 					complete: () => {}
 				});
-				
+
 				//初始化点赞按钮状态
 				uni.request({
-					url: 'http://localhost:8080/actGivelike/' + this.currentuid + "/" + this.Activityid,
+					url: 'http://123.56.217.170:8080/actGivelike/' + this.currentuid + "/" + this
+						.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
 						console.log("======================？？？？？？？？？？？？？？？");
 						console.log("当前活动的点赞状态为" + res.data);
 						this.usergivelikestatus = res.data;
-				
+
 						if (this.usergivelikestatus) {
 							this.options[0].icon = "hand-up-filled";
 							this.options[0].text = "已点赞";
@@ -262,16 +315,17 @@
 					fail: () => {},
 					complete: () => {}
 				});
-				
+
 				//初始化收藏按钮状态
 				uni.request({
-					url: 'http://localhost:8080/actCollection/' + this.currentuid + "/" + this.Activityid,
+					url: 'http://123.56.217.170:8080/actCollection/' + this.currentuid + "/" + this
+						.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
 						console.log("当前活动的收藏状态为" + res.data);
 						this.usercollectionstatus = res.data;
-				
+
 						if (this.usercollectionstatus) {
 							this.options[1].icon = "star-filled";
 							this.options[1].text = "已收藏";
@@ -284,111 +338,165 @@
 					complete: () => {}
 				});
 
+				//获取活动信息
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("对应id活动数据如下：");
+						console.log(res);
+						this.ActivityData = res.data.data;
+
+						this.actpersonnum = this.ActivityData.activitityNumbernum;
+						// console.log("当前活动的最大报名人数为：");
+						// console.log(this.actpersonnum);
+
+						// console.log("90909099090909", this.ActivityData.activityAttribution);
+						// console.log(this.currentuid);
+
+						if (this.ActivityData.activityAttribution == this.currentuid) {
+							this.showsugsugbutton = true;
+						}
+						// console.log(this.showsugsugbutton);
+						this.fileurlurl = this.ActivityData.activityAttachment;
+
+						console.log("当前活动的审核情况");
+						if (this.ActivityData.activityReviewstatus == 0) {
+							// 活动还未审核
+							this.showsug = false;
+							this.showsugsug = true;
+							this.sugtext = '当前活动还未审核'
+
+						} else if (this.ActivityData.activityReviewstatus == 1) {
+
+							// 活动已经审核通过
+
+						} else if (this.ActivityData.activityReviewstatus == 2) {
+
+							// 审核未通过
+							this.showsug = false;
+							this.showsugsug = true;
+							this.sugtext = '当前活动审核未通过'
+						}
+
+
+						//初始化步骤条
+						console.log("四个关键时间为:");
+						console.log("报名开始时间：", this.ActivityData.activityRegistrationstarttime);
+						console.log("报名结束时间：", this.ActivityData.activityRegistrationendtime);
+						console.log("活动开始时间：", this.ActivityData.activityStarttime);
+						console.log("活动结束时间：", this.ActivityData.activityEndtime);
+
+						//报名开始时间
+						let registrationstarttime = new Date(Date.parse(this.ActivityData
+							.activityRegistrationstarttime));
+						//报名结束时间
+						let registrationendtime = new Date(Date.parse(this.ActivityData
+							.activityRegistrationendtime));
+						//活动开始时间
+						let activityStarttime = new Date(Date.parse(this.ActivityData
+							.activityStarttime));
+						//活动结束时间
+						let activityEndtime = new Date(Date.parse(this.ActivityData
+							.activityEndtime));
+
+						//当前时间
+						let nowtime = new Date();
+
+						//活动未开始
+						if (nowtime < registrationstarttime) {
+							console.log("活动未开始");
+							this.stepactive = 0;
+						} else if (nowtime < registrationendtime && nowtime >
+							registrationstarttime) {
+							console.log("活动报名中");
+							this.stepactive = 1;
+						} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
+							console.log("活动进行中");
+							this.stepactive = 2;
+						} else if (nowtime > activityEndtime) {
+							console.log("活动已结束");
+							this.stepactive = 3;
+						}
+
+
+
+						console.log(registrationstarttime);
+						console.log(new Date() > registrationstarttime);
+
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			});
-			
-
-
-
-
 
 			console.log(e);
 			this.Activityid = e.activityid;
 			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
 
-			//获取活动信息
-			uni.request({
-				url: 'http://localhost:8080/actActivity/' + this.Activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("对应id活动数据如下：");
-					console.log(res);
-					this.ActivityData = res.data.data;
-
-					this.actpersonnum = this.ActivityData.activitityNumbernum;
-					console.log("当前活动的最大报名人数为：");
-					console.log(this.actpersonnum);
-
-					if (this.ActivityData.activityAttribution == this.currentuid) {
-
-						this.showsugsugbutton = true;
-
-					}
-
-					console.log("当前活动的审核情况");
-					if (res.data.data.activityReviewstatus == 0) {
-						// 活动还未审核
-						this.showsug = false;
-						this.showsugsug = true;
-
-						this.sugtext = '当前活动还未审核'
-
-					} else if (res.data.data.activityReviewstatus == 1) {
-
-						// 活动已经审核通过
-
-					} else if (res.data.data.activityReviewstatus == 2) {
-
-						// 审核未通过
-						this.showsug = false;
-						this.showsugsug = true;
-						this.sugtext = '当前活动审核未通过'
-					}
-
-
-					//初始化步骤条
-					console.log("四个关键时间为:");
-					console.log("报名开始时间：", this.ActivityData.activityRegistrationstarttime);
-					console.log("报名结束时间：", this.ActivityData.activityRegistrationendtime);
-					console.log("活动开始时间：", this.ActivityData.activityStarttime);
-					console.log("活动结束时间：", this.ActivityData.activityEndtime);
-
-					//报名开始时间
-					let registrationstarttime = new Date(Date.parse(this.ActivityData
-						.activityRegistrationstarttime));
-					//报名结束时间
-					let registrationendtime = new Date(Date.parse(this.ActivityData
-						.activityRegistrationendtime));
-					//活动开始时间
-					let activityStarttime = new Date(Date.parse(this.ActivityData.activityStarttime));
-					//活动结束时间
-					let activityEndtime = new Date(Date.parse(this.ActivityData.activityEndtime));
-
-					//当前时间
-					let nowtime = new Date();
-
-					//活动未开始
-					if (nowtime < registrationstarttime) {
-						console.log("活动未开始");
-						this.stepactive = 0;
-					} else if (nowtime < registrationendtime && nowtime > registrationstarttime) {
-						console.log("活动报名中");
-						this.stepactive = 1;
-					} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
-						console.log("活动进行中");
-						this.stepactive = 2;
-					} else if (nowtime > activityEndtime) {
-						console.log("活动已结束");
-						this.stepactive = 3;
-					}
-
-
-
-					console.log(registrationstarttime);
-					console.log(new Date() > registrationstarttime);
-
-				},
-				fail: () => {},
-				complete: () => {}
-			});
-
-
-
-
-
-
 		},
+
+		onShow() {
+			this.onLoad();
+		},
+
 		methods: {
+
+			// 切换选项卡
+			sectionChange(index) {
+				this.current = index;
+				console.log(index);
+				if (index) {
+					// 切换到活动相关信息选项卡
+					this.fileshow = false;
+					this.fileifshow = true;
+
+
+					console.log(uni.getSystemInfoSync().platform);
+					console.log(this.ActivityData.activityAttachment);
+
+					if (this.ActivityData.activityAttachment[0] == "当") {
+						console.log("哈哈哈哈");
+						
+						// 弹出一个通知
+						this.messageToggle("当前活动暂无附件");
+						
+						
+					} else {
+						switch (uni.getSystemInfoSync().platform) {
+							case 'android':
+								this.fileifurlshow = false;
+								uni.downloadFile({
+									url: this.fileurlurl,
+									success: function(res) {
+										var filePath = res.tempFilePath;
+										uni.openDocument({
+											filePath: filePath,
+											showMenu: true,
+											success: function(res) {
+												console.log('打开文档成功');
+											}
+										});
+									}
+								});
+							case 'windows':
+								this.fileifurlshow = true;
+						}
+					}
+
+
+
+				} else {
+					// 切换到活动附件预览选项卡
+					this.fileshow = true;
+					this.fileifshow = false;
+					this.fileifurlshow = false;
+
+
+
+				}
+			},
 
 			// 重新编辑活动申请信息
 			editapplication() {
@@ -416,7 +524,7 @@
 					//已经报名了，可进行取消报名的操作
 					console.log("用户点击了取消报名");
 					uni.request({
-						url: "http://localhost:8080/actSignupinfo/" + this.currentuid + "/" + this
+						url: "http://123.56.217.170:8080/actSignupinfo/" + this.currentuid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},
@@ -437,7 +545,7 @@
 					//还未报名，可进行立即报名的操作
 					//立即报名
 					uni.request({
-						url: 'http://localhost:8080/actSignupinfo',
+						url: 'http://123.56.217.170:8080/actSignupinfo',
 						method: 'POST',
 						data: {
 							"userid": this.currentuid,
@@ -456,7 +564,7 @@
 
 				}
 			},
-				
+
 			onClick(e) {
 
 				if (e.content.text === "点赞") {
@@ -469,7 +577,7 @@
 
 					//发起点赞请求
 					uni.request({
-						url: 'http://localhost:8080/actGivelike',
+						url: 'http://123.56.217.170:8080/actGivelike',
 						method: 'POST',
 						data: {
 							"userid": this.currentuid,
@@ -493,7 +601,7 @@
 
 					//发起收藏请求
 					uni.request({
-						url: 'http://localhost:8080/actCollection',
+						url: 'http://123.56.217.170:8080/actCollection',
 						method: 'POST',
 						data: {
 							"collectionuserid": this.currentuid,
@@ -519,7 +627,7 @@
 
 					//发起取消点赞的请求
 					uni.request({
-						url: "http://localhost:8080/actGivelike/" + this.currentuid + "/" + this.Activityid,
+						url: "http://123.56.217.170:8080/actGivelike/" + this.currentuid + "/" + this.Activityid,
 						method: 'DELETE',
 						data: {},
 						success: res => {
@@ -543,7 +651,7 @@
 
 					//发起取消收藏的请求
 					uni.request({
-						url: "http://localhost:8080/actCollection/" + this.currentuid + "/" + this
+						url: "http://123.56.217.170:8080/actCollection/" + this.currentuid + "/" + this
 							.Activityid,
 						method: 'DELETE',
 						data: {},

@@ -16,7 +16,7 @@
 		
 		<div id="content" class="content">
 			<div class="btn">
-				<input @change="onChange" :accept="accept" ref="file" class="file" type="file" />
+				<input :multiple="multiple" @change="onChange" :accept="accept" ref="file" class="file" type="file" />
 			</div>
 		</div>
 		
@@ -27,8 +27,10 @@
 				el: '#content',
 				data: {
 					accept: '',
+					multiple: true,
 				},
 				mounted() {
+					console.log('加载webview');
 					_this = this;
 					this.files = new Map();
 					document.addEventListener('plusready', (e)=>{
@@ -36,7 +38,8 @@
 					this.debug = debug;
 					this.instantly = instantly;
 					this.prohibited = prohibited;
-					this.accept = prohibited.accept;
+					this.accept = prohibited.accept; 
+					this.multiple = prohibited.count > 1;
 					location.href = 'callback?retype=updateOption';
 					}, false);
 				},
@@ -73,12 +76,21 @@
 					},
 					onChange(e) {
 						let fileDom = this.$refs.file;
-						let file = fileDom.files[0];
-						let name = file.name;
+						for (let file of fileDom.files) {
+							if (this.files.size >= this.prohibited.count) {
+								this.toast(`只允许上传${this.prohibited.count}个文件`);
+								fileDom.value = '';
+								break;
+							}
+							this.addFile(file);
+						}
+						this.uploadAfter();
 						fileDom.value = '';
-						this.debug&&console.log('文件名称',name,'大小',file.size);
-						
+					},
+					addFile(file) {
 						if (file) {
+							let name = file.name;
+							this.debug&&console.log('文件名称',name,'大小',file.size);
 							// 限制文件格式
 							let suffix = name.substring(name.lastIndexOf(".")+1).toLowerCase();
 							let formats = this.prohibited.formats.toLowerCase();
@@ -93,10 +105,7 @@
 							}
 							let path = URL.createObjectURL(file);
 							this.files.set(file.name,{file,path,name: file.name,size: file.size,progress: 0,type: 'waiting'});
-							this.callChange();
-							this.instantly&&this.upload();
 						}
-						
 					},
 					/**
 					 * @returns {Map} 已选择的文件Map集
@@ -110,6 +119,10 @@
 					changeFilesItem(item,end='') {
 						this.files.set(item.name,item);
 						location.href = 'callback?retype=progress&end='+ end +'&item=' + escape(JSON.stringify(item));
+					},
+					uploadAfter() {
+						this.callChange();
+						this.instantly&&this.upload();
 					},
 					createUpload(item) {
 						this.debug&&console.log('准备上传,option=：'+JSON.stringify(this.option));

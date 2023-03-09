@@ -33,7 +33,7 @@ export default {
 		//file=可以选择除了图片和视频之外的其它的文件
 		wxFileType: { type: String, default: 'all' },
 		// webviewID需唯一，不同窗口也不要同Id
-		childId: { type: String, default: 'lsjUpload' },
+		childId: { type: String, default: 'lsjUpload'  },
 		// 文件选择触发面宽度
 		width: { type: String, default: '100%' },
 		// 文件选择触发面高度
@@ -93,9 +93,10 @@ export default {
 	},
 	mounted() {
 		this._size = 0;
+		let WEBID = this.childId + new Date().getTime();
 		this.lsjFile = new LsjFile({
+			id: WEBID,
 			debug: this.debug,
-			id: this.childId,
 			width: this.width,
 			height: this.height,
 			option: this.option,
@@ -122,30 +123,6 @@ export default {
 		// #endif
 	},
 	methods: {
-		reSet(){
-			this._size = 0;
-			this.lsjFile = new LsjFile({
-				debug: this.debug,
-				id: this.childId,
-				width: this.width,
-				height: this.height,
-				option: this.option,
-				instantly: this.instantly,
-				// 限制条件
-				prohibited: {
-					// 大小
-					size: this.size,
-					// 允许上传的格式
-					formats: this.formats,
-					// 限制选择的格式
-					accept: this.accept,
-					count: this.count
-				},
-				onchange: this.onchange,
-				onprogress: this.onprogress,
-			});
-			this.create();
-		},
 		setFiles(array) {
 			if (array instanceof Map) {
 				for (let [key, item] of array) {
@@ -209,6 +186,9 @@ export default {
 			// #endif
 		},
 		show() {
+			if (this._size && (this._size >= this.count)) {
+				return;
+			}
 			this.isShow = true;
 			// #ifdef APP-PLUS
 			this.lsjFile&&this.getDomStyles(styles => {
@@ -223,10 +203,10 @@ export default {
 			this.isShow = false;
 			// #ifdef APP-PLUS
 			this.lsjFile&&this.lsjFile.dom.setStyle({
-				top: '-500px',
+				top: '-100px',
 				left:'0px',
 				width: '1px',
-				height: '1px',
+				height: '100px',
 			});
 			// #endif
 			// #ifdef H5
@@ -316,8 +296,6 @@ export default {
 
 <style scoped>
 .lsj-file {
-	width: 55rpx;
-	height: 55rpx;
 	display: inline-block;
 }
 .defview {
@@ -331,6 +309,6 @@ export default {
 }
 .hFile {
 	position: relative;
-	/* overflow: hidden; */
+	overflow: hidden;
 }
 </style>

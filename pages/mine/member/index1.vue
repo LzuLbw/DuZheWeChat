@@ -50,6 +50,7 @@
 							<image class="img" :src="info.icon" @click="routerItem(info.url)"></image>
 						</view>
 						<text class="txt" @click="routerItem(info.url)">{{info.name}}</text>
+						<!-- <text class="btn" @click="routerItem(info.url)" >去完成</text> -->
 					</view>
 				</template>
 			</view>
@@ -64,7 +65,7 @@ import { getMemberProfile } from '../../../api/system/user'
 import { listUser_score, getUser_score, delUser_score, addUser_score, updateUser_score } from "@/api/readerstation-member/user_score";
 import { listTask, getTask, delTask, addTask, updateTask } from "@/api/readerstation-member/task";
 import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap, updateLevelscoremap } from "@/api/readerstation-member/levelscoremap";
-// import { forever } from "request";
+import { forever } from "request";
 	export default {
 		data() {
 			return {

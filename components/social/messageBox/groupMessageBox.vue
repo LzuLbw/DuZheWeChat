@@ -450,7 +450,8 @@
 	// }
 	.background-color{
 		position: fixed;
-		background-color: #333;
+		//background-color: #333;
+		background-image: url('@/static/social/bg.webp');
 		z-index: -1;
 		width: 100%;
 		height: 100%;
