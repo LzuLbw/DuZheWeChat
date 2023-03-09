@@ -714,7 +714,8 @@
 		{
 			"path": "pages/paper/everyread",
 			"style": {
-				"navigationBarTitleText": "每日阅读"
+				"navigationBarTitleText": "每日阅读",
+				"backgroundColor": "#ffffff"
 			}
 		},
 		{
