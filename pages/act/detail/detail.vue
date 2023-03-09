@@ -1,7 +1,13 @@
 <template>
 	<view class="main">
 
-		<uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" />
+		<!-- <uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" /> -->
+		<view style="height: 20px;"></view>
+<!-- 		<view class="u-demo-block">
+			<view class="u-demo-block__content">
+				<u-notice-bar :text="ActivityData.activityMatters" color="#ffffff" bgColor="#f56c6c"></u-notice-bar>
+			</view>
+		</view> -->
 
 		<image :src="ActivityData.activityPicurl"></image><br>
 

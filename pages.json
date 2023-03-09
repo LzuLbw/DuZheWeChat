@@ -743,14 +743,14 @@
 				"navigationBarTitleText": "活动中心",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "我的活动",
-							"fontSize": "15",
-							"color": "#55aaff",
-							"type": "favorite",
+							// "float": "left",
+							"text": "我的",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}
@@ -763,14 +763,14 @@
 				"navigationBarTitleText": "活动详情",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "我的活动",
-							"fontSize": "15",
-							"color": "#55aaff",
-							"type": "favorite",
+							// "float": "left",
+							"text": "我的",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}
@@ -783,14 +783,14 @@
 				"navigationBarTitleText": "我的活动",
 				"enablePullDownRefresh": false,
 				"app-plus": {
+					
 					"titleNView": {
 						"buttons": [{
 							"fontWeight": "bold",
-							"float": "right",
-							"text": "申请发布活动 +",
-							"fontSize": "15",
-							"color": "#550000",
-							"type": "favorite",
+							// "float": "left",
+							"text": "申请+",
+							"fontSize": "10px",
+							// "type": "favorite",
 							"fontSrc": "/static/yticon.ttf"
 						}]
 					}
