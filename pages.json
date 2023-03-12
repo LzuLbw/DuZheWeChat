@@ -493,14 +493,15 @@
 		{
 			"path": "pages/social/social",
 			"style": {
-				"navigationBarTitleText": "社交"
+				"navigationBarTitleText": "社交",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/social/components/topsearch/topsearch",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{

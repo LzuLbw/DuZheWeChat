@@ -423,7 +423,7 @@
 					title:'删除成功',
 					icon:'success'
 				})
-				$store.dispatch('groupMessage')
+				$store.dispatch('getGroupMessage')
 			}
 		}
 	}

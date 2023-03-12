@@ -386,7 +386,7 @@
 					title:'删除成功',
 					icon:'success'
 				})
-				$store.dispatch('personMessage')
+				$store.dispatch('getPersonMessage')
 			},
 			withdrawMessage(){
 				if(this.selectedMessage.senderId!=this.loginUserInfo.userId){

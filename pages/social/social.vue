@@ -37,10 +37,6 @@
 	import Moment from './components/moment/moment.vue'
 	// import Find from './components/find/find.vue'
 	import { getUserProfile } from "@/api/system/user" 
-	//import userRequest from '@/api/social/user.js'
-	// import websocket from '@/api/social/websocket.js';
-	// import $store from '@/store/modules/social/test.js';
-	//import $store from '@/store/modules/social/test.js';
 	export default {
 		components:{
 			Topsearch,
@@ -90,6 +86,13 @@
 		// },
 		onShow() {
 			this.getUser()
+		},
+		// 下拉刷新
+		onPullDownRefresh(){
+		//刷新数据之后停止刷新
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},1000) 
 		},
 		methods: {
 			// tabs通知swiper切换

@@ -92,7 +92,7 @@
 					})
 				}
 				uni.stopPullDownRefresh()
-			},500)
+			},100)
 		},
 		methods: {
 			timeShowFormat(time){

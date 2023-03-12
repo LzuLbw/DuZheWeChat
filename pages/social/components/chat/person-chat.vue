@@ -70,6 +70,13 @@
 			this.clearUnread()
 			this.showOnline()
 		},
+		// 下拉刷新
+		onPullDownRefresh(){
+		//刷新数据之后停止刷新
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},1000) 
+		},
 		methods: {
 			//查看在线人数
 			showOnline(){
