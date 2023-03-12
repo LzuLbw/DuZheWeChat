@@ -110,13 +110,13 @@
 		onLoad() {
 
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("当前登录用户的昵称为：", res.user.nickName);
-				console.log("当前登录用户的ID为", res.user.userId);
+				// console.log("当前登录用户的昵称为：", res.user.nickName);
+				// console.log("当前登录用户的ID为", res.user.userId);
 
 			})
 
 
-			console.log("当前所在位置：全部活动页面");
+			// console.log("当前所在位置：全部活动页面");
 			// console.log("当前登录用户id=", getApp().globalData.uid);
 
 			// console.log("当前登录用户昵称=", getApp().globalData.name);
@@ -140,7 +140,7 @@
 				method: 'GET',
 				data: {},
 				success: res => {
-					console.log(res.data.data);
+					// console.log(res.data.data);
 
 					this.list3 = [];
 					// 初始化list3
@@ -150,7 +150,7 @@
 							id: (i + 1),
 							content: res.data.data[i]
 						};
-						console.log(item);
+						// console.log(item);
 						this.list3.push(item);
 					}
 
@@ -213,7 +213,7 @@
 
 				setTimeout(() => {
 					uni.hideLoading()
-					console.log(val)
+					// console.log(val)
 					this.value = val
 					// 关闭窗口后，恢复默认内容
 					this.$refs.inputDialog.close()
@@ -242,7 +242,7 @@
 
 					},
 					success: res => {
-						console.log(res.data);
+						// console.log(res.data);
 						this.AllActivityData = res.data.data;
 					},
 					fail: () => {},
@@ -267,7 +267,7 @@
 
 					},
 					success: res => {
-						console.log(res.data);
+						// console.log(res.data);
 						this.AllActivityData = res.data.data;
 					},
 					fail: () => {},
@@ -290,7 +290,7 @@
 
 					},
 					success: res => {
-						console.log(res.data);
+						// console.log(res.data);
 						this.AllActivityData = res.data.data;
 					},
 					fail: () => {},
@@ -307,7 +307,7 @@
 				console.log(this.AllActivityData);
 			},
 			opendetail(id) {
-				console.log("点击查看活动ID为" + id + "的活动详情");
+				// console.log("点击查看活动ID为" + id + "的活动详情");
 				uni.navigateTo({
 					url: 'detail/detail?activityid=' + id,
 					success: res => {
@@ -321,7 +321,7 @@
 			}
 		},
 		onNavigationBarButtonTap(e) {
-			console.log("点击了我的活动按钮");
+			// console.log("点击了我的活动按钮");
 			uni.navigateTo({
 				url: 'myact/myact',
 				success: res => {
