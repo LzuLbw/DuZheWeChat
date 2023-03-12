@@ -17,20 +17,22 @@
 
 		</view>
 
-		<view style="margin-top: 5px;margin-left: 5px;margin-right: 5px;">
+		<!-- 		<view style="margin-top: 5px;margin-left: 5px;margin-right: 5px;">
 			<u-gap height="20" bgColor="#00aaff"></u-gap>
-		</view>
+		</view> -->
 
 
 		<view v-for="(item,index) in AllActivityData">
 
-			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
+			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId" style="text-align: center;">
 
-				<uni-card :cover="AllActivityData[index].activityPicurl">
+				<uni-card :cover="AllActivityData[index].activityPicurl" padding="10px">
+
+					<!-- <image :src="AllActivityData[index].activityPicurl"></image> -->
 
 					<view>
-						<text class="uni-body">{{item.activityMaintitle}}</text><br>
-						<text class="uni-body">{{item.activitySubtitle}}</text>
+						<text class="uni-body">【{{item.activityMaintitle}}】</text><br>
+						<text class="uni-body" style="color: gray;">{{item.activitySubtitle}}</text>
 					</view>
 
 				</uni-card>
@@ -66,10 +68,10 @@
 				//活动地点数据
 				list1: [{
 					id: 1,
-					content: '线上'
+					content: '线上活动'
 				}, {
 					id: 2,
-					content: '线下'
+					content: '线下活动'
 				}],
 
 				//活动状态数据
@@ -108,8 +110,8 @@
 		onLoad() {
 
 			this.$store.dispatch('GetInfo').then(res => {
-				console.log("当前登录用户的昵称为：",res.user.nickName);
-				console.log("当前登录用户的ID为",res.user.userId);
+				console.log("当前登录用户的昵称为：", res.user.nickName);
+				console.log("当前登录用户的ID为", res.user.userId);
 
 			})
 
@@ -132,8 +134,33 @@
 				complete: () => {}
 			});
 
+			// 初始化当前活动发起人筛选
+			uni.request({
+				url: 'http://123.56.217.170:8080/actActivity/getsponsors',
+				method: 'GET',
+				data: {},
+				success: res => {
+					console.log(res.data.data);
+
+					this.list3 = [];
+					// 初始化list3
+					for (let i = 0; i < res.data.data.length; i++) {
+						// console.log(i);
+						var item = {
+							id: (i + 1),
+							content: res.data.data[i]
+						};
+						console.log(item);
+						this.list3.push(item);
+					}
+
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+
 		},
-		
+
 		onShow() {
 			uni.request({
 				url: 'http://123.56.217.170:8080/actActivity',
@@ -147,7 +174,7 @@
 				complete: () => {}
 			});
 		},
-		
+
 		methods: {
 
 
