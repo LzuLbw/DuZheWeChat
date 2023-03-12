@@ -84,13 +84,13 @@ export default {
 		taskList:[],
 		sign_in_Score:0,
 		user_score: {
-	    userId:"",
-	    level: "",
-	    totalScore: "",
-	    usableScore: "",
-	    createAt: "",
-	    updateAt: "",
-	    deleted: ""
+	    // userId:"",
+	    // level: "",
+	    // totalScore: 0,
+	    // usableScore: 0,
+	    // createAt: "",
+	    // updateAt: "",
+	    // deleted: ""
 	  },
     }
   },
@@ -189,8 +189,9 @@ export default {
 	},
 
 	updateScore(addscore){
-		this.user_score.totalScore += addscore
-		this.user_score.usableScore += addscore
+		// var i = Number(this.user_score.totalScore) + Number(addscore)
+		this.user_score.totalScore = Number(this.user_score.totalScore) + Number(addscore)
+		this.user_score.usableScore = Number(this.user_score.usableScore) + Number(addscore)
 		// alert(this.user_score.totalScore)
 		updateUser_score(this.user_score).then(response => {
 		              // this.$modal.msgSuccess("签到成功！");
