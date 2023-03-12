@@ -195,29 +195,28 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		  },
 		  /** 查询用户等级积分映射列表,用总积分得到等级 */
 		  getLevel(){
-			  this.ss = '11';
-			  listLevelscoremap().then(response => {
-			           this.levelscoremapList = response.rows;
-			           this.total = response.total;
-					   this.i = 0;
-					   if(this.user_score.totalScore > this.levelscoremapList[this.total-1].totalScore){
-					   			// alert('积分已达上限')
-								getLevelscoremap(this.total-1).then(response => {
-										this.levelrow = response.data
-									});
-								return
-					   }
-						while(this.i < this.total){
-							if(this.user_score.totalScore < this.levelscoremapList[this.i].totalScore){
-								getLevelscoremap(this.i).then(response => {
-								        this.levelrow = response.data
-								      });
-								break;
-							}
-							 this.i++;
-					  }
-					  
-			   });
+		  			  listLevelscoremap().then(response => {
+		  			           this.levelscoremapList = response.rows;
+		  			           this.total = response.total;
+		  					   this.i = 0;
+		  					   if(Number(this.user_score.totalScore) > Number(this.levelscoremapList[this.total-1].totalScore)){
+		  					   			// alert('积分已达上限')
+		  								getLevelscoremap(this.total-1).then(response => {
+		  										this.levelrow = response.data
+		  									});
+		  								return
+		  					   }
+		  						while(this.i < this.total){
+		  							if(Number(this.user_score.totalScore) < Number(this.levelscoremapList[this.i].totalScore)){
+		  								getLevelscoremap(this.i).then(response => {
+		  								        this.levelrow = response.data
+		  								      });
+		  								break;
+		  							}
+		  							 this.i = Number(this.i) + 1;
+		  					  }
+		  					  
+		  			   });
 		  },
 		  //查询表格得到任务信息列表
 		  getTask_info(){
