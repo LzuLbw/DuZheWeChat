@@ -80,7 +80,7 @@
 		methods: {
 			//查看在线人数
 			showOnline(){
-				//let tip = this.onlineArray.indexOf(this.chattingUserInfo.chattingUserId)===-1?'离线':'在线'
+				let tip = this.onlineArray.indexOf(this.chattingUserInfo.chattingUserId)===-1?'离线':'在线'
 				uni.setNavigationBarTitle({
 					title:this.chattingUserInfo.name+'('+tip+')'
 				})

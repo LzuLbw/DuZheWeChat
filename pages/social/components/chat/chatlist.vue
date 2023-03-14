@@ -84,6 +84,7 @@
 						icon:'success',
 						title:'刷新成功！'
 					})
+				     $store.dispatch('initSessionList')
 				}
 				else{
 					uni.showToast({
@@ -131,30 +132,30 @@
 			})
 		},
 		/* 长按监听 */
-		onLongPress(e) {
-			let [touches, style, index] = [e.touches[0], "", e.currentTarget.dataset.index];
+		// onLongPress(e) {
+		// 	let [touches, style, index] = [e.touches[0], "", e.currentTarget.dataset.index];
 		
-			/* 因 非H5端不兼容 style 属性绑定 Object ，所以拼接字符 */
-			if (touches.clientY > (this.winSize.height / 2)) {
-				style = `bottom:${this.winSize.height-touches.clientY}px;`;
-			} else {
-				style = `top:${touches.clientY}px;`;
-			}
-			if (touches.clientX > (this.winSize.witdh / 2)) {
-				style += `right:${this.winSize.witdh-touches.clientX}px`;
-			} else {
-				style += `left:${touches.clientX}px`;
-			}
+		// 	/* 因 非H5端不兼容 style 属性绑定 Object ，所以拼接字符 */
+		// 	if (touches.clientY > (this.winSize.height / 2)) {
+		// 		style = `bottom:${this.winSize.height-touches.clientY}px;`;
+		// 	} else {
+		// 		style = `top:${touches.clientY}px;`;
+		// 	}
+		// 	if (touches.clientX > (this.winSize.witdh / 2)) {
+		// 		style += `right:${this.winSize.witdh-touches.clientX}px`;
+		// 	} else {
+		// 		style += `left:${touches.clientX}px`;
+		// 	}
 		
-			this.popStyle = style;
-			this.pickerUserIndex = Number(index);
-			this.showShade = true;
-			this.$nextTick(() => {
-				setTimeout(() => {
-					this.showPop = true;
-				}, 10);
-			});
-		},
+		// 	this.popStyle = style;
+		// 	this.pickerUserIndex = Number(index);
+		// 	this.showShade = true;
+		// 	this.$nextTick(() => {
+		// 		setTimeout(() => {
+		// 			this.showPop = true;
+		// 		}, 10);
+		// 	});
+		// },
 		/* 隐藏弹窗 */
 		hidePop() {
 			this.showPop = false;

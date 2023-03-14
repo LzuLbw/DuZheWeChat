@@ -37,6 +37,7 @@
 	import Moment from './components/moment/moment.vue'
 	// import Find from './components/find/find.vue'
 	import { getUserProfile } from "@/api/system/user" 
+	import $store from '@/store/modules/social';
 	export default {
 		components:{
 			Topsearch,
@@ -89,10 +90,28 @@
 		},
 		// 下拉刷新
 		onPullDownRefresh(){
-		//刷新数据之后停止刷新
-			setTimeout(()=>{
-				uni.stopPullDownRefresh()
-			},1000) 
+			///重新获取连接websocket
+			if(!$store.state.isSocketOpen){
+				websocket.initConnect()
+			}
+		///从新获取消息列表
+		$store.dispatch('getFriendList')
+		setTimeout(()=>{
+			if($store.state.isSocketOpen){
+				uni.showToast({
+					icon:'success',
+					title:'刷新成功！'
+				})
+			     $store.dispatch('initSessionList')
+			}
+			else{
+				uni.showToast({
+					icon:'error',
+					title:'刷新失败！'
+				})
+			}
+			uni.stopPullDownRefresh()
+		},100)
 		},
 		methods: {
 			// tabs通知swiper切换
