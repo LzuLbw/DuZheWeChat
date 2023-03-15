@@ -69,6 +69,7 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		data() {
 			return {
 				i:0,
+				form:{},
 				// 总条数
 				total: 0,
 				ss: '',
@@ -186,8 +187,20 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		  //通过用户id得到用户积分表
 		  getScore_info_sub(userID){
 			  getUser_score(userID).then(response => {
-			    this.user_score = response.data
-				this.getLevel()
+				  
+				  let res = response.data
+				  if(res == null){
+				  	this.user_score.userId = this.user.userId
+				  	addUser_score(this.user_score).then(response => {
+				  		this.user_score = response.data;
+				  		this.getLevel()
+				  	});
+				  }else{
+					this.user_score = response.data
+					this.getLevel()
+				  }
+				  
+			    
 				// alert(this.user_score.totalScore)
 				// this.ss = 'nihao';
 				// this.getList()
