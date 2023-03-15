@@ -32,6 +32,8 @@
 		<view class="bottom">
 			<view @tap="gotoChat()" v-if="isMember" class="btn">发消息</view>
 			<view @tap="joinGroup()" v-if="!isMember" class="btn">入群聊</view>
+			<view v-if="loginUserInfo.userId==groupInfo.ownerId" class="btn" @click="deleteGroup()">解散群聊</view>
+			<view v-if="isMember&&loginUserInfo.userId!=groupInfo.ownerId" class="btn" @click="exitGroup()">退出群聊</view>
 		</view>
 		
 		
@@ -42,7 +44,7 @@
 	import userRequest from '@/api/social/user.js';
 	import timeUtil from '@/utils/social/timeUtil.js';
 	import {mapGetters} from 'vuex';
-	import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default{
 		computed:{
 			...mapGetters(['loginUserInfo','groupList','sessionList'])
@@ -69,6 +71,74 @@
 			this.getGroupInfo(id)
 		},
 		methods:{
+			//解散群聊
+			deleteGroup(){
+				let id =  this.groupInfo.id
+					//console.log(id+"11111111");
+					let that = this
+					uni.showModal({
+						cancelText:'取消',
+						confirmText:'退出',
+						title:'确认退出当前读友圈吗',
+						success(res) {
+							if(res.confirm){
+								that.postDelete(id)
+							}
+							//console.log(id)
+						}
+					})
+				},
+				async postDelete(id){
+					//console.log(id)
+					let res = await userRequest.deleteGroup({
+						id:id,
+					})
+					uni.showToast({
+						title:'已退出',
+						icon:'success'
+					})
+					$store.dispatch('getGroupList')
+					uni.navigateBack({
+						url:"/pages/social/list/group-list"
+					})
+				},
+			
+			
+			//退出群聊
+			exitGroup(){
+				let groupId  =  this.groupInfo.id
+				let userId = this.loginUserInfo.userId
+					// console.log(id+"11111111")
+					// console.log(userId)
+					let that = this
+					uni.showModal({
+						cancelText:'取消',
+						confirmText:'退出',
+						title:'确认退出当前读友圈吗',
+						success(res) {
+							if(res.confirm){
+								that.postDelete(groupId,userId)
+							}
+							//console.log(id)
+						}
+					})
+			},	
+				async postDelete(groupId,userId){
+					console.log(groupId,userId)
+					let res = await userRequest.exitGroup({
+						groupId:groupId,
+						userId:userId
+					})
+					uni.showToast({
+						title:'已退出',
+						icon:'success'
+					})
+					$store.dispatch('getGroupList')
+					uni.navigateBack({
+						url:"/pages/social/components/chat/chatlist"
+					})
+				},
+			
 			gotoChat(){
 				//console.log(this.personInfo)
 				if(!this.isMember){
