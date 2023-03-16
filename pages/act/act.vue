@@ -275,6 +275,32 @@
 				});
 			},
 			change3(e) {
+				
+				// 初始化当前活动发起人筛选
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/getsponsors',
+					method: 'GET',
+					data: {},
+					success: res => {
+						// console.log(res.data.data);
+				
+						this.list3 = [];
+						// 初始化list3
+						for (let i = 0; i < res.data.data.length; i++) {
+							// console.log(i);
+							var item = {
+								id: (i + 1),
+								content: res.data.data[i]
+							};
+							// console.log(item);
+							this.list3.push(item);
+						}
+				
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
 				console.log('活动地点', this.chooseValue1);
 				console.log('活动状态', this.chooseValue2);
 				console.log('活动发起人', this.chooseValue3);
