@@ -74,12 +74,12 @@
 			//解散群聊
 			deleteGroup(){
 				let id =  this.groupInfo.id
-					//console.log(id+"11111111");
+					console.log(id+"11111111");
 					let that = this
 					uni.showModal({
 						cancelText:'取消',
-						confirmText:'退出',
-						title:'确认退出当前读友圈吗',
+						confirmText:'解散',
+						title:'确认解散当前读友圈吗',
 						success(res) {
 							if(res.confirm){
 								that.postDelete(id)
@@ -89,10 +89,11 @@
 					})
 				},
 				async postDelete(id){
-					//console.log(id)
+					console.log(id)
 					let res = await userRequest.deleteGroup({
 						id:id,
 					})
+					console.log(id)
 					uni.showToast({
 						title:'已退出',
 						icon:'success'
@@ -117,13 +118,13 @@
 						title:'确认退出当前读友圈吗',
 						success(res) {
 							if(res.confirm){
-								that.postDelete(groupId,userId)
+								that.postExit(groupId,userId)
 							}
 							//console.log(id)
 						}
 					})
 			},	
-				async postDelete(groupId,userId){
+				async postExit(groupId,userId){
 					console.log(groupId,userId)
 					let res = await userRequest.exitGroup({
 						groupId:groupId,

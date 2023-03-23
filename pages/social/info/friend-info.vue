@@ -127,7 +127,7 @@
 	
 	export default{
 		computed:{
-			...mapGetters(['friendList','loginUserInfo','sessionList'])
+			...mapGetters(['friendList','loginUserInfo','sessionList','chattingUserInfo'])
 		},
 		data(){
 			return{
@@ -153,12 +153,12 @@
 			let id = options.id;
 			this.getPersonInfo(id),
 			console.log(this.personInfo)
+			console.log(this.chattingUserInfo)
 		},
 		methods:{
-		
 			    /** 删除好友操作 */
 			    async handleDelete() {
-			     	let sessionId = this.personInfo.sessionId;
+			     	let sessionId = this.chattingUserInfo.sessionId;
 			     	 console.log(sessionId+"11111111");
 			     	let that = this
 			     	uni.showModal({
@@ -180,8 +180,12 @@
 			     		title:'删除成功',
 			     		icon:'success'
 			     	})
-			     	$store.dispatch('getFriendList')
+					$store.dispatch('getFriendList')
+					uni.navigateTo({
+						url:'/pages/social/components/friend/friend'
+					})
 			     },
+				 
 				  
 			    
 			
