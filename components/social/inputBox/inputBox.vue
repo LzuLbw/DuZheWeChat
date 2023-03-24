@@ -1,9 +1,9 @@
 <template>
 	<view class="container">
-		<view style="position: relative;margin-top: 10rpx;margin-left: 1%;justify-content: space-between;display: flex;">
+		<view style="position: relative;margin-top: 10rpx;margin-left: 1%;display: flex;">
 			<textarea maxlength="600" @keyup.enter="sendText()" auto-height="true" v-model="text" @focus="showKeyBoard()" class="input-area"></textarea>
 			
-			<image @tap="openDrawer(1)" src="@/static/social/icon/emoji.png" style="height: 50rpx;width: 50rpx;margin-right: 68px;">
+			<image @tap="openDrawer(1)" src="@/static/social/icon/emoji.png" style="height: 50rpx;width: 50rpx;margin-right: 68px;margin-top: 10rpx;"/>
 			
 			<view @tap="sendText()" :class="[isDisable?'send-btn-disable':'send-btn-able','send-btn']">发送</view> 
 		</view>
@@ -23,7 +23,7 @@
 				:option="fileOption"
 				@change="fileOnChange"
 			>
-				<image  class="input-icon" src="@/static/social/icon/file.png"></image>
+				<!-- <image  class="input-icon" src="@/static/social/icon/file.png"></image> -->
 			</lsj-upload>
 			<!-- #endif -->
 			<!-- #ifdef H5 -->
@@ -104,6 +104,7 @@
 	import audioPlayer from '@/components/social/imt-audio/imt-audio.vue';
 	import timeUtil from '@/utils/social/timeUtil.js';
 	import requestUrl from '@/api/social/url.js';
+	import $store from '@/store/modules/social';
 	export default{
 		name: 'inputBoxOff',
 		props:{
@@ -444,7 +445,8 @@
 				}
 				this.$emit('sendMessage', message);
 				this.text = '';
-				
+				$store.dispatch('getPersonMessage')
+				$store.dispatch('getGroupMessage')
 			},
 			openDrawer(index){
 				if(this.showDrawer === index)	this.showDrawer = 0;
@@ -686,7 +688,8 @@
 		background-color: #0071bc;
 	}
 	.icon-container{
-		margin-top: 10rpx;
+		//margin-top: -10rpx;
+		margin-top: -30rpx;
 		margin-bottom: 0rpx;
 		padding-left: 20rpx;
 		.input-icon{

@@ -124,6 +124,34 @@ export default{
 		  }
 		});
 	},
+	
+	//解散群聊
+	deleteGroup(data){
+		return request({
+		  url: 'ry-vue/group/deleteGroup',
+		  method: 'POST',
+		  data,
+		  header:{
+			  'content-type': 'application/json',
+			  'token': $store.state.token
+		  }
+		});
+	},
+	
+	//退出群聊
+	exitGroup(data){
+		return request({
+		  url: 'ry-vue/group/exitGroup',
+		  method: 'POST',
+		  data,
+		  header:{
+			  'content-type': 'application/json',
+			  'token': $store.state.token
+		  }
+		});
+	},
+	
+	
 	//获取通知信息
 	getNotice(data){
 		return request({

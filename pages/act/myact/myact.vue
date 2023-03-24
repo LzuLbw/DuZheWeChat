@@ -8,7 +8,7 @@
 		</text> -->
 		<view v-for="(item,index) in activitydata" v-if="tagtag">
 
-			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId">
+			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId" style="text-align: center;">
 
 
 				<uni-card :cover="activitydata[index].activityPicurl">
@@ -22,8 +22,8 @@
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag> -->
 
-						<text class="uni-body">{{item.activityMaintitle}}</text><br>
-						<text class="uni-body">{{item.activitySubtitle}}</text>
+						<text class="uni-body" style="float: left;">{{item.activityMaintitle}}</text><br>
+						<text class="uni-body" style="float: left;font-size: 10px;color: gray;">{{item.activitySubtitle}}</text>
 					</view>
 
 				</uni-card>
@@ -34,7 +34,7 @@
 		
 		<view v-for="(item,index) in signupdata" v-if="signtagtag">
 		
-					<view @click="opendetail(item.activityid)" :data-activityid="item.activityid">
+					<view @click="opendetail(item.activityid)" :data-activityid="item.activityid" style="text-align: center;">
 		
 		
 						<uni-card :cover="signupdata[index].activity_picurl">
@@ -45,13 +45,10 @@
 									custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 								</uni-tag>
 		
-								<text class="uni-body">{{item.activity_maintitle}}</text><br>
-								<text class="uni-body">{{item.activity_subtitle}}</text>
+								<text class="uni-body" style="float: left;">{{item.activity_maintitle}}</text><br>
+								<text class="uni-body" style="float: left;font-size: 10px;color: gray;">{{item.activity_subtitle}}</text>
 							</view>
 							
-							
-							
-		
 						</uni-card>
 		
 					</view>

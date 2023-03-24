@@ -4,7 +4,9 @@
 			<image class="background" style="width: 100%;" mode="aspectFill" @tap="preViewImage(personInfo.background)" src="/static/social/img/reader.jpg"></image>
 			<image class="avatar" @tap="preViewImage(personInfo.avatar)" :src="personInfo.avatar"></image>
 			<view v-show="isFriend" @tap="show1 = true" class="btn">修改备注</view>
+			
 		</view>
+		
 		<view class="middle">
 			<view class="name-container">
 				<text selectable="true" class="name">{{personInfo.nickName}}</text>
@@ -30,6 +32,8 @@
 			<view class="btn" @tap="gotoChat()" v-show="isFriend">发消息</view>
 			<view  v-show="!isFriend" class="btn" @tap="show=true">加好友</view>
 			<view @tap="gotoPage('space')" class="btn">进空间</view>
+			<view v-show="isFriend" @click="handleDelete()"
+			class="btn">删除好友</view>
 		</view>
 		
 		<u-popup
@@ -120,15 +124,17 @@
 	import friendRequest from '@/api/social/friend.js';
 	import {mapGetters} from 'vuex';
 	import $store from '@/store/modules/social';
+	
 	export default{
 		computed:{
-			...mapGetters(['friendList','loginUserInfo','sessionList'])
+			...mapGetters(['friendList','loginUserInfo','sessionList','chattingUserInfo'])
 		},
 		data(){
 			return{
 				personInfo:{},
 				show : false,
 				show1 : false,
+				allData:[],
 				popupData: {
 					overlay: true,
 					mode: 'center',
@@ -143,12 +149,47 @@
 				friendId:0
 			}
 		},
-		onLoad(options){
+		onLoad(options){			
 			let id = options.id;
 			this.getPersonInfo(id),
 			console.log(this.personInfo)
+			console.log(this.chattingUserInfo)
 		},
 		methods:{
+			    /** 删除好友操作 */
+			    async handleDelete() {
+			     	let sessionId = this.chattingUserInfo.sessionId;
+			     	 console.log(sessionId+"11111111");
+			     	let that = this
+			     	uni.showModal({
+			     		cancelText:'取消',
+			     		confirmText:'删除',
+			     		title:'确认删除',
+			     		success(res) {
+			     			if(res.confirm){
+			     				that.postDelete(sessionId)
+			     			}
+			     		}
+			     	})
+			     },
+			     async postDelete(sessionId){
+			     	let res = await friendRequest.deleteSession({
+			     		sessionId:sessionId
+			     	})
+			     	uni.showToast({
+			     		title:'删除成功',
+			     		icon:'success'
+			     	})
+					$store.dispatch('getFriendList')
+					uni.navigateTo({
+						url:'/pages/social/components/friend/friend'
+					})
+			     },
+				 
+				  
+			    
+			
+			
 			gotoChat(){
 				//console.log(this.personInfo)
 				if(!this.isFriend){
