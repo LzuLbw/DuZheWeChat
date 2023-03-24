@@ -89,5 +89,6 @@
                 "enable" : false
             }
         }
-    }
+    },
+    "locale" : "auto"
 }

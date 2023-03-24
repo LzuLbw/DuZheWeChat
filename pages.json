@@ -882,13 +882,6 @@
 					"bounce": "none"
 				}
 			}
-		}, {
-			"path": "pages/study/addnote/addnote",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
 		}
 	],
 	"globalStyle": {
