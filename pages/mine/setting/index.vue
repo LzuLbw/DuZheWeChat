@@ -1,12 +1,12 @@
 <template>
   <view class="setting-container" :style="{height: `${windowHeight}px`}">
     <view class="menu-list">
-		<view class="list-cell list-cell-arrow" @click="handleToPwd">
+		<!-- <view class="list-cell list-cell-arrow" @click="handleToPwd">
 		  <view class="menu-item-box">
 		    <view class="iconfont icon-password menu-icon"></view>
 		    <view>隐私设置</view>
 		  </view>
-		</view>
+		</view> -->
       <view class="list-cell list-cell-arrow" @click="handleToPwd">
         <view class="menu-item-box">
           <view class="iconfont icon-password menu-icon"></view>
