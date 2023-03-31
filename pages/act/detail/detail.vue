@@ -11,8 +11,8 @@
 
 		<image :src="ActivityData.activityPicurl"></image><br>
 
-		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title:'报名已截止'},{title: '进行中'}, {title: '已结束'}]"
-			:active="stepactive" activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>
+		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title:'报名截止'},{title: '进行中'}, {title: '已结束'}]"
+			:active="stepactive" activeIcon="map-pin-ellipse" activeColor="#000000"></uni-steps>
 
 		<br />
 
@@ -133,6 +133,8 @@
 						style="color: red;">{{ sugtext }}</text>
 					<text class="maintitilecontent">{{ActivityData.activityReviewMessage}}</text><br />
 				</view>
+				
+				<image :src="ActivityData.activityPicurl"></image><br>
 
 				<view v-if="showsugsugbutton">
 					<button @click="editapplication" class="mini-btn"
@@ -141,7 +143,9 @@
 				</view>
 
 			</view>
-
+			
+			
+			
 			<view style="height: 50px;"></view>
 
 

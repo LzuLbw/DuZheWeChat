@@ -71,8 +71,8 @@
 
 				show: false,
 
-				tagtag: false, // 活动申请是否通过
-				signtagtag: false, // 活动报名是否通过
+				tagtag: false, // 【查看申请发布活动】
+				signtagtag: false, // 【查看报名的】
 
 
 				list: ['已报名的活动', '申请发布的活动'],
@@ -115,7 +115,7 @@
 		},
 
 		onShow() {
-			this.sectionChange(1);
+			// this.sectionChange(1);
 		},
 
 		methods: {
@@ -140,6 +140,8 @@
 				if (index === 0) {
 					this.tagtag = false;
 					this.signtagtag = true;
+					
+					this.activitydata = [];
 
 					// 已报名的活动
 					// this.signupinfo();
@@ -200,8 +202,10 @@
 
 				} else if (index === 1) {
 
-					this.tagtag = true;
-					this.signtagtag = false;
+					this.tagtag = false;
+					this.signtagtag = true;
+					
+					this.signupdata = [];
 
 					uni.request({
 						url: 'http://123.56.217.170:8080/actActivity/activity/user/application/' + this.currentuid,
