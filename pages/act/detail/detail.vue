@@ -3,7 +3,7 @@
 
 		<!-- <uni-notice-bar show-icon scrollable :text="ActivityData.activityMatters" /> -->
 		<view style="height: 20px;"></view>
-<!-- 		<view class="u-demo-block">
+		<!-- 		<view class="u-demo-block">
 			<view class="u-demo-block__content">
 				<u-notice-bar :text="ActivityData.activityMatters" color="#ffffff" bgColor="#f56c6c"></u-notice-bar>
 			</view>
@@ -11,8 +11,8 @@
 
 		<image :src="ActivityData.activityPicurl"></image><br>
 
-		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title: '进行中'}, {title: '已结束'}]" :active="stepactive"
-			activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>
+		<uni-steps :options="[{title: '未开始'}, {title: '报名中'}, {title:'报名已截止'},{title: '进行中'}, {title: '已结束'}]"
+			:active="stepactive" activeIcon="map-pin-ellipse" activeColor="#003312"></uni-steps>
 
 		<br />
 
@@ -249,19 +249,6 @@
 		},
 		onLoad: function(e) {
 
-			uni.request({
-				url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + e.activityid,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log("当前活动的已报名人数:", res.data);
-
-					this.signnum = res.data;
-				},
-				fail: () => {},
-				complete: () => {}
-			});
-
 			this.$store.dispatch('GetInfo').then(res => {
 				// console.log("================++++++++++++++++++++++=======================");
 				console.log("当前登录用户的昵称为：");
@@ -274,6 +261,11 @@
 
 
 				//初始化报名按钮状态
+
+				// 如果报名已满或时间已截止, 那么按钮变为不可用状态【组件不好变...】
+
+
+
 				uni.request({
 					url: 'http://123.56.217.170:8080/actSignupinfo/' + this.currentuid + "/" + this
 						.Activityid,
@@ -404,6 +396,8 @@
 						//当前时间
 						let nowtime = new Date();
 
+						console.log("==========>>>>");
+
 						//活动未开始
 						if (nowtime < registrationstarttime) {
 							console.log("活动未开始");
@@ -412,18 +406,46 @@
 							registrationstarttime) {
 							console.log("活动报名中");
 							this.stepactive = 1;
+						} else if (nowtime < activityStarttime && nowtime > registrationendtime) {
+							console.log("等待活动开始");
+							this.stepactive = 2;
+							this.customButtonGroup1[0].backgroundColor =
+								'linear-gradient(90deg, #a9a9a9, #878787)'
+
 						} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
 							console.log("活动进行中");
-							this.stepactive = 2;
+							this.stepactive = 3;
+							this.customButtonGroup1[0].backgroundColor =
+								'linear-gradient(90deg, #a9a9a9, #878787)'
 						} else if (nowtime > activityEndtime) {
 							console.log("活动已结束");
-							this.stepactive = 3;
+							this.stepactive = 4;
+							this.customButtonGroup1[0].backgroundColor =
+								'linear-gradient(90deg, #a9a9a9, #878787)'
 						}
 
+						// console.log(registrationstarttime);
+						// console.log(new Date() > registrationstarttime);
+						uni.request({
+							url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + e
+								.activityid,
+							method: 'GET',
+							data: {},
+							success: res => {
+								console.log("当前活动的已报名人数:", res.data);
+								this.signnum = res.data;
 
+								if (this.signnum == this.ActivityData
+									.activitityNumbernum) {
+									this.customButtonGroup1[0].text = "报名人数已满";
+									this.customButtonGroup1[0].backgroundColor =
+										'linear-gradient(90deg, #bbbbbb, #aeaeae)';
+								}
 
-						console.log(registrationstarttime);
-						console.log(new Date() > registrationstarttime);
+							},
+							fail: () => {},
+							complete: () => {}
+						});
 
 					},
 					fail: () => {},
@@ -458,11 +480,11 @@
 
 					if (this.ActivityData.activityAttachment[0] == "当") {
 						console.log("哈哈哈哈");
-						
+
 						// 弹出一个通知
 						this.messageToggle("当前活动暂无附件");
-						
-						
+
+
 					} else {
 						switch (uni.getSystemInfoSync().platform) {
 							case 'android':
@@ -542,24 +564,51 @@
 				} else {
 
 					console.log("用户点击了立即报名");
-					//还未报名，可进行立即报名的操作
-					//立即报名
-					uni.request({
-						url: 'http://123.56.217.170:8080/actSignupinfo',
-						method: 'POST',
-						data: {
-							"userid": this.currentuid,
-							"activityid": this.Activityid
-						},
-						success: res => {
-							console.log(res.data);
-							this.customButtonGroup1[0].text = "取消报名";
-							this.messageToggle("报名成功");
-							this.useractstatus = true;
-						},
-						fail: () => {},
-						complete: () => {}
-					});
+
+					// 判断当前时间是否满足条件
+					//当前时间
+					let nowtime = new Date();
+					//报名开始时间
+					let registrationstarttime = new Date(Date.parse(this.ActivityData.activityRegistrationstarttime));
+					//报名结束时间
+					let registrationendtime = new Date(Date.parse(this.ActivityData.activityRegistrationendtime));
+
+					if (nowtime < registrationstarttime) {
+
+						this.messageToggle("报名还未开始");
+
+					} else if (this.signnum == this.ActivityData.activitityNumbernum) {
+
+						this.messageToggle("报名人数已满");
+
+					} else if (nowtime > registrationendtime) {
+
+						this.messageToggle("报名时间已截止");
+
+					} else {
+
+						//还未报名且已到达可报名时间且人数未满，可进行立即报名的操作
+						//立即报名
+						uni.request({
+							url: 'http://123.56.217.170:8080/actSignupinfo',
+							method: 'POST',
+							data: {
+								"userid": this.currentuid,
+								"activityid": this.Activityid
+							},
+							success: res => {
+								console.log(res.data);
+								this.customButtonGroup1[0].text = "取消报名";
+								this.messageToggle("报名成功");
+								this.useractstatus = true;
+							},
+							fail: () => {},
+							complete: () => {}
+						});
+
+					}
+
+
 
 
 				}

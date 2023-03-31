@@ -26,9 +26,24 @@
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId" style="text-align: center;">
 
-				<uni-card :cover="AllActivityData[index].activityPicurl" padding="10px">
+				<uni-card>
+					
+					<!-- <uni-card :cover="AllActivityData[index].activityPicurl" padding="10px"> -->
+					
+					<view v-if="endifif[index]">
+						<div class="row" style="width:100%; position:relative;z-index:1;margin:0 auto; background: #000000;">
+						    <img :src="AllActivityData[index].activityPicurl" style="width:100%; opacity:0.6; filter: alpha(opacity=60);"/>
+						    <div style="width:100%;height: 100%;;position:absolute;z-index:2;top:50%; text-align:center;">
+						        <h2 style="color:#fff">活动已结束</h2>
+						    </div>
+						</div>
+					</view>
+					
+					<view v-if="!endifif[index]">
+						<image :src="AllActivityData[index].activityPicurl" style="width: 100%;"></image>
+					</view>
 
-					<!-- <image :src="AllActivityData[index].activityPicurl"></image> -->
+					
 
 					<view>
 						<text class="uni-body">【{{item.activityMaintitle}}】</text><br>
@@ -53,6 +68,9 @@
 		data() {
 			return {
 
+				// 初始化一个状态数组, 存储当前活动是否已经结束
+				endifif: [],
+				
 				type: 'center',
 				msgType: 'success',
 				messageText: '这是一条成功提示',
@@ -83,11 +101,15 @@
 						content: '报名中'
 					},
 					{
-						id: 3,
-						content: '进行中'
+						id:3,
+						content: '等待活动开始'
 					},
 					{
 						id: 4,
+						content: '进行中'
+					},
+					{
+						id: 5,
 						content: '已结束'
 					}
 				],
@@ -129,6 +151,22 @@
 				success: res => {
 					// console.log(res.data.data);
 					this.AllActivityData = res.data.data;
+					this.endifif = [];
+					// 拿到当前时间
+					let nowtime = new Date();
+					
+					// 拿到每个活动的是否结束信息【用于初始化蒙版】
+					for(var i = 0; i < this.AllActivityData.length; i ++){
+						// 拿到每个活动的结束时间
+						let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
+						if(nowtime > activityEndtime){
+							this.endifif.push(true);
+						}else{
+							this.endifif.push(false);
+						}
+					}
+					
+					console.log(this.endifif);
 				},
 				fail: () => {},
 				complete: () => {}
@@ -169,6 +207,25 @@
 				success: res => {
 					// console.log(res.data.data);
 					this.AllActivityData = res.data.data;
+					
+					this.endifif = [];
+					// 拿到当前时间
+					let nowtime = new Date();
+					
+					// 拿到每个活动的是否结束信息【用于初始化蒙版】
+					for(var i = 0; i < this.AllActivityData.length; i ++){
+						// 拿到每个活动的结束时间
+						let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
+						if(nowtime > activityEndtime){
+							this.endifif.push(true);
+						}else{
+							this.endifif.push(false);
+						}
+					}
+					
+					console.log(this.endifif);
+					
+					
 				},
 				fail: () => {},
 				complete: () => {}
@@ -244,6 +301,23 @@
 					success: res => {
 						// console.log(res.data);
 						this.AllActivityData = res.data.data;
+						this.endifif = [];
+						// 拿到当前时间
+						let nowtime = new Date();
+						
+						// 拿到每个活动的是否结束信息【用于初始化蒙版】
+						for(var i = 0; i < this.AllActivityData.length; i ++){
+							// 拿到每个活动的结束时间
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
+							if(nowtime > activityEndtime){
+								this.endifif.push(true);
+							}else{
+								this.endifif.push(false);
+							}
+						}
+						
+						console.log(this.endifif);
+						
 					},
 					fail: () => {},
 					complete: () => {}
@@ -269,6 +343,22 @@
 					success: res => {
 						// console.log(res.data);
 						this.AllActivityData = res.data.data;
+						this.endifif = [];
+						// 拿到当前时间
+						let nowtime = new Date();
+						
+						// 拿到每个活动的是否结束信息【用于初始化蒙版】
+						for(var i = 0; i < this.AllActivityData.length; i ++){
+							// 拿到每个活动的结束时间
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
+							if(nowtime > activityEndtime){
+								this.endifif.push(true);
+							}else{
+								this.endifif.push(false);
+							}
+						}
+						
+						console.log(this.endifif);
 					},
 					fail: () => {},
 					complete: () => {}
@@ -318,6 +408,23 @@
 					success: res => {
 						// console.log(res.data);
 						this.AllActivityData = res.data.data;
+						
+						// 拿到当前时间
+						let nowtime = new Date();
+						this.endifif = [];
+						
+						// 拿到每个活动的是否结束信息【用于初始化蒙版】
+						for(var i = 0; i < this.AllActivityData.length; i ++){
+							// 拿到每个活动的结束时间
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
+							if(nowtime > activityEndtime){
+								this.endifif.push(true);
+							}else{
+								this.endifif.push(false);
+							}
+						}
+						
+						console.log(this.endifif);
 					},
 					fail: () => {},
 					complete: () => {}
