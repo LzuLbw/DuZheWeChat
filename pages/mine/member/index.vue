@@ -6,7 +6,7 @@
 		 :autoplay="false" :interval="3000" :duration="1000" :current="bigIdx">
 
 			<template v-for="(vip, i) in vips">
-				<swiper-item :key="'vip_'+i">
+				<swiper-item :key="i">
 					<view :class="['swiper-item',bigIdx === i ? 'big' : 'small']" :style="{background:vip.bg,'box-shadow':vip.shadow}">
 						<image class="img" src="/static/mine/member/icon_vip.png"></image>
 						<text class="title">{{levelrow.level}}{{vip.title}}</text>
@@ -24,7 +24,7 @@
 
 		<scroll-view class="slider" scroll-x="true">
 			<template v-for="(task,i) in taskList" v-if="task.status == 0">
-				<view :key="'task_'+i" class="s_item">
+				<view :key="i" class="s_item">
 					<view class="content">
 						<image :src="task.thumbUrl" class="img"></image>
 						<text class="name">{{task.name}}</text>
@@ -45,7 +45,7 @@
 		<view class="footer">
 			<view class="welfare">
 				<template v-for="(info,i) in welfare">
-					<view class="item" :key="'welfare_'+i">
+					<view class="item" :key="i">
 						<view class="border">
 							<image class="img" :src="info.icon" @click="routerItem(info.url)"></image>
 						</view>
