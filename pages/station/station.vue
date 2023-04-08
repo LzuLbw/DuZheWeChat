@@ -25,12 +25,12 @@
 					<view class="name">{{item.name}}</view>
 					<view class="info">{{item.location}}</view>
 					<view class="info">{{item.openTime}}</view>
-					<!--  #ifndef  MP-WEIXIN -->
+					<!--  #ifndef  MP -->
 					<view class="tag" :style="open ? 'background-color: #FF0000' : 'background-color: #C0C0C0'">
 					{{open? '营业中' : '已关门'}}
 					</view>
 					 <!-- #endif -->
-					<!--  #ifdef  MP-WEIXIN -->
+					<!--  #ifdef  MP -->
 					<view class="tag" style="{{open ? 'background-color: #FF0000' : 'background-color: #C0C0C0'}}">
 					{{open? '营业中' : '已关门'}}
 					</view>
