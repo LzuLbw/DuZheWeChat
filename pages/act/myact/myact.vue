@@ -75,7 +75,7 @@
 				signtagtag: false, // 【查看报名的】
 
 
-				list: ['已报名的活动', '申请发布的活动'],
+				list: ['已报名的活动', '申请发布的活动','签到签退'],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
 				current: 0,
@@ -142,6 +142,7 @@
 					this.signtagtag = true;
 					
 					this.activitydata = [];
+					
 
 					// 已报名的活动
 					// this.signupinfo();
@@ -202,8 +203,8 @@
 
 				} else if (index === 1) {
 
-					this.tagtag = false;
-					this.signtagtag = true;
+					this.tagtag = true;
+					this.signtagtag = false;
 					
 					this.signupdata = [];
 
@@ -213,6 +214,8 @@
 						data: {},
 						success: res => {
 							console.log(res.data.data.length);
+							
+							console.log(res.data.data);
 
 							if (res.data.data.length == 0) {
 								this.show = true;

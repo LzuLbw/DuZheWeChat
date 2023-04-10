@@ -27,23 +27,26 @@
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId" style="text-align: center;">
 
 				<uni-card>
-					
+
 					<!-- <uni-card :cover="AllActivityData[index].activityPicurl" padding="10px"> -->
-					
+
 					<view v-if="endifif[index]">
-						<div class="row" style="width:100%; position:relative;z-index:1;margin:0 auto; background: #000000;">
-						    <img :src="AllActivityData[index].activityPicurl" style="width:100%; opacity:0.6; filter: alpha(opacity=60);"/>
-						    <div style="width:100%;height: 100%;;position:absolute;z-index:2;top:50%; text-align:center;">
-						        <h2 style="color:#fff">活动已结束</h2>
-						    </div>
+						<div class="row"
+							style="width:100%; position:relative;z-index:1;margin:0 auto; background: #000000;">
+							<img :src="AllActivityData[index].activityPicurl"
+								style="width:100%; opacity:0.6; filter: alpha(opacity=60);" />
+							<div
+								style="width:100%;height: 100%;;position:absolute;z-index:2;top:50%; text-align:center;">
+								<h2 style="color:#fff">活动已结束</h2>
+							</div>
 						</div>
 					</view>
-					
+
 					<view v-if="!endifif[index]">
 						<image :src="AllActivityData[index].activityPicurl" style="width: 100%;"></image>
 					</view>
 
-					
+
 
 					<view>
 						<text class="uni-body">【{{item.activityMaintitle}}】</text><br>
@@ -58,6 +61,9 @@
 
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
 
+		<uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
+			:direction="direction" @trigger="trigger" @fabClick="fabClick" />
+
 		<view style="height: 10px;"></view>
 	</view>
 </template>
@@ -68,9 +74,44 @@
 		data() {
 			return {
 
+
+				// 悬浮按钮的配置参数
+				horizontal: 'left',
+				vertical: 'bottom',
+				direction: 'horizontal',
+				pattern: {
+					color: '#7A7E83',
+					backgroundColor: '#fff',
+					selectedColor: '#007AFF',
+					buttonColor: '#71aaaa',
+					iconColor: '#fff'
+					
+				},
+				is_color_type: false,
+				content: [{
+						iconPath: '/static/act/star.png',
+						selectedIconPath: '/static/act/star.png',
+						text: '我的活动',
+						active: false
+					},
+					{
+						iconPath: '/static/act/apply.png',
+						selectedIconPath: '/static/act/apply.png',
+						text: '申请发布',
+						active: false
+					},
+					{
+						iconPath: '/static/act/scan.png',
+						selectedIconPath: '/static/act/scan.png',
+						text: '签到签退',
+						active: false
+					},
+
+				],
+
 				// 初始化一个状态数组, 存储当前活动是否已经结束
 				endifif: [],
-				
+
 				type: 'center',
 				msgType: 'success',
 				messageText: '这是一条成功提示',
@@ -101,7 +142,7 @@
 						content: '报名中'
 					},
 					{
-						id:3,
+						id: 3,
 						content: '等待活动开始'
 					},
 					{
@@ -154,18 +195,18 @@
 					this.endifif = [];
 					// 拿到当前时间
 					let nowtime = new Date();
-					
+
 					// 拿到每个活动的是否结束信息【用于初始化蒙版】
-					for(var i = 0; i < this.AllActivityData.length; i ++){
+					for (var i = 0; i < this.AllActivityData.length; i++) {
 						// 拿到每个活动的结束时间
 						let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
-						if(nowtime > activityEndtime){
+						if (nowtime > activityEndtime) {
 							this.endifif.push(true);
-						}else{
+						} else {
 							this.endifif.push(false);
 						}
 					}
-					
+
 					console.log(this.endifif);
 				},
 				fail: () => {},
@@ -207,25 +248,25 @@
 				success: res => {
 					// console.log(res.data.data);
 					this.AllActivityData = res.data.data;
-					
+
 					this.endifif = [];
 					// 拿到当前时间
 					let nowtime = new Date();
-					
+
 					// 拿到每个活动的是否结束信息【用于初始化蒙版】
-					for(var i = 0; i < this.AllActivityData.length; i ++){
+					for (var i = 0; i < this.AllActivityData.length; i++) {
 						// 拿到每个活动的结束时间
 						let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
-						if(nowtime > activityEndtime){
+						if (nowtime > activityEndtime) {
 							this.endifif.push(true);
-						}else{
+						} else {
 							this.endifif.push(false);
 						}
 					}
-					
+
 					console.log(this.endifif);
-					
-					
+
+
 				},
 				fail: () => {},
 				complete: () => {}
@@ -233,7 +274,105 @@
 
 		},
 
+		onBackPress() {
+			if (this.$refs.fab.isShow) {
+				this.$refs.fab.close()
+				return true
+			}
+			return false
+		},
+
 		methods: {
+
+			// 悬浮按钮的方法=============================================
+
+			trigger(e) {
+				console.log(e)
+
+				if (e.item.text == "签到签退") {
+					console.log("点击了进行签到签退");
+
+					// 跳转到生成二维码的页面
+					uni.navigateTo({
+						url: 'signinandsignout/manageact/manageact',
+						success: res => {
+							console.log("打开成功,id = ", id);
+						},
+						fail: () => {
+							console.log("打开签到签退页面失败");
+						},
+						complete: () => {}
+					});
+
+
+				} else if (e.item.text == "我的活动") {
+					console.log("点击了我的活动按钮");
+					uni.navigateTo({
+						url: 'myact/myact',
+						success: res => {
+							console.log("打开成功,id = ", id);
+						},
+						fail: () => {
+							console.log("打开我的活动页面失败");
+						},
+						complete: () => {}
+					});
+				} else if (e.item.text == "申请发布") {
+					console.log("点击了申请发布按钮");
+					uni.navigateTo({
+						url: 'application/application',
+						success: res => {
+							console.log("打开成功,id = ", id);
+						},
+						fail: () => {
+							console.log("打开申请发布页面失败");
+						},
+						complete: () => {}
+					});
+				} else {
+					this.content[e.index].active = !e.item.active
+					uni.showModal({
+						title: '提示',
+						content: `您${this.content[e.index].active ? '选中了' : '取消了'}${e.item.text}`,
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定')
+							} else if (res.cancel) {
+								console.log('用户点击取消')
+							}
+						}
+					})
+				}
+
+
+			},
+			fabClick() {
+				
+			},
+			switchBtn(hor, ver) {
+				if (hor === 0) {
+					this.direction = this.direction === 'horizontal' ? 'vertical' : 'horizontal'
+					this.directionStr = this.direction === 'horizontal' ? '垂直' : '水平'
+				} else {
+					this.horizontal = hor
+					this.vertical = ver
+				}
+				this.$forceUpdate()
+			},
+			switchColor() {
+				this.is_color_type = !this.is_color_type
+				if (this.is_color_type) {
+					this.pattern.iconColor = '#aaa'
+					this.pattern.buttonColor = '#fff'
+				} else {
+					this.pattern.iconColor = '#fff'
+					this.pattern.buttonColor = '#007AFF'
+				}
+			},
+
+			// // 悬浮按钮的方法=============================================
+
+
 
 
 			change(e) {
@@ -305,20 +444,21 @@
 						this.endifif = [];
 						// 拿到当前时间
 						let nowtime = new Date();
-						
+
 						// 拿到每个活动的是否结束信息【用于初始化蒙版】
-						for(var i = 0; i < this.AllActivityData.length; i ++){
+						for (var i = 0; i < this.AllActivityData.length; i++) {
 							// 拿到每个活动的结束时间
-							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
-							if(nowtime > activityEndtime){
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i]
+								.activityEndtime));
+							if (nowtime > activityEndtime) {
 								this.endifif.push(true);
-							}else{
+							} else {
 								this.endifif.push(false);
 							}
 						}
-						
+
 						console.log(this.endifif);
-						
+
 					},
 					fail: () => {},
 					complete: () => {}
@@ -347,18 +487,19 @@
 						this.endifif = [];
 						// 拿到当前时间
 						let nowtime = new Date();
-						
+
 						// 拿到每个活动的是否结束信息【用于初始化蒙版】
-						for(var i = 0; i < this.AllActivityData.length; i ++){
+						for (var i = 0; i < this.AllActivityData.length; i++) {
 							// 拿到每个活动的结束时间
-							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
-							if(nowtime > activityEndtime){
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i]
+								.activityEndtime));
+							if (nowtime > activityEndtime) {
 								this.endifif.push(true);
-							}else{
+							} else {
 								this.endifif.push(false);
 							}
 						}
-						
+
 						console.log(this.endifif);
 					},
 					fail: () => {},
@@ -366,7 +507,7 @@
 				});
 			},
 			change3(e) {
-				
+
 				// 初始化当前活动发起人筛选
 				uni.request({
 					url: 'http://123.56.217.170:8080/actActivity/getsponsors',
@@ -374,7 +515,7 @@
 					data: {},
 					success: res => {
 						// console.log(res.data.data);
-				
+
 						this.list3 = [];
 						// 初始化list3
 						for (let i = 0; i < res.data.data.length; i++) {
@@ -386,12 +527,12 @@
 							// console.log(item);
 							this.list3.push(item);
 						}
-				
+
 					},
 					fail: () => {},
 					complete: () => {}
 				});
-				
+
 				console.log('活动地点', this.chooseValue1);
 				console.log('活动状态', this.chooseValue2);
 				console.log('活动发起人', this.chooseValue3);
@@ -409,22 +550,23 @@
 					success: res => {
 						// console.log(res.data);
 						this.AllActivityData = res.data.data;
-						
+
 						// 拿到当前时间
 						let nowtime = new Date();
 						this.endifif = [];
-						
+
 						// 拿到每个活动的是否结束信息【用于初始化蒙版】
-						for(var i = 0; i < this.AllActivityData.length; i ++){
+						for (var i = 0; i < this.AllActivityData.length; i++) {
 							// 拿到每个活动的结束时间
-							let activityEndtime = new Date(Date.parse(this.AllActivityData[i].activityEndtime));
-							if(nowtime > activityEndtime){
+							let activityEndtime = new Date(Date.parse(this.AllActivityData[i]
+								.activityEndtime));
+							if (nowtime > activityEndtime) {
 								this.endifif.push(true);
-							}else{
+							} else {
 								this.endifif.push(false);
 							}
 						}
-						
+
 						console.log(this.endifif);
 					},
 					fail: () => {},
@@ -471,6 +613,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.warp {
+		padding: 10px;
+	}
+
+	.button {
+		margin-bottom: 10px;
+	}
+
 	@mixin flex {
 		/* #ifndef APP-NVUE */
 		display: flex;

@@ -743,60 +743,21 @@
 			"path": "pages/act/act",
 			"style": {
 				"navigationBarTitleText": "活动中心",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					
-					"titleNView": {
-						"buttons": [{
-							"fontWeight": "bold",
-							// "float": "left",
-							"text": "我的",
-							"fontSize": "10px",
-							// "type": "favorite",
-							"fontSrc": "/static/yticon.ttf"
-						}]
-					}
-				}
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/act/detail/detail",
 			"style": {
 				"navigationBarTitleText": "活动详情",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					
-					"titleNView": {
-						"buttons": [{
-							"fontWeight": "bold",
-							// "float": "left",
-							"text": "我的",
-							"fontSize": "10px",
-							// "type": "favorite",
-							"fontSrc": "/static/yticon.ttf"
-						}]
-					}
-				}
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/act/myact/myact",
 			"style": {
 				"navigationBarTitleText": "我的活动",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					
-					"titleNView": {
-						"buttons": [{
-							"fontWeight": "bold",
-							// "float": "left",
-							"text": "申请+",
-							"fontSize": "10px",
-							// "type": "favorite",
-							"fontSrc": "/static/yticon.ttf"
-						}]
-					}
-				}
+				"enablePullDownRefresh": false
 			}
 
 		}
@@ -807,7 +768,7 @@
 				"navigationBarTitleText": "申请发布活动",
 				"enablePullDownRefresh": false
 			}
-
+			
 		}, {
 			"path": "pages/act/editapplication/editapplication",
 			"style": {
@@ -884,7 +845,25 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/act/signinandsignout/myrealact/myrealact",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/act/signinandsignout/manageact/manageact",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "可签到活动列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",
