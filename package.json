@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "qiniu-js": "^3.4.1"
+    "qiniu-js": "^3.4.1",
+    "tki-qrcode": "^0.1.6"
   }
 }

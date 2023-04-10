@@ -46,8 +46,6 @@
 						<image :src="AllActivityData[index].activityPicurl" style="width: 100%;"></image>
 					</view>
 
-
-
 					<view>
 						<text class="uni-body">【{{item.activityMaintitle}}】</text><br>
 						<text class="uni-body" style="color: gray;">{{item.activitySubtitle}}</text>
@@ -62,7 +60,7 @@
 		<u-back-top :scroll-top="scrollTop"></u-back-top>
 
 		<uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
-			:direction="direction" @trigger="trigger" @fabClick="fabClick" />
+			:direction="direction" @trigger="trigger" />
 
 		<view style="height: 10px;"></view>
 	</view>
@@ -330,51 +328,14 @@
 						complete: () => {}
 					});
 				} else {
-					this.content[e.index].active = !e.item.active
-					uni.showModal({
-						title: '提示',
-						content: `您${this.content[e.index].active ? '选中了' : '取消了'}${e.item.text}`,
-						success: function(res) {
-							if (res.confirm) {
-								console.log('用户点击确定')
-							} else if (res.cancel) {
-								console.log('用户点击取消')
-							}
-						}
-					})
+					console.log("无事");
 				}
 
 
-			},
-			fabClick() {
-				
-			},
-			switchBtn(hor, ver) {
-				if (hor === 0) {
-					this.direction = this.direction === 'horizontal' ? 'vertical' : 'horizontal'
-					this.directionStr = this.direction === 'horizontal' ? '垂直' : '水平'
-				} else {
-					this.horizontal = hor
-					this.vertical = ver
-				}
-				this.$forceUpdate()
-			},
-			switchColor() {
-				this.is_color_type = !this.is_color_type
-				if (this.is_color_type) {
-					this.pattern.iconColor = '#aaa'
-					this.pattern.buttonColor = '#fff'
-				} else {
-					this.pattern.iconColor = '#fff'
-					this.pattern.buttonColor = '#007AFF'
-				}
 			},
 
 			// // 悬浮按钮的方法=============================================
-
-
-
-
+			
 			change(e) {
 				console.log('当前模式：' + e.type + ',状态：' + e.show);
 			},

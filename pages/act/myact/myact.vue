@@ -18,12 +18,10 @@
 							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
 						</uni-tag>
 
-<!-- 						<uni-tag :text="signupdata[index].approved" 
-							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
-						</uni-tag> -->
 
 						<text class="uni-body" style="float: left;">{{item.activityMaintitle}}</text><br>
-						<text class="uni-body" style="float: left;font-size: 10px;color: gray;">{{item.activitySubtitle}}</text>
+						<text class="uni-body"
+							style="float: left;font-size: 10px;color: gray;">{{item.activitySubtitle}}</text>
 					</view>
 
 				</uni-card>
@@ -31,29 +29,46 @@
 			</view>
 
 		</view>
-		
+
 		<view v-for="(item,index) in signupdata" v-if="signtagtag">
-		
-					<view @click="opendetail(item.activityid)" :data-activityid="item.activityid" style="text-align: center;">
-		
-		
-						<uni-card :cover="signupdata[index].activity_picurl">
-		
-							<view>
-		
-								<uni-tag :text="item.approved" v-if="signtagtag"
-									custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
-								</uni-tag>
-		
-								<text class="uni-body" style="float: left;">{{item.activity_maintitle}}</text><br>
-								<text class="uni-body" style="float: left;font-size: 10px;color: gray;">{{item.activity_subtitle}}</text>
-							</view>
-							
-						</uni-card>
-		
+
+
+			<view @click="opendetail(item.activityid)" :data-activityid="item.activityid" style="text-align: center;">
+
+
+				<uni-card :cover="signupdata[index].activity_picurl">
+
+					<view>
+
+						<uni-tag :text="item.approved" v-if="signtagtag"
+							custom-style="background-color: #00557f; border-color: #4335d6; color: #fff;float:right;">
+						</uni-tag>
+
+						<text class="uni-body" style="float: left;">{{item.activity_maintitle}}</text><br>
+						<text class="uni-body"
+							style="float: left;font-size: 10px;color: gray;">{{item.activity_subtitle}}</text>
 					</view>
-		
-				</view>
+
+				</uni-card>
+
+			</view>
+
+		</view>
+
+
+
+		<view v-if="scantagtag">
+			这是测试扫码签到的子界面
+
+			<view class="qrimg">
+				<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
+					:foreground="foreground" :pdground="pdground" :icon="icon" :iconSize="iconsize" :lv="lv"
+					:onval="onval" :loadMake="loadMake" :showLoading="showLoading" :loadingText="loadingText"
+					@result="qrR" />
+			</view>
+
+		</view>
+
 
 		<view style="margin-top: 100px;">
 			<u-empty mode="data" :show="show">
@@ -65,17 +80,40 @@
 
 <script>
 	import $store from '@/store/modules/social/test.js';
+	import tkiQrcode from "@/node_modules/tki-qrcode/components/tki-qrcode/tki-qrcode.vue"
 	export default {
+		components: {
+			tkiQrcode
+		},
 		data() {
 			return {
+
+				// 生成二维码的信息
+				cid: '',
+				val: "{}",
+				size: 200,
+				unit: 'rpx',
+				background: '#b4e9e2', // 背景色
+				foreground: '#309286', // 前景色
+				pdground: '#32dbc6', // 角标色
+				icon: '', // 二维码图标
+				iconsize: 40, // 二维码图标大小
+				lv: 3, // 二维码容错级别 ， 一般不用设置，默认就行
+				onval: true, // val值变化时自动重新生成二维码
+				loadMake: true, // 组件加载完成后自动生成二维码
+				showLoading: true,
+				loadingText: '二维码生成中...',
+
+				// 生成二维码
 
 				show: false,
 
 				tagtag: false, // 【查看申请发布活动】
 				signtagtag: false, // 【查看报名的】
+				scantagtag: false, // 【测试扫码签到】
 
 
-				list: ['已报名的活动', '申请发布的活动','签到签退'],
+				list: ['已报名的活动', '申请发布的活动', '签到签退'],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
 				current: 0,
@@ -120,6 +158,11 @@
 
 		methods: {
 
+			qrR(res) {
+				console.log(res);
+			},
+
+
 			opendetail(id) {
 				console.log("点击查看活动ID为" + id + "的活动详情");
 				uni.navigateTo({
@@ -139,10 +182,11 @@
 
 				if (index === 0) {
 					this.tagtag = false;
+					this.scantagtag = false;
 					this.signtagtag = true;
-					
+
 					this.activitydata = [];
-					
+
 
 					// 已报名的活动
 					// this.signupinfo();
@@ -186,7 +230,8 @@
 													.approvedmessage;
 											}
 										}
-										console.log("=========1111111===============",this.signupdata);
+										console.log("=========1111111===============", this
+											.signupdata);
 									},
 									fail: () => {},
 									complete: () => {}
@@ -204,8 +249,9 @@
 				} else if (index === 1) {
 
 					this.tagtag = true;
+					this.scantagtag = false;
 					this.signtagtag = false;
-					
+
 					this.signupdata = [];
 
 					uni.request({
@@ -214,7 +260,7 @@
 						data: {},
 						success: res => {
 							console.log(res.data.data.length);
-							
+
 							console.log(res.data.data);
 
 							if (res.data.data.length == 0) {
@@ -252,9 +298,21 @@
 					// this.activitydata = [];
 					// this.approvedinfo();
 				} else if (index === 2) {
+
+					this.tagtag = false;
+					this.scantagtag = true;
+					this.signtagtag = false;
+
 					console.log("暂未开发完成");
-					this.activitydata = [];
-					// this.endinfo();
+
+					let temp = {
+						"type": "签到二维码",
+						"userid": this.currentuid,
+						"actid": 100, // 暂时定死
+						"extra": ""
+					}
+
+					this.val = JSON.stringify(temp);
 				} else if (index == 3) {
 					console.log("暂未开发完成!");
 					this.activitydata = [];
