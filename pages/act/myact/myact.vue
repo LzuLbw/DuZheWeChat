@@ -80,7 +80,7 @@
 
 <script>
 	import $store from '@/store/modules/social/test.js';
-	import tkiQrcode from "@/node_modules/tki-qrcode/components/tki-qrcode/tki-qrcode.vue"
+	import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue"
 	export default {
 		components: {
 			tkiQrcode
