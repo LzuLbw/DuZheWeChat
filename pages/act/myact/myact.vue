@@ -57,14 +57,26 @@
 
 
 
-		<view v-if="scantagtag">
-			这是测试扫码签到的子界面
+		<view v-if="scantagtag" style="padding: 10px;">
+			
+			<!-- 			这是测试扫码签到的子界面
 
 			<view class="qrimg">
 				<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
 					:foreground="foreground" :pdground="pdground" :icon="icon" :iconSize="iconsize" :lv="lv"
 					:onval="onval" :loadMake="loadMake" :showLoading="showLoading" :loadingText="loadingText"
 					@result="qrR" />
+			</view> -->
+
+			<!-- 真正报名通过的活动信息 -->
+			<view class="actsignin-list">
+				<view class="actsignin-item" v-for="(item, index) in actsigninList" :key="index" @click="handleClick(item)">
+					<image class="actsignin-image" :src="item.image"></image>
+					<view class="actsignin-content">
+						<view class="actsignin-title">{{ item.title }}</view>
+						<view class="actsignin-desc">{{ item.desc }}</view>
+					</view>
+				</view>
 			</view>
 
 		</view>
@@ -82,11 +94,11 @@
 	import $store from '@/store/modules/social/test.js';
 	import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue"
 	export default {
-		components: {
-			tkiQrcode
-		},
+		
 		data() {
 			return {
+				// 真正报名通过的信息列表
+				actsigninList: [],
 
 				// 生成二维码的信息
 				cid: '',
@@ -157,9 +169,23 @@
 		},
 
 		methods: {
-
-			qrR(res) {
-				console.log(res);
+			
+			handleClick(item){
+				console.log(item);
+				
+				// 跳转至生成二维码页面
+				uni.navigateTo({
+					url: '../signinandsignout/myrealact/myrealact?userid=' + this.currentuid + '&username=' + this.currentuname + '&actid=' + item.actid + '&actname=' + item.title,
+					success: res => {
+						console.log("打开生成二维码页面成功");
+					},
+					fail: () => {
+						console.log("打开生成二维码页面失败");
+					},
+					complete: () => {}
+				});
+				
+				
 			},
 
 
@@ -181,6 +207,7 @@
 				this.current = index;
 
 				if (index === 0) {
+					this.show = true;
 					this.tagtag = false;
 					this.scantagtag = false;
 					this.signtagtag = true;
@@ -195,12 +222,14 @@
 						method: 'GET',
 						data: {},
 						success: res => {
-							console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-							console.log(res.data.data);
+
+
+							this.signupdata.length = 0;
 
 							this.activitydata = res.data.data;
 							if (res.data.data.length == 0) {
 								this.show = true;
+
 							} else {
 								this.show = false;
 
@@ -247,7 +276,6 @@
 
 
 				} else if (index === 1) {
-
 					this.tagtag = true;
 					this.scantagtag = false;
 					this.signtagtag = false;
@@ -259,18 +287,20 @@
 						method: 'GET',
 						data: {},
 						success: res => {
+
+							this.signupdata.length = 0;
+							this.activitydata.length = 0;
+
 							console.log(res.data.data.length);
 
 							console.log(res.data.data);
 
 							if (res.data.data.length == 0) {
 								this.show = true;
+								this.signtagtag = false;
 							} else {
 								this.show = false;
-
-
 								this.activitydata = res.data.data;
-
 
 								// console.log(res.data.data[0]);
 
@@ -286,9 +316,6 @@
 								}
 							}
 
-
-
-
 						},
 						fail: () => {},
 						complete: () => {}
@@ -298,21 +325,42 @@
 					// this.activitydata = [];
 					// this.approvedinfo();
 				} else if (index === 2) {
-
+					this.show = false;
 					this.tagtag = false;
 					this.scantagtag = true;
 					this.signtagtag = false;
 
 					console.log("暂未开发完成");
 
-					let temp = {
-						"type": "签到二维码",
-						"userid": this.currentuid,
-						"actid": 100, // 暂时定死
-						"extra": ""
-					}
+					// 获取报名状态信息
+					uni.request({
+						url: 'http://123.56.217.170:8080/actSignupinfo/listActSignUserYes/' + this.currentuid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							console.log(res.data.data);
 
-					this.val = JSON.stringify(temp);
+							this.actsigninList.length = 0;
+
+							for (let i = 0; i < res.data.data.length; i++) {
+								this.actsigninList.push({
+
+									image: res.data.data[i].activity_picurl,
+									title: res.data.data[i].activity_maintitle,
+									desc: res.data.data[i].activity_subtitle,
+									actid: res.data.data[i].activityid,
+									username: res.data.data[i].user_name,
+									userid:res.data.data[i].userid
+
+								})
+							}
+
+
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
 				} else if (index == 3) {
 					console.log("暂未开发完成!");
 					this.activitydata = [];
@@ -413,5 +461,39 @@
 		width: 10px;
 		height: 10px;
 		float: right;
+	}
+
+
+	.actsignin-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.actsignin-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+	.actsignin-image {
+		width: 150px;
+		height: 100px;
+		margin-right: 20px;
+	}
+
+	.actsignin-content {
+		flex: 1;
+	}
+
+	.actsignin-title {
+		font-size: 15px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+
+	.actsignin-desc {
+		font-size: 11px;
+		color: #666;
 	}
 </style>

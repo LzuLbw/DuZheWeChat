@@ -858,7 +858,7 @@
             "path" : "pages/act/signinandsignout/manageact/manageact",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "可签到活动列表",
+                "navigationBarTitleText": "扫码签到",
                 "enablePullDownRefresh": false
             }
             

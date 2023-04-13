@@ -72,6 +72,8 @@
 		data() {
 			return {
 
+				currentuname: "",
+				currentuid: 0,
 
 				// 悬浮按钮的配置参数
 				horizontal: 'left',
@@ -83,7 +85,7 @@
 					selectedColor: '#007AFF',
 					buttonColor: '#71aaaa',
 					iconColor: '#fff'
-					
+
 				},
 				is_color_type: false,
 				content: [{
@@ -169,14 +171,6 @@
 
 		},
 		onLoad() {
-
-			this.$store.dispatch('GetInfo').then(res => {
-				// console.log("当前登录用户的昵称为：", res.user.nickName);
-				// console.log("当前登录用户的ID为", res.user.userId);
-
-			})
-
-
 			// console.log("当前所在位置：全部活动页面");
 			// console.log("当前登录用户id=", getApp().globalData.uid);
 
@@ -239,6 +233,61 @@
 		},
 
 		onShow() {
+
+			this.$store.dispatch('GetInfo').then(res => {
+				// console.log("当前登录用户的昵称为：", res.user.nickName);
+				// console.log("当前登录用户的ID为", res.user.userId);
+				this.currentuname = res.user.nickName;
+				this.currentuid = res.user.userId;
+
+				// 初始化悬浮按钮状态
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/iftaaactPermission/' + this.currentuid,
+					method: 'GET',
+					data: {},
+					success: res => {
+
+						this.content = [{
+									iconPath: '/static/act/star.png',
+									selectedIconPath: '/static/act/star.png',
+									text: '我的活动',
+									active: false
+								},
+								{
+									iconPath: '/static/act/apply.png',
+									selectedIconPath: '/static/act/apply.png',
+									text: '申请发布',
+									active: false
+								},
+								{
+									iconPath: '/static/act/scan.png',
+									selectedIconPath: '/static/act/scan.png',
+									text: '签到签退',
+									active: false
+								},
+
+							],
+
+
+							// console.log(this.currentuid);
+							// console.log("=======================");
+							console.log(res.data.data);
+
+						if (res.data.data.length != 0) {
+							console.log("当前登录用户可进行签到扫码操作");
+						} else {
+							console.log("当前登录用户不可进行签到扫码操作");
+							this.content.pop();
+						}
+
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+
+			})
+
+
 			uni.request({
 				url: 'http://123.56.217.170:8080/actActivity',
 				method: 'GET',
@@ -335,7 +384,7 @@
 			},
 
 			// // 悬浮按钮的方法=============================================
-			
+
 			change(e) {
 				console.log('当前模式：' + e.type + ',状态：' + e.show);
 			},
