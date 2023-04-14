@@ -339,16 +339,55 @@
 				if (e.item.text == "签到签退") {
 					console.log("点击了进行签到签退");
 
-					// 跳转到生成二维码的页面
-					uni.navigateTo({
-						url: 'signinandsignout/manageact/manageact',
-						success: res => {
-							console.log("打开成功,id = ", id);
-						},
-						fail: () => {
-							console.log("打开签到签退页面失败");
-						},
-						complete: () => {}
+					// 直接调用函数进行扫码
+					// 只允许通过相机扫码
+					uni.scanCode({
+						onlyFromCamera: true,
+						success: function(res) {
+							console.log('条码类型：' + res.scanType);
+							console.log('条码内容：' + res.result);
+					
+							let obj = JSON.parse(res.result);
+							console.log(obj);
+					
+							// 将扫描到的信息加入数据库
+							uni.request({
+								url: 'http://123.56.217.170:8080/actSignupinfo/SignInScan/new',
+								method: 'POST',
+								data: {
+					
+									"userid": obj.userid,
+									"username": obj.username,
+									"actid": obj.actid,
+									"actname": obj.actname
+					
+								},
+								success: res => {
+									console.log(res);
+									
+									
+									if(res.data == "签到成功"){
+										uni.showToast({
+											
+											title: '签到成功',
+											duration: 2000
+										});
+									}else {
+										uni.showToast({
+											icon:'error',
+											title: '签到失败',
+											duration: 2000
+										});
+									}	
+								},
+								fail: () => {
+									
+								},
+								complete: () => {}
+							});
+					
+					
+						}
 					});
 
 

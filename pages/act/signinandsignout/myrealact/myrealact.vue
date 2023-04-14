@@ -1,7 +1,8 @@
 <template>
 	<view>
-		
-		
+
+		<uni-notice-bar show-icon :text="currentTime" />
+
 		<view>
 			<view> 活动ID: {{ actid }}</view>
 			<view> 活动名: {{ actname }}</view>
@@ -9,6 +10,7 @@
 			<view> 用户名: {{ username }}</view>
 		</view>
 		
+	
 		<view style="display: flex; justify-content: center; margin-top: 50px;">
 			<view class="qrimg">
 				<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
@@ -17,20 +19,25 @@
 					@result="qrR" />
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
 	import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue"
 	export default {
-		
+
 		components: {
 			tkiQrcode
 		},
-		
+
 		data() {
 			return {
+
+				// 当前实时时间
+				currentTime: '',
+
+
 				// 生成二维码的信息
 				cid: '',
 				val: "{}",
@@ -46,50 +53,61 @@
 				loadMake: true, // 组件加载完成后自动生成二维码
 				showLoading: true,
 				loadingText: '二维码生成中...',
-				
+
 				// 生成二维码
-				
+
 				actid: 0,
 				actname: '',
 				userid: 0,
 				username: ''
-				
+
 			}
 		},
-		
-		onLoad:function(e){
-			console.log(e);
-			
-			let temp = {
-				"type": "签到二维码",
-				"userid": e.userid,
-				"actid": e.actid, // 暂时定死【】释放
-				"actname": e.actname,
-				"username":e.username,
-				"extra": ""
-			};
-			
-			console.log(temp);
-			
-			this.val = JSON.stringify(temp);
-			
+
+		mounted() {
+			// 每秒更新时间
+			setInterval(() => {
+				const now = new Date()
+				const options = {
+					hour12: false,
+					timeZone: 'Asia/Shanghai'
+				}
+				this.currentTime = "当前时间: " + now.toLocaleTimeString('en-US', options)
+			}, 1000)
+		},
+
+		onLoad: function(e) {
+			// console.log(e);
+
 			this.actid = e.actid;
 			this.actname = e.actname;
 			this.userid = e.userid;
 			this.username = e.username;
-			
-			
-			
+
+			let temp = {
+				"type": "签到二维码",
+				"userid": parseInt(this.userid),
+				"actid": parseInt(this.actid), // 暂时定死【】释放
+				"actname": this.actname,
+				"username": this.username,
+				"extra": ""
+			};
+
+			// console.log(temp);
+
+			this.val = JSON.stringify(temp);
+
+			console.log("=========");
+			console.log(this.val);
+
 		},
-		
+
 		methods: {
-			
+
 			qrR(res) {
 				console.log(res);
-				
-				
 			},
-			
+
 		}
 	}
 </script>

@@ -849,7 +849,7 @@
             "path" : "pages/act/signinandsignout/myrealact/myrealact",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "签到签退二维码",
                 "enablePullDownRefresh": false
             }
             

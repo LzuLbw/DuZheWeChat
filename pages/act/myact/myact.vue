@@ -59,6 +59,8 @@
 
 		<view v-if="scantagtag" style="padding: 10px;">
 			
+			<uni-notice-bar show-icon text="请在签到签退时间内将二维码出示予工作人员" />
+			
 			<!-- 			这是测试扫码签到的子界面
 
 			<view class="qrimg">
