@@ -18,137 +18,190 @@
 
 		<u-subsection :list="list" :current="current" @change="sectionChange"></u-subsection>
 
-		<scroll-view scroll-x="true" scroll-y="true" class="content" v-if="fileshow">
+		<scroll-view scroll-x="false" scroll-y="true" class="content" v-if="fileshow">
 
 			<view class="bgcontent">
 
-				<view class="itemitem">
-					<uni-icons type="star" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动主题：</text><text
-						class="maintitilecontent">{{ActivityData.activityMaintitle}}</text><br />
-				</view>
+				<view style="height: 1rpx;"></view>
 
-				<view class="itemitem">
-					<uni-icons type="paperplane" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动副标题：</text><text
-						class="maintitilecontent">{{ActivityData.activitySubtitle}}</text><br />
-				</view>
+				<uni-group title="活动基本信息" mode="card">
 
-				<view class="itemitem">
-					<uni-icons type="chatbubble" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动类型：</text><text
-						class="maintitilecontent">{{ActivityData.activityType}}</text><br />
-				</view>
+					<view class="itemitem">
+						<uni-icons type="star" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动主题：</text>
+						<text class="maintitilecontent">{{ActivityData.activityMaintitle}}</text><br />
+					</view>
 
-				<view class="itemitem">
-					<uni-icons type="compose" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动描述：</text><text
-						class="maintitilecontent">{{ActivityData.activityDesc}}</text><br />
-				</view>
+					<view class="itemitem">
+						<uni-icons type="paperplane" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动副标题：</text><text
+							class="maintitilecontent">{{ActivityData.activitySubtitle}}</text><br />
+					</view>
 
-				<view class="itemitem">
-					<uni-icons type="link" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动公司：</text><text
-						class="maintitilecontent">{{ActivityData.activityEnterprise}}</text><br />
-				</view>
+					<view class="itemitem">
+						<uni-icons type="chatbubble" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动类型：</text><text
+							class="maintitilecontent">{{ActivityData.activityType}}</text><br />
+					</view>
 
-				<view class="itemitem">
-					<uni-icons type="fire" size="20" color="#000000"></uni-icons><text
-						class="maintitile">报名开始时间：</text><text
-						class="maintitilecontent">{{ActivityData.activityRegistrationstarttime}}</text><br />
-				</view>
+					<view class="itemitem">
+						<uni-icons type="compose" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动描述：</text><text
+							class="maintitilecontent">{{ActivityData.activityDesc}}</text><br />
+					</view>
 
-				<view class="itemitem">
-					<uni-icons type="notification" size="20" color="#000000"></uni-icons><text
-						class="maintitile">报名结束时间：</text><text
-						class="maintitilecontent">{{ActivityData.activityRegistrationendtime}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="font" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动开始时间：</text><text
-						class="maintitilecontent">{{ActivityData.activityStarttime}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="info" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动结束时间：</text><text
-						class="maintitilecontent">{{ActivityData.activityEndtime}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="personadd" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动人数：</text><text
-						class="maintitilecontent">{{ActivityData.activitityNumbernum}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="personadd" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动报名人数情况：</text><text class="maintitilecontent">{{signnum}} / {{actpersonnum}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="auth" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动发起人：</text><text
-						class="maintitilecontent">{{ActivityData.activitySponsor}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="phone" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动发起人联系方式：</text><text
-						class="maintitilecontent">{{ActivityData.activitySponsorcontact}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="location" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动地点：</text><text
-						class="maintitilecontent">{{ActivityData.activityPlace}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="help" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动注意事项和其他说明：</text><text
-						class="maintitilecontent">{{ActivityData.activityMatters}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="tune" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动归属小站：</text><text
-						class="maintitilecontent">{{ActivityData.activityBelongtostation}}</text><br />
-				</view>
-
-				<view class="itemitem">
-					<uni-icons type="map-pin" size="20" color="#000000"></uni-icons><text
-						class="maintitile">活动举办省市：</text><text
-						class="maintitilecontent">{{ActivityData.activityCity}}</text><br />
-				</view>
+					<view class="itemitem">
+						<uni-icons type="link" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动公司：</text><text
+							class="maintitilecontent">{{ActivityData.activityEnterprise}}</text><br />
+					</view>
+				</uni-group>
 
 
-				<view style="height: 70px;">
+				<view style="height: 20rpx; background-color: #f8f9fa;">
 
 				</view>
+
+
+				<uni-group title="活动时间" mode="card">
+					<view class="itemitem">
+						<!-- <uni-icons type="fire" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons> -->
+						<uni-tag text="报名开始时间" type="primary" size="small" style="margin-left: -5rpx;" />
+						<!-- <text
+							class="maintitile">报名开始时间：</text> -->
+						<text class="maintitilecontent">{{ActivityData.activityRegistrationstarttime}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<!-- <uni-icons type="notification" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+						class="maintitile">报名结束时间：</text> -->
+						<uni-tag text="报名结束时间" type="primary" size="small" style="margin-left: -5rpx;" />
+						<text class="maintitilecontent">{{ActivityData.activityRegistrationendtime}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<!-- <uni-icons type="notification" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+						class="maintitile">报名结束时间：</text> -->
+						<uni-tag text="活动场次信息" type="error" size="small" style="margin-left: -5rpx;" />
+						<text class="maintitilecontent"></text><br />
+					</view>
+
+
+					<!-- <view>
+						<uni-section class="mb-10" :title="sessionsession" :sub-title="hehehe" type="line">
+							<text>开始时间</text>
+							<text>结束时间</text>
+							<text>地点</text>
+						</uni-section>
+					</view> -->
+
+					<uni-table ref="table" border stripe emptyText="暂无更多数据" style="margin-top: 5rpx;">
+						<uni-tr>
+							<uni-th width="60" align="center">场次</uni-th>
+							<uni-th width="150" align="center">场次开始时间</uni-th>
+							<uni-th width="150" align="center">场次结束时间</uni-th>
+							<uni-th align="center">场次进行地点</uni-th>
+						</uni-tr>
+						<uni-tr v-for="(item, index) in currentactsessions" :key="index">
+							<uni-td>{{ item.sessionname }}</uni-td>
+							<uni-td>
+								<view class="name">{{ item.sessionstartdatetime }}</view>
+							</uni-td>
+							<uni-td>
+								<view class="name">{{ item.sessionenddatetime }}</view>
+							</uni-td>
+							<uni-td align="center">{{ item.location }}</uni-td>
+						</uni-tr>
+					</uni-table>
+
+
+					<!-- <view class="itemitem">
+						<uni-icons type="font" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动开始时间：</text><text
+							class="maintitilecontent">{{ActivityData.activityStarttime}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="info" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动结束时间：</text><text
+							class="maintitilecontent">{{ActivityData.activityEndtime}}</text><br />
+					</view> -->
+				</uni-group>
+
+				<uni-group title="活动地点信息" mode="card">
+					<view class="itemitem">
+						<uni-icons type="location" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动地点：</text><text
+							class="maintitilecontent">{{ActivityData.activityPlace}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="tune" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动归属小站：</text style="white-space: nowrap;">
+						<!-- <text class="maintitilecontent">{{ActivityData.activityBelongtostation}}</text> -->
+						<uni-tag :text="ActivityData.activityBelongtostation" type="success" style="margin-left: -5rpx;"
+							@click="openstation(Activityid)" />
+						<br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="map-pin" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动举办省市：</text><text
+							class="maintitilecontent">{{ActivityData.activityCity}}</text><br />
+					</view>
+				</uni-group>
+
+				<uni-group title="注意事项" mode="card">
+
+					<view class="itemitem">
+						<uni-icons type="personadd" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动人数：</text><text
+							class="maintitilecontent">{{ActivityData.activitityNumbernum}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="personadd" size="20" color="#000000"
+							style="margin-left: -5rpx;"></uni-icons><text class="maintitile">活动报名人数情况：</text><text
+							class="maintitilecontent">{{signnum}} / {{actpersonnum}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="auth" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动发起人：</text><text
+							class="maintitilecontent">{{ActivityData.activitySponsor}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="phone" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动发起人联系方式：</text><text
+							class="maintitilecontent">{{ActivityData.activitySponsorcontact}}</text><br />
+					</view>
+
+					<view class="itemitem">
+						<uni-icons type="help" size="20" color="#000000" style="margin-left: -5rpx;"></uni-icons><text
+							class="maintitile">活动注意事项和其他说明：</text><text
+							class="maintitilecontent">{{ActivityData.activityMatters}}</text><br />
+					</view>
+				</uni-group>
 
 				<view class="itemitem" v-if="showsugsug">
-					<uni-icons type="closeempty" size="20" color="#550000"></uni-icons><text class="maintitile"
-						style="color: red;">{{ sugtext }}</text>
+					<uni-icons type="closeempty" size="20" color="#550000" style="margin-left: -5rpx;"></uni-icons><text
+						class="maintitile" style="color: red;">{{ sugtext }}</text>
 					<text class="maintitilecontent">{{ActivityData.activityReviewMessage}}</text><br />
 				</view>
-				
+
+				<view style="height: 20rpx; background-color: #f8f9fa;"></view>
+
 				<image :src="ActivityData.activityPicurl"></image><br>
 
-				<view v-if="showsugsugbutton">
-					<button @click="editapplication" class="mini-btn"
-						style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
-						type="primary" size="mini">重新编辑活动申请信息</button>
-				</view>
+				<!-- 			<view v-if="showsugsugbutton">
+				<button @click="editapplication" class="mini-btn"
+					style="vertical-align: middle;height: 30px;text-align: center;width: 100%;margin-bottom: 10px;"
+					type="primary" size="mini">重新编辑活动申请信息</button>
+			</view> -->
 
 			</view>
-			
-			
-			
 			<view style="height: 50px;"></view>
-
-
 		</scroll-view>
 
 		<!-- 活动附件预览 -->
@@ -169,7 +222,7 @@
 		<view class="goods-carts" v-if="showsug">
 			<view>
 				<uni-goods-nav :options="options" :fill="true" :button-group="customButtonGroup1"
-					@buttonClick="onClickSignUp" @click="onClick" />
+					@buttonClick="onClickSignUp(Activityid)" @click="onClick" />
 			</view>
 		</view>
 
@@ -194,6 +247,18 @@
 	export default {
 		data() {
 			return {
+
+				hehehe: "时间",
+				sessionsession: "场次0",
+
+				// 当前活动所属小站ID
+
+				currentstationid: 0,
+
+				currentactsessions: [],
+
+				// 当前活动是否可以报名
+				signupor: false,
 
 				byPhoneIn: "正在通过手机内置应用加载附件...请稍后",
 
@@ -262,14 +327,37 @@
 				console.log(res.user.userId);
 				this.currentuid = res.user.userId;
 
+				this.initsessions();
+				this.initactinfo();
+				this.initextra();
 
+				// 初始化当前小站信息
 
 				//初始化报名按钮状态
 
 				// 如果报名已满或时间已截止, 那么按钮变为不可用状态【组件不好变...】
 
+			});
 
+			console.log(e);
+			this.Activityid = e.activityid;
+			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
 
+		},
+
+		onShow() {
+			// onLoad();
+			// this.onLoad();
+			// console.log(getCurrentPages());
+			// console.log(this.$options.name);
+			this.initsessions();
+			this.initactinfo();
+			this.initextra();
+		},
+
+		methods: {
+
+			initextra() {
 				uni.request({
 					url: 'http://123.56.217.170:8080/actSignupinfo/' + this.currentuid + "/" + this
 						.Activityid,
@@ -333,10 +421,13 @@
 					fail: () => {},
 					complete: () => {}
 				});
+			},
 
+
+			initactinfo() {
 				//获取活动信息
 				uni.request({
-					url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
+					url: 'http://localhost:8080/actActivity/' + this.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -404,35 +495,41 @@
 
 						//活动未开始
 						if (nowtime < registrationstarttime) {
+							this.signupor = false;
 							console.log("活动未开始");
 							this.stepactive = 0;
 						} else if (nowtime < registrationendtime && nowtime >
 							registrationstarttime) {
+							this.signupor = true;
 							console.log("活动报名中");
 							this.stepactive = 1;
 						} else if (nowtime < activityStarttime && nowtime > registrationendtime) {
 							console.log("等待活动开始");
+							this.signupor = false;
 							this.stepactive = 2;
-							this.customButtonGroup1[0].backgroundColor =
-								'linear-gradient(90deg, #a9a9a9, #878787)'
 
+							this.customButtonGroup1[0].backgroundColor =
+								'linear-gradient(90deg, #bbbbbb, #aeaeae)';
 						} else if (nowtime < activityEndtime && nowtime > activityStarttime) {
 							console.log("活动进行中");
+							this.signupor = false;
 							this.stepactive = 3;
+
 							this.customButtonGroup1[0].backgroundColor =
-								'linear-gradient(90deg, #a9a9a9, #878787)'
+								'linear-gradient(90deg, #bbbbbb, #aeaeae)';
 						} else if (nowtime > activityEndtime) {
 							console.log("活动已结束");
+							this.signupor = false;
 							this.stepactive = 4;
+
 							this.customButtonGroup1[0].backgroundColor =
-								'linear-gradient(90deg, #a9a9a9, #878787)'
+								'linear-gradient(90deg, #bbbbbb, #aeaeae)';
 						}
 
 						// console.log(registrationstarttime);
 						// console.log(new Date() > registrationstarttime);
 						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + e
-								.activityid,
+							url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + this.Activityid,
 							method: 'GET',
 							data: {},
 							success: res => {
@@ -455,19 +552,34 @@
 					fail: () => {},
 					complete: () => {}
 				});
-			});
+			},
 
-			console.log(e);
-			this.Activityid = e.activityid;
-			console.log("当前位置：'id = ", this.Activityid, '的活动详情');
 
-		},
+			initsessions() {
+				// 初始化场次信息
+				uni.request({
+					url: 'http://localhost:8080/actActivity/getAllSessions/' + this.Activityid,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("当前活动的场次信息如下: ");
+						// console.log(res.data.data);
+						this.currentactsessions = res.data.data;
+						console.log(this.currentactsessions);
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 
-		onShow() {
-			this.onLoad();
-		},
+			},
 
-		methods: {
+			// 查看小站详情
+			openstation(id) {
+				console.log(id);
+				uni.navigateTo({
+					url: '/pages/station/station-detail?id=' + id,
+				})
+			},
 
 			// 切换选项卡
 			sectionChange(index) {
@@ -479,16 +591,14 @@
 					this.fileifshow = true;
 
 
-					console.log(uni.getSystemInfoSync().platform);
-					console.log(this.ActivityData.activityAttachment);
+					// console.log(uni.getSystemInfoSync().platform);
+					// console.log("????????????????????~~~~~~~~");
+					// console.log(this.ActivityData.activityAttachment);
 
-					if (this.ActivityData.activityAttachment[0] == "当") {
+					if (this.ActivityData.activityAttachment[0] == "当" || this.ActivityData.activityAttachment === "") {
 						console.log("哈哈哈哈");
-
 						// 弹出一个通知
 						this.messageToggle("当前活动暂无附件");
-
-
 					} else {
 						switch (uni.getSystemInfoSync().platform) {
 							case 'android':
@@ -542,80 +652,109 @@
 			},
 
 
-			onClickSignUp() {
-				console.log(this.useractstatus);
+			onClickSignUp(id) {
 
-				if (this.useractstatus) {
+				// 直接跳转到下单一级页面
+				console.log(id);
 
-					//已经报名了，可进行取消报名的操作
-					console.log("用户点击了取消报名");
-					uni.request({
-						url: "http://123.56.217.170:8080/actSignupinfo/" + this.currentuid + "/" + this
-							.Activityid,
-						method: 'DELETE',
-						data: {},
-						success: res => {
-							console.log(res.data);
-							this.customButtonGroup1[0].text = "立即报名";
-							this.messageToggle("取消报名成功");
-							this.useractstatus = false;
-						},
-						fail: () => {},
-						complete: () => {}
-					});
+				// 如果已经过了报名时间，不能再次进行下单
 
+				//报名开始时间
+				let registrationstarttime = new Date(Date.parse(this.ActivityData.activityRegistrationstarttime));
+				//当前时间
+				let nowtime = new Date();
+				//活动结束时间
+				let activityEndtime = new Date(Date.parse(this.ActivityData.activityEndtime));
 
+				if (nowtime < registrationstarttime) {
+					this.messageToggle("当前活动报名还未开始");
 				} else {
-
-					console.log("用户点击了立即报名");
-
-					// 判断当前时间是否满足条件
-					//当前时间
-					let nowtime = new Date();
-					//报名开始时间
-					let registrationstarttime = new Date(Date.parse(this.ActivityData.activityRegistrationstarttime));
-					//报名结束时间
-					let registrationendtime = new Date(Date.parse(this.ActivityData.activityRegistrationendtime));
-
-					if (nowtime < registrationstarttime) {
-
-						this.messageToggle("报名还未开始");
-
-					} else if (this.signnum == this.ActivityData.activitityNumbernum) {
-
-						this.messageToggle("报名人数已满");
-
-					} else if (nowtime > registrationendtime) {
-
-						this.messageToggle("报名时间已截止");
-
-					} else {
-
-						//还未报名且已到达可报名时间且人数未满，可进行立即报名的操作
-						//立即报名
-						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo',
-							method: 'POST',
-							data: {
-								"userid": this.currentuid,
-								"activityid": this.Activityid
-							},
+					if (this.signupor) {
+						uni.navigateTo({
+							url: '../order/SelectSession/SelectSession?actid=' + this.Activityid,
 							success: res => {
-								console.log(res.data);
-								this.customButtonGroup1[0].text = "取消报名";
-								this.messageToggle("报名成功");
-								this.useractstatus = true;
+								console.log("打开下单一级页面成功");
 							},
-							fail: () => {},
+							fail: () => {
+								console.log("打开下单一级页面失败");
+							},
 							complete: () => {}
 						});
-
+					} else {
+						if (nowtime > activityEndtime) {
+							this.messageToggle("当前活动已结束");
+						} else {
+							this.messageToggle("当前活动报名已截止");
+						}
 					}
-
-
-
-
 				}
+				// if (this.useractstatus) {
+
+				// 	//已经报名了，可进行取消报名的操作
+				// 	console.log("用户点击了取消报名");
+				// 	uni.request({
+				// 		url: "http://123.56.217.170:8080/actSignupinfo/" + this.currentuid + "/" + this
+				// 			.Activityid,
+				// 		method: 'DELETE',
+				// 		data: {},
+				// 		success: res => {
+				// 			console.log(res.data);
+				// 			this.customButtonGroup1[0].text = "立即报名";
+				// 			this.messageToggle("取消报名成功");
+				// 			this.useractstatus = false;
+				// 		},
+				// 		fail: () => {},
+				// 		complete: () => {}
+				// 	});
+
+
+				// } else {
+
+				// 	console.log("用户点击了立即报名");
+
+				// 	// 判断当前时间是否满足条件
+				// 	//当前时间
+				// 	let nowtime = new Date();
+				// 	//报名开始时间
+				// 	let registrationstarttime = new Date(Date.parse(this.ActivityData.activityRegistrationstarttime));
+				// 	//报名结束时间
+				// 	let registrationendtime = new Date(Date.parse(this.ActivityData.activityRegistrationendtime));
+
+				// 	if (nowtime < registrationstarttime) {
+
+				// 		this.messageToggle("报名还未开始");
+
+				// 	} else if (this.signnum == this.ActivityData.activitityNumbernum) {
+
+				// 		this.messageToggle("报名人数已满");
+
+				// 	} else if (nowtime > registrationendtime) {
+
+				// 		this.messageToggle("报名时间已截止");
+
+				// 	} else {
+
+				// 		//还未报名且已到达可报名时间且人数未满，可进行立即报名的操作
+				// 		//立即报名
+				// 		uni.request({
+				// 			url: 'http://123.56.217.170:8080/actSignupinfo',
+				// 			method: 'POST',
+				// 			data: {
+				// 				"userid": this.currentuid,
+				// 				"activityid": this.Activityid
+				// 			},
+				// 			success: res => {
+				// 				console.log(res.data);
+				// 				this.customButtonGroup1[0].text = "取消报名";
+				// 				this.messageToggle("报名成功");
+				// 				this.useractstatus = true;
+				// 			},
+				// 			fail: () => {},
+				// 			complete: () => {}
+				// 		});
+
+				// 	}
+				// }
 			},
 
 			onClick(e) {
@@ -807,6 +946,95 @@
 </script>
 
 <style lang="scss">
+	.container {
+		padding: 20rpx;
+	}
+
+	.title {
+		font-size: 32rpx;
+		font-weight: bold;
+		margin-bottom: 20rpx;
+	}
+
+	.subtitle,
+	.type,
+	.description,
+	.company,
+	.location,
+	.note,
+	.remark,
+	.belong,
+	.province,
+	.price {
+		margin-top: 20rpx;
+	}
+
+	.person,
+	.sponsor {
+		margin-top: 40rpx;
+	}
+
+	.person>view,
+	.sponsor>view,
+	.price>view {
+		font-weight: bold;
+		margin-bottom: 10rpx;
+	}
+
+	.datetime>view:first-child,
+	.person>view:first-child,
+	.price>view:first-child {
+		font-weight: bold;
+		margin-bottom: 10rpx;
+	}
+
+	.datetime>view:not(:first-child),
+	.person>view:not(:first-child),
+	.remark>view:first-child,
+	.belong>view:first-child,
+	.province>view:first-child {
+		font-weight: bold;
+		margin-bottom: 10rpx;
+	}
+
+	.datetime,
+	.person,
+	.sponsor,
+	.price {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.datetime>view,
+	.person>view,
+	.sponsor>view,
+	.price>view,
+	.belong>view,
+	.province>view {
+		display: flex;
+		align-items: center;
+	}
+
+	.datetime>view:not(:first-child),
+	.person>view:not(:first-child),
+	.sponsor>view:not(:first-child),
+	.price>view:not(:first-child),
+	.belong>view:not(:first-child),
+	.province>view:not(:first-child) {
+		margin-top: 10rpx;
+	}
+
+	.datetime>view:last-child {
+		margin-left: auto;
+	}
+
+	.status {
+		font-size: 28rpx;
+		margin-top: 40rpx;
+		text-align: center;
+		color: #ff0000;
+	}
+
 	// .footerreal {
 	// 	background: #662e8c;
 	// 	margin-top: -200px;
@@ -818,7 +1046,8 @@
 	// }
 
 	.itemitem {
-		margin: 2px 2px;
+		margin-top: 15rpx;
+		margin-bottom: 15rpx;
 	}
 
 	.main {}
@@ -830,17 +1059,18 @@
 
 	.maintitilecontent {
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		font-weight: 545;
+		font-weight: bold;
+		margin-left: -5px;
 		color: black;
 		font-size: 14px;
 	}
 
 	.maintitile {
-
-		font-family: 'Courier New', Courier, monospace;
+		font-family: '微软雅黑', Courier, monospace;
 		margin-left: -6px;
-		font-size: 14px;
-		color: #4c474d;
+		font-size: 13px;
+		color: #86898a;
+		font-weight: bold;
 	}
 
 	@mixin flex {

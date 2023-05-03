@@ -36,7 +36,7 @@
 							<img :src="AllActivityData[index].activityPicurl"
 								style="width:100%; opacity:0.6; filter: alpha(opacity=60);" />
 							<div
-								style="width:100%;height: 100%;;position:absolute;z-index:2;top:50%; text-align:center;">
+								style="width:100%;position:absolute;z-index:2;top:50%; text-align:center;">
 								<h2 style="color:#fff">活动已结束</h2>
 							</div>
 						</div>
@@ -178,7 +178,7 @@
 
 			//获取全部活动数据
 			uni.request({
-				url: 'http://123.56.217.170:8080/actActivity',
+				url: 'http://localhost:8080/actActivity',
 				method: 'GET',
 				data: {},
 				success: res => {

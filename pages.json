@@ -863,6 +863,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/act/order/SelectSession/SelectSession",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "下单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/act/order/ContactPage/ContactPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "确认信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
