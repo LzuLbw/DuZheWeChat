@@ -270,7 +270,7 @@
 			console.log(e.actid);
 			this.actid = e.actid;
 
-			// 'http://localhost:8080/actActivity/' + this.Activityid
+			// 'http://123.56.217.170:8080/actActivity/' + this.Activityid
 			uni.request({
 				url: 'http://123.56.217.170:8080/actActivity/' + e.actid,
 				method: 'GET',

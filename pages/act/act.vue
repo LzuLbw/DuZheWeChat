@@ -22,21 +22,17 @@
 		</view> -->
 
 
-		<view v-for="(item,index) in AllActivityData">
+		<view v-for="(item,index) in AllActivityData" :key="index">
 
 			<view @click="opendetail(item.activityId)" :data-activityid="item.activityId" style="text-align: center;">
-
 				<uni-card>
-
 					<!-- <uni-card :cover="AllActivityData[index].activityPicurl" padding="10px"> -->
-
 					<view v-if="endifif[index]">
 						<div class="row"
 							style="width:100%; position:relative;z-index:1;margin:0 auto; background: #000000;">
 							<img :src="AllActivityData[index].activityPicurl"
 								style="width:100%; opacity:0.6; filter: alpha(opacity=60);" />
-							<div
-								style="width:100%;position:absolute;z-index:2;top:50%; text-align:center;">
+							<div style="width:100%;position:absolute;z-index:2;top:50%; text-align:center;">
 								<h2 style="color:#fff">活动已结束</h2>
 							</div>
 						</div>
@@ -47,8 +43,13 @@
 					</view>
 
 					<view>
-						<text class="uni-body">【{{item.activityMaintitle}}】</text><br>
-						<text class="uni-body" style="color: gray;">{{item.activitySubtitle}}</text>
+						<view>
+							<text class="uni-body">【{{item.activityMaintitle}}】</text>
+							<!-- <text class="uni-body" style="color: gray;">{{item.activitySubtitle}}</text> -->
+							<view style="float: right;">
+								<uni-tag :text="actchargeif[index].text" :type='actchargeif[index].stylestyle' />
+							</view>
+						</view>
 					</view>
 
 				</uni-card>
@@ -71,6 +72,8 @@
 	export default {
 		data() {
 			return {
+
+				actchargeif: [],
 
 				currentuname: "",
 				currentuid: 0,
@@ -178,13 +181,14 @@
 
 			//获取全部活动数据
 			uni.request({
-				url: 'http://localhost:8080/actActivity',
+				url: 'http://123.56.217.170:8080/actActivity',
 				method: 'GET',
 				data: {},
 				success: res => {
-					// console.log(res.data.data);
+					console.log(res.data.data);
 					this.AllActivityData = res.data.data;
 					this.endifif = [];
+					this.actchargeif = [];
 					// 拿到当前时间
 					let nowtime = new Date();
 
@@ -198,8 +202,67 @@
 							this.endifif.push(false);
 						}
 					}
+					this.actchargeif.length = 0;
+					// 拿到是否免费的信息，用于初始化index
+					for (let i = 0; i < this.AllActivityData.length; i++) {
+						// console.log(this.actchargeif);
+						if(!this.AllActivityData[i].activityCharge){
+							this.actchargeif.push({text: "免费", stylestyle: 'success'});
+						}else{
+							this.actchargeif.push({text: "付费", stylestyle: 'warning'});
+						}
+						
+					}
+					
+					console.log(this.actchargeif);
+					// uni.request({
+					// 	url: 'http://123.56.217.170:8080/actActivity/getAllPrices/' + this
+					// 		.AllActivityData[i].activityId,
+					// 	method: 'GET',
+					// 	data: {},
+					// 	success: res => {
 
-					console.log(this.endifif);
+					// 		if (res.data.data.length === 0) {
+					// 			// 免费活动
+					// 			let item = {
+					// 				textvalue: "免费活动",
+					// 				style: 'success'
+					// 			}
+					// 			// this.actchargeif.push(item);
+					// 		} else {
+					// 			// // 拿到最低价
+					// 			// var minprice = 100000;
+					// 			// // console.log(Number.isInteger((res.data.data[i].price)));
+					// 			// for (let i = 0; i < res.data.data.length; i++) {
+					// 			// 	if (res.data.data[i].price < minprice) {
+					// 			// 		console.log("交换");
+					// 			// 		minprice = res.data.data[i].price;
+					// 			// 	}
+					// 			// }
+
+					// 			// console.log(minprice);
+
+					// 			// var textinfo = "收费活动 " + "￥" + minprice + "起"
+
+					// 			let item = {
+					// 				textvalue: "收费活动",
+					// 				style: 'warning'
+					// 			}
+					// 			// this.actchargeif.push(item);
+					// 		}
+
+					// 		console.log("??????????????????????????");
+					// 		console.log(this.actchargeif);
+
+					// 	},
+					// 	fail: () => {},
+					// 	complete: () => {}
+					// });
+
+					// console.log("??????????????????????????????????");
+					// console.log(this.actchargeif);
+
+					// console.log(this.endifif);
 				},
 				fail: () => {},
 				complete: () => {}
@@ -312,6 +375,18 @@
 					}
 
 					console.log(this.endifif);
+					
+					this.actchargeif.length = 0;
+					// 拿到是否免费的信息，用于初始化index
+					for (let i = 0; i < this.AllActivityData.length; i++) {
+						// console.log(this.actchargeif);
+						if(!this.AllActivityData[i].activityCharge){
+							this.actchargeif.push({text: "免费", stylestyle: 'success'});
+						}else{
+							this.actchargeif.push({text: "付费", stylestyle: 'warning'});
+						}
+						
+					}
 
 
 				},
@@ -346,47 +421,47 @@
 						success: function(res) {
 							console.log('条码类型：' + res.scanType);
 							console.log('条码内容：' + res.result);
-					
+
 							let obj = JSON.parse(res.result);
 							console.log(obj);
-					
+
 							// 将扫描到的信息加入数据库
 							uni.request({
 								url: 'http://123.56.217.170:8080/actSignupinfo/SignInScan/new',
 								method: 'POST',
 								data: {
-					
+
 									"userid": obj.userid,
 									"username": obj.username,
 									"actid": obj.actid,
 									"actname": obj.actname
-					
+
 								},
 								success: res => {
 									console.log(res);
-									
-									
-									if(res.data == "签到成功"){
+
+
+									if (res.data == "签到成功") {
 										uni.showToast({
-											
+
 											title: '签到成功',
 											duration: 2000
 										});
-									}else {
+									} else {
 										uni.showToast({
-											icon:'error',
+											icon: 'error',
 											title: '签到失败',
 											duration: 2000
 										});
-									}	
+									}
 								},
 								fail: () => {
-									
+
 								},
 								complete: () => {}
 							});
-					
-					
+
+
 						}
 					});
 

@@ -1,23 +1,24 @@
 <template>
 	<view class="container">
+		<view style="height: 20rpx;background-color: white;"></view>
 		<image class="poster" :src="resorderdata.actpicurl" />
 
 		<uni-group title="活动信息" mode="card">
-			<view> 活动名: {{resorderdata.actname}} </view>
-			<view> 活动开始时间: {{resorderdata.sessionstartdatetime}} </view>
-			<view> 活动结束时间: {{resorderdata.sessionenddatetime}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 活动名: {{resorderdata.actname}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 活动开始时间: {{resorderdata.sessionstartdatetime}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 活动结束时间: {{resorderdata.sessionenddatetime}} </view>
 		</uni-group>
 
 		<uni-group title="票价信息" mode="card">
-			<view> 票种: {{resorderdata.pricedescription}} </view>
-			<view> 单价: {{resorderdata.pricenum}} </view>
-			<view> 数量: {{resorderdata.ticketnum}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 票种: {{resorderdata.pricedescription}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 单价: {{resorderdata.pricenum}} </view>
+			<view style="margin-top: 10px;margin-bottom: 10px;"> 数量: {{resorderdata.ticketnum}} </view>
 		</uni-group>
 
 		<uni-group title="填写个人信息" mode="card">
 			<view class="form">
-				<input class="input" type="text" placeholder="姓名" v-model="name"></input>
-				<input class="input" type="text" placeholder="手机号" v-model="phone"></input>
+				<input class="input" type="text" placeholder="姓名" v-model="name"></input><br>
+				<input class="input" type="text" maxlength="11" placeholder="手机号" v-model="phone"></input>
 			</view>
 		</uni-group>
 
@@ -79,7 +80,7 @@
 		width: 100%;
 		height: 200px;
 		object-fit: cover;
-		margin-bottom: 10px;
+		/* margin-bottom: 10px; */
 	}
 
 	.info {
@@ -110,8 +111,11 @@
 	}
 
 	.label {
+		margin-top: 5px;
 		font-size: 16px;
 		font-weight: bold;
+		margin-left: 10px;
+		text-align: center;
 	}
 
 	.value {

@@ -21,18 +21,20 @@
 
 		<view style="display: flex; flex-wrap: wrap;">
 			<view style="width: 375rpx;" v-for="(item,index) in currentactsessions" :key="index"
-				@click="selectsessionopt(item)">
-				<uni-group mode="card" :class="item.activate ? 'sessionselect' : ''">
-					<view :class="item.activate ? 'sessionselect' : ''" style="font-weight: bold;"> {{item.sessionname}}
+				@click="selectsessionopt(item)" :class="item.activate ? 'sessionselect' : ''">
+
+				<uni-group mode="card">
+					<view style="font-weight: bold;"> {{item.sessionname}}
 					</view>
 					<hr style="margin-top: 1rpx;margin-bottom: 1rpx;">
-					<text :class="item.activate ? 'sessionselect' : ''" style="font-size: 0.3rem;">开始时间</text>
-					<view :class="item.activate ? 'sessionselect' : ''"> {{item.sessionstarttime}} </view>
-					<text :class="item.activate ? 'sessionselect' : ''" style="font-size: 0.3rem;">结束时间</text>
-					<view :class="item.activate ? 'sessionselect' : ''"> {{item.sessionendtime}} </view>
-					<text :class="item.activate ? 'sessionselect' : ''" style="font-size: 0.3rem;">场次地点</text>
-					<view :class="item.activate ? 'sessionselect' : ''"> {{item.sessionlocation}} </view>
+					<text style="font-size: 0.3rem;">开始时间</text>
+					<view> {{item.sessionstarttime}} </view>
+					<text style="font-size: 0.3rem;">结束时间</text>
+					<view> {{item.sessionendtime}} </view>
+					<text style="font-size: 0.3rem;">场次地点</text>
+					<view> {{item.sessionlocation}} </view>
 				</uni-group>
+
 			</view>
 		</view>
 		<view style="height: 20rpx;"></view>
@@ -43,14 +45,12 @@
 			</template>
 		</uni-section>
 
-
-
 		<view style="display: flex; flex-wrap: wrap;">
 			<view style="width: 250rpx;" v-for="(item,index) in currentactprices" :key="index"
-				@click="selectpriceopt(item)">
-				<uni-group mode="card" :class="item.activate ? 'priceselect' : ''">
-					<view :class="item.activate ? 'priceselect' : ''"> {{item.pricedescription}} </view>
-					<view :class="item.activate ? 'priceselect' : ''"> ￥{{item.pricenum}} </view>
+				@click="selectpriceopt(item)" :class="item.activate ? 'priceselect' : ''">
+				<uni-group mode="card">
+					<view> {{item.pricedescription}} </view>
+					<view> ￥{{item.pricenum}} </view>
 				</uni-group>
 			</view>
 		</view>
@@ -172,7 +172,7 @@
 				return "此活动共有" + this.currentactsessions.length + "场[单次只可购买一场]"
 			},
 			totalprices() {
-				return "此活动共有" + this.currentactprices.length + "种票价";
+				return this.currentactprices.length === 0 ? "此活动是免费活动" :"此活动共有" + this.currentactprices.length + "种票价";
 			}
 		},
 
@@ -182,7 +182,7 @@
 
 			// 初始化活动信息
 			uni.request({
-				url: 'http://localhost:8080/actActivity/' + e.actid,
+				url: 'http://123.56.217.170:8080/actActivity/' + e.actid,
 				method: 'GET',
 				data: {},
 				success: res => {
@@ -192,12 +192,14 @@
 
 					// 初始化场次信息
 					uni.request({
-						url: 'http://localhost:8080/actActivity/getAllSessions/' + e.actid,
+						url: 'http://123.56.217.170:8080/actActivity/getAllSessions/' + e.actid,
 						method: 'GET',
 						data: {},
 						success: res => {
 							console.log("当前活动的场次信息如下: ");
 							// console.log(res.data.data);
+
+							console.log();
 
 							console.log(res.data.data);
 							for (let i = 0; i < res.data.data.length; i++) {
@@ -236,7 +238,8 @@
 							// 初始化价格信息
 							// 初始化场次信息
 							uni.request({
-								url: 'http://localhost:8080/actActivity/getAllPrices/' + e
+								url: 'http://123.56.217.170:8080/actActivity/getAllPrices/' +
+									e
 									.actid,
 								method: 'GET',
 								data: {},
@@ -255,6 +258,10 @@
 										}
 
 										this.currentactprices.push(item);
+									}
+
+									if (this.currentactprices.length === 0) {
+										this.totalsessions = "这是一个免费活动";
 									}
 
 									uni.request({
@@ -415,15 +422,30 @@
 				console.log(orderdata.sessionname);
 				if (orderdata.sessionname === undefined) {
 					// 还未选择场次，不能进入下一步，提示一下
-
 					this.dialogToggle('error', "您还未选择活动场次信息");
-
 				} else {
 
-					if (orderdata.pricenum === undefined) {
+					if (orderdata.pricenum === undefined && this.ActivityData.activityCharge) {
+
 						this.dialogToggle('error', "您还未选择活动价格信息");
-					} else {
+					} else if (this.ActivityData.activityCharge === 0) {
+						// 这是一个免费活动
+						orderdata.pricenum = 0;
+						orderdata.pricedescription = "免费活动";
 						// 省略具体实现
+						uni.navigateTo({
+							url: '../ContactPage/ContactPage?data=' + encodeURIComponent(JSON.stringify(
+								orderdata)),
+							success: res => {
+								console.log("打开下单二级页面成功");
+							},
+							fail: () => {
+								console.log("打开下单二级页面失败");
+							},
+							complete: () => {}
+						});
+					} else {
+						// 省略具体实现【这是一个收费活动】
 						uni.navigateTo({
 							url: '../ContactPage/ContactPage?data=' + encodeURIComponent(JSON.stringify(
 								orderdata)),
@@ -450,6 +472,7 @@
 		background-color: cornflowerblue;
 		color: white;
 		font-weight: bold;
+		border-radius: 10px;
 
 	}
 
@@ -457,6 +480,7 @@
 		background-color: darkorange;
 		color: white;
 		font-weight: bold;
+		border-radius: 10px;
 	}
 
 	.mb-10 {

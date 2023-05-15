@@ -427,7 +427,7 @@
 			initactinfo() {
 				//获取活动信息
 				uni.request({
-					url: 'http://localhost:8080/actActivity/' + this.Activityid,
+					url: 'http://123.56.217.170:8080/actActivity/' + this.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
@@ -558,7 +558,7 @@
 			initsessions() {
 				// 初始化场次信息
 				uni.request({
-					url: 'http://localhost:8080/actActivity/getAllSessions/' + this.Activityid,
+					url: 'http://123.56.217.170:8080/actActivity/getAllSessions/' + this.Activityid,
 					method: 'GET',
 					data: {},
 					success: res => {
