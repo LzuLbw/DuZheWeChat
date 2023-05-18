@@ -31,21 +31,46 @@
 				<text class="label">总价：</text>
 				<text class="value">{{resorderdata.sumpricecost}}元</text>
 			</view>
-			<button class="submit-btn" @click="submitOrder">提交订单</button>
+			<button class="submit-btn" @click="submitOrder">{{subtext}}</button>
 		</view>
 
+		<view>
+			<!-- 提示窗示例 -->
+			<uni-popup ref="alertDialog" type="dialog">
+				<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="知道了" title="提示" :content="messageText"
+					@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
+			</uni-popup>
+		</view>
+		
+		<u-toast ref="uToast" />
 
 	</view>
 </template>
 
 <script>
+	import $store from '@/store/modules/social/test.js';
 	export default {
 		data() {
 			return {
-				
+
+
+				type: 'center',
+				msgType: 'success',
+				messageText: '这是一条成功提示',
+				value: '',
+
+				loadingshow: false,
+				status: 'more',
+				subtext: "提交订单",
+
 				name: '',
 				phone: '',
-				resorderdata: {}
+				resorderdata: {},
+				currentuname: '',
+				currentuid: 0,
+
+				orderstatus: 0
+
 			}
 		},
 
@@ -53,6 +78,21 @@
 			let orderdatadetail = JSON.parse(decodeURIComponent(orderdata.data));
 			console.log(orderdatadetail);
 			this.resorderdata = orderdatadetail;
+
+
+		},
+
+		onShow() {
+			this.$store.dispatch('GetInfo').then(res => {
+				console.log("当前下单用户的昵称为：", res.user.nickName);
+				console.log("当前下单用户的ID为", res.user.userId);
+				this.currentuname = res.user.nickName;
+				this.currentuid = res.user.userId;
+
+			});
+			this.name = '';
+			this.phone = '';
+			this.subtext = '提交订单';
 		},
 
 		computed: {
@@ -61,8 +101,83 @@
 			}
 		},
 		methods: {
+
+			dialogConfirm() {
+				// console.log('点击确认')
+				// this.messageText = `点击确认了 ${this.msgType} 窗口`
+				// this.$refs.message.open()
+			},
+
+			dialogClose() {
+				// console.log('点击关闭')
+			},
+
+			dialogToggle(type, info) {
+				this.msgType = type
+				this.messageText = info
+				this.$refs.alertDialog.open()
+			},
+
+
 			submitOrder() {
-				// 提交订单的逻辑代码
+				//生成当前时间和十分钟自动超时时间
+				// 打印当前订单信息
+
+				// 判断当前总金额，如果为0说明是免费活动，无需支付
+				if (this.resorderdata.sumpricecost === 0) {
+					this.orderstatus = 1;
+				};
+
+				// 检查输入信息
+				if (this.name === '') {
+					this.dialogToggle('error', "您还未填写姓名");
+				} else {
+
+					if (this.phone === '') {
+						this.dialogToggle('error', "您还未填写手机号");
+					} else {
+						uni.request({
+							url: 'http://123.56.217.170:8080/actActivity/addAActOrder',
+							method: 'POST',
+							data: {
+								"actid": this.resorderdata.actid,
+								"userid": this.currentuid,
+								"sessionid": this.resorderdata.sessionid,
+								"priceid": this.resorderdata.priceid,
+								"username": this.name,
+								"phonenumber": this.phone,
+								"ticketnum": this.resorderdata.ticketnum,
+								"totalprice": this.resorderdata.sumpricecost,
+								"orderstatus": this.orderstatus
+							},
+							success: res => {
+								console.log(res.data);
+								// 提交订单的逻辑代码
+								this.subtext = "正在生成订单...";
+								setTimeout(() => {
+									this.subtext = "订单生成完成!正在跳往订单详情页...";
+									// 跳向新页面
+									uni.navigateTo({
+										url: '../../orderdetail/orderdetail?data=' + res.data,
+										success: res => {
+											console.log("打开订单详情页面成功");
+										},
+										fail: () => {
+											console.log("打开订单详情页面失败");
+										},
+										complete: () => {}
+									});
+
+								}, 2000);
+								// 拿到生成订单的id 信息
+								
+							},
+							fail: () => {},
+							complete: () => {}
+						});
+					}
+				}
+
 			}
 		}
 	}

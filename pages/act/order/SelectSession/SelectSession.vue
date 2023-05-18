@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import order from '../../../../store/modules/shop/order';
 	export default {
 		data() {
 			return {
@@ -429,6 +430,7 @@
 
 						this.dialogToggle('error', "您还未选择活动价格信息");
 					} else if (this.ActivityData.activityCharge === 0) {
+						orderdata.priceid = -1;
 						// 这是一个免费活动
 						orderdata.pricenum = 0;
 						orderdata.pricedescription = "免费活动";

@@ -3,14 +3,15 @@
 
 		<uni-notice-bar show-icon :text="currentTime" />
 
-		<view>
-			<view> 活动ID: {{ actid }}</view>
-			<view> 活动名: {{ actname }}</view>
-			<view> 用户ID: {{ userid }}</view>
-			<view> 用户名: {{ username }}</view>
+		<view style="text-align: center;">
+			<view style="margin: 20rpx;"> 活动ID: {{ actid }}</view>
+			<view style="margin: 20rpx;"> 活动名: {{ actname }}</view>
+			<view style="margin: 20rpx;"> 用户ID: {{ userid }}</view>
+			<view style="margin: 20rpx;"> 用户名: {{ username }}</view>
+			<view style="margin: 20rpx;"> 场次时间: {{ resorderdata.SessionStartDatetime }}</view>
 		</view>
-		
-	
+
+
 		<view style="display: flex; justify-content: center; margin-top: 50px;">
 			<view class="qrimg">
 				<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
@@ -59,9 +60,14 @@
 				actid: 0,
 				actname: '',
 				userid: 0,
-				username: ''
+				username: '',
+				resorderdata: {}
 
 			}
+		},
+
+		onShow() {
+
 		},
 
 		mounted() {
@@ -77,12 +83,18 @@
 		},
 
 		onLoad: function(e) {
-			// console.log(e);
 
-			this.actid = e.actid;
-			this.actname = e.actname;
-			this.userid = e.userid;
-			this.username = e.username;
+			let orderdatadetail = JSON.parse(decodeURIComponent(e.data));
+			// console.log(orderdatadetail);
+			this.resorderdata = orderdatadetail;
+
+			console.log("=======================");
+			console.log(this.resorderdata);
+
+			this.actid = this.resorderdata.actid;
+			this.actname = this.resorderdata.activity_maintitle;
+			this.userid = this.resorderdata.userid;
+			this.username = this.resorderdata.username;
 
 			let temp = {
 				"type": "签到二维码",

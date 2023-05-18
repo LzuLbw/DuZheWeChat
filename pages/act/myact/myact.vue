@@ -55,12 +55,31 @@
 
 		</view>
 
+		<view v-if="showorder" style="padding: 10px;">
+			<view class="actsignin-list">
+				<view class="actsignin-item" v-for="(item, index) in actorderdata" :key="index"
+					@click="handleClickorderdetail(item.orderid)">
+					<image class="actsignin-image" :src="item.image"></image>
+					<view class="actsignin-content">
+						<view class="actsignin-title">{{ item.title }}</view>
+						<view class="actsignin-desc">{{ item.ordersession }}</view>
+						<view style="float: right;margin-top: 5px;"><uni-tag :text="item.orderstatus" type="success" />
+						</view>
+
+					</view>
+				</view>
+			</view>
+
+
+
+		</view>
+
 
 
 		<view v-if="scantagtag" style="padding: 10px;">
-			
+
 			<uni-notice-bar show-icon text="请在签到签退时间内将二维码出示予工作人员" />
-			
+
 			<!-- 			这是测试扫码签到的子界面
 
 			<view class="qrimg">
@@ -72,11 +91,13 @@
 
 			<!-- 真正报名通过的活动信息 -->
 			<view class="actsignin-list">
-				<view class="actsignin-item" v-for="(item, index) in actsigninList" :key="index" @click="handleClick(item)">
-					<image class="actsignin-image" :src="item.image"></image>
+				<view class="actsignin-item" v-for="(item, index) in actsignpayList" :key="index"
+					@click="handleClick(item)">
+					<image class="actsignin-image" :src="item.activity_picurl"></image>
 					<view class="actsignin-content">
-						<view class="actsignin-title">{{ item.title }}</view>
-						<view class="actsignin-desc">{{ item.desc }}</view>
+						<view class="actsignin-title">{{ item.activity_maintitle }}</view>
+						<view class="actsignin-desc">{{ item.activity_subtitle }}</view>
+						<view class="actsignin-desc" style="margin-top: 20rpx;">{{ item.SessionStartDatetime }}</view>
 					</view>
 				</view>
 			</view>
@@ -96,11 +117,15 @@
 	import $store from '@/store/modules/social/test.js';
 	import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue"
 	export default {
-		
+
 		data() {
 			return {
 				// 真正报名通过的信息列表
 				actsigninList: [],
+
+
+				// 真正已支付的活动信息列表
+				actsignpayList: [],
 
 				// 生成二维码的信息
 				cid: '',
@@ -125,9 +150,10 @@
 				tagtag: false, // 【查看申请发布活动】
 				signtagtag: false, // 【查看报名的】
 				scantagtag: false, // 【测试扫码签到】
+				showorder: false, // 【我的活动订单】
 
 
-				list: ['已报名的活动', '申请发布的活动', '签到签退'],
+				list: ['申请发布', '活动订单', '签到签退'],
 				// 或者如下，也可以配置keyName参数修改对象键名
 				// list: [{name: '未付款'}, {name: '待评价'}, {name: '已付款'}],
 				current: 0,
@@ -147,7 +173,11 @@
 				signupdata: [],
 
 				currentuname: "",
-				currentuid: 0
+				currentuid: 0,
+
+
+				// 所有订单数据
+				actorderdata: []
 
 			}
 		},
@@ -161,23 +191,41 @@
 				console.log("当前登录用户的ID为", res.user.userId);
 				this.currentuid = res.user.userId;
 
-				this.sectionChange(1);
+				// this.sectionChange(1);
+				this.sectionChange(0);
 			});
+
 
 		},
 
 		onShow() {
+			this.sectionChange(0);
 			// this.sectionChange(1);
 		},
 
 		methods: {
-			
-			handleClick(item){
+
+			handleClickorderdetail(item) {
+				// 跳转至订单详情页面
 				console.log(item);
-				
+				uni.navigateTo({
+					url: '../orderdetail/orderdetail?data=' + item,
+					success: res => {
+						console.log("打开订单详情页面成功");
+					},
+					fail: () => {
+						console.log("打开订单详情页面失败");
+					},
+					complete: () => {}
+				});
+			},
+
+			handleClick(item) {
+				console.log(item);
+
 				// 跳转至生成二维码页面
 				uni.navigateTo({
-					url: '../signinandsignout/myrealact/myrealact?userid=' + this.currentuid + '&username=' + this.currentuname + '&actid=' + item.actid + '&actname=' + item.title,
+					url: '../signinandsignout/myrealact/myrealact?data=' + encodeURIComponent(JSON.stringify(item)),
 					success: res => {
 						console.log("打开生成二维码页面成功");
 					},
@@ -186,8 +234,8 @@
 					},
 					complete: () => {}
 				});
-				
-				
+
+
 			},
 
 
@@ -208,11 +256,12 @@
 			sectionChange(index) {
 				this.current = index;
 
-				if (index === 0) {
+				if (index === 10) {
 					this.show = true;
 					this.tagtag = false;
 					this.scantagtag = false;
 					this.signtagtag = true;
+
 
 					this.activitydata = [];
 
@@ -277,10 +326,12 @@
 					});
 
 
-				} else if (index === 1) {
+				} else if (index === 0) {
+					this.show = false;
 					this.tagtag = true;
 					this.scantagtag = false;
 					this.signtagtag = false;
+					this.showorder = false;
 
 					this.signupdata = [];
 
@@ -323,7 +374,6 @@
 						complete: () => {}
 					});
 
-
 					// this.activitydata = [];
 					// this.approvedinfo();
 				} else if (index === 2) {
@@ -331,44 +381,93 @@
 					this.tagtag = false;
 					this.scantagtag = true;
 					this.signtagtag = false;
+					this.showorder = false;
 
-					console.log("暂未开发完成");
-
-					// 获取报名状态信息
+					// 请求数据
 					uni.request({
-						url: 'http://123.56.217.170:8080/actSignupinfo/listActSignUserYes/' + this.currentuid,
+						url: 'http://123.56.217.170:8080/actSignupinfo/getAllActAlreadyPayByUserId/' + this.currentuid,
 						method: 'GET',
 						data: {},
 						success: res => {
 							console.log(res.data.data);
-
-							this.actsigninList.length = 0;
-
 							for (let i = 0; i < res.data.data.length; i++) {
-								this.actsigninList.push({
-
-									image: res.data.data[i].activity_picurl,
-									title: res.data.data[i].activity_maintitle,
-									desc: res.data.data[i].activity_subtitle,
-									actid: res.data.data[i].activityid,
-									username: res.data.data[i].user_name,
-									userid:res.data.data[i].userid
-
-								})
+								res.data.data[i].SessionStartDatetime = res.data.data[i].SessionStartDatetime
+									.replace("T", " ");
 							}
 
+							this.actsignpayList = res.data.data;
 
 						},
 						fail: () => {},
 						complete: () => {}
 					});
 
-				} else if (index == 3) {
-					console.log("暂未开发完成!");
-					this.activitydata = [];
-				} else if (index == 4) {
-					console.log("暂未开发完成");
-					this.activitydata = [];
+
+
+				} else if (index === 1) {
+					console.log("查看我的活动订单");
+					this.show = false;
+					this.tagtag = false;
+					this.scantagtag = false;
+					this.signtagtag = false;
+					this.showorder = true;
+
+
+
+					uni.request({
+						url: 'http://123.56.217.170:8080/actSignupinfo/getAllOrderByUserId/' + this.currentuid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							this.actorderdata.length = 0;
+							console.log("当前用户所有的订单信息");
+							console.log(res.data.data);
+
+							if (res.data.data.length === 0) {
+								this.show = true;
+							}
+
+							for (let i = 0; i < res.data.data.length; i++) {
+
+								let temp = '未支付';
+								if (res.data.data[i].orderstatus === 0) {
+									temp = '未支付';
+								} else if (res.data.data[i].orderstatus === 1) {
+									temp = '已支付';
+								} else {
+									temp = '已取消';
+								}
+
+								var timeDataFromDatabase = res.data.data[i].SessionStartDatetime;
+								var dateObj = new Date(timeDataFromDatabase);
+								var year = dateObj.getFullYear(); // 年份
+								var month = dateObj.getMonth() + 1; // 月份 (注意要加1，因为月份从0开始)
+								var day = dateObj.getDate(); // 日期
+								var hours = dateObj.getHours(); // 小时
+								var minutes = dateObj.getMinutes(); // 分钟
+								var seconds = dateObj.getSeconds(); // 秒钟
+								var daysOfWeek = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+								var dayOfWeek = daysOfWeek[dateObj.getDay()];
+
+								var formattedTime = year + '-' + month + '-' + day + ' (' + dayOfWeek + ') ';
+
+								this.actorderdata.push({
+
+									image: res.data.data[i].activity_picurl,
+									title: res.data.data[i].activity_maintitle,
+									desc: res.data.data[i].activity_subtitle,
+									actid: res.data.data[i].activityid,
+									orderid: res.data.data[i].actorderid,
+									orderstatus: temp,
+									ordersession: formattedTime
+
+								})
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
 				}
 
 			},
