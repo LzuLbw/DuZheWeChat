@@ -104,18 +104,18 @@
 				data: {},
 				success: res => {
 					console.log(res.data.data);
-			
+
 					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T",
 						" ");
 					res.data.data[0].ordertime = res.data.data[0].ordertime.replace("T", " ");
-			
+
 					this.orderdata = res.data.data[0];
-			
+
 					// console.log(this.orderdata.SessionStartDatetime);
-			
+
 					// this.orderdata.SessionStartDatetime = this.orderdata.SessionStartDatetime.replace("T", " ");
 					// console.log(this.orderdata.SessionStartDatetime);
-			
+
 					if (this.orderdata.orderstatus === 0) {
 						this.orderstatusa = '未支付';
 					} else if (this.orderdata.orderstatus === 1) {
@@ -129,8 +129,8 @@
 						this.payshow = false;
 						this.countshow = false;
 					}
-			
-			
+
+
 					if (this.orderdata.orderstatus == 1) {
 						this.countdown = "已支付";
 						// this.
@@ -139,21 +139,21 @@
 					} else {
 						// 拿到超时时间
 						const endTimeString = this.orderdata.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
-			
+
 						// 解析超时时间为时间戳
 						const endTime = new Date(endTimeString).getTime();
-			
+
 						// 使用 setInterval 更新倒计时
 						setInterval(() => {
 							const now = Date.now();
 							const remainingTime = endTime - now;
-			
+
 							if (remainingTime > 0) {
 								const seconds = Math.floor(remainingTime / 1000);
 								const minutes = Math.floor(seconds / 60);
 								const hours = Math.floor(minutes / 60);
 								const days = Math.floor(hours / 24);
-			
+
 								this.countdown =
 									`${minutes % 60}分钟 ${seconds % 60}秒`;
 							} else {
@@ -161,12 +161,12 @@
 							}
 						}, 1000);
 					}
-			
+
 					// if (this.countdown === '超时') {
 					// 	// 发起请求取消当前订单，【设置为已取消】
-			
+
 					// }
-			
+
 				},
 				fail: () => {},
 				complete: () => {}
@@ -270,9 +270,104 @@
 			},
 			pay() {
 				console.log("点击了立即支付");
-								
-				
-								
+
+				// 【202305 模拟已经支付成功】
+				uni.request({
+					url: 'http://123.56.217.170:8080/actSignupinfo/payActOrderByActOrderId/' + this.orderid + '/' + this
+						.orderdata.totalprice,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log(res);
+						
+						
+						// 支付成功提示
+						this.messageToggle("支付成功!");
+
+
+						// 重新获取订单数据
+						// 获取订单信息
+						uni.request({
+							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' +
+								this
+								.orderid,
+							method: 'GET',
+							data: {},
+							success: res => {
+								console.log(res.data.data);
+
+								res.data.data[0].SessionStartDatetime = res.data.data[0]
+									.SessionStartDatetime.replace("T",
+										" ");
+								res.data.data[0].ordertime = res.data.data[0].ordertime.replace(
+									"T", " ");
+
+								this.orderdata = res.data.data[0];
+
+								// console.log(this.orderdata.SessionStartDatetime);
+
+								// this.orderdata.SessionStartDatetime = this.orderdata.SessionStartDatetime.replace("T", " ");
+								// console.log(this.orderdata.SessionStartDatetime);
+
+								if (this.orderdata.orderstatus === 0) {
+									this.orderstatusa = '未支付';
+									
+								} else if (this.orderdata.orderstatus === 1) {
+									this.orderstatusa = '已支付';
+									this.countshow = false;
+								} else {
+									this.orderstatusa = '已取消';
+									this.countshow = false;
+									this.cancelshow = false;
+									this.payshow = false;
+								}
+
+
+								if (this.orderdata.orderstatus == 1) {
+									this.countdown = "已支付";
+									// this.
+								} else if (this.orderdata.orderstatus == 2) {
+									this.countdown = '已取消';
+								} else {
+									// 拿到超时时间
+									const endTimeString = this.orderdata
+										.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
+
+									// 解析超时时间为时间戳
+									const endTime = new Date(endTimeString).getTime();
+
+									// 使用 setInterval 更新倒计时
+									setInterval(() => {
+										const now = Date.now();
+										const remainingTime = endTime - now;
+
+										if (remainingTime > 0) {
+											const seconds = Math.floor(remainingTime /
+												1000);
+											const minutes = Math.floor(seconds / 60);
+											const hours = Math.floor(minutes / 60);
+											const days = Math.floor(hours / 24);
+
+											this.countdown =
+												`${minutes % 60}分钟 ${seconds % 60}秒`;
+										} else {
+											this.countdown = '已取消'; // 超过设定时间，显示超时信息
+										}
+									}, 1000);
+								}
+
+							},
+							fail: () => {},
+							complete: () => {}
+						});
+
+
+
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+
 				// // 发起支付
 				// uni.getProvider({
 				// 	service:'payment',
@@ -280,8 +375,8 @@
 				// 		console.log(res.provider);
 				// 	}
 				// })
-				
-				
+
+
 			},
 
 			dialogConfirm() {
@@ -302,7 +397,8 @@
 
 						// 获取订单信息
 						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' + this
+							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' +
+								this
 								.orderid,
 							method: 'GET',
 							data: {},
@@ -341,7 +437,7 @@
 								} else {
 									// 拿到超时时间
 									const endTimeString = this.orderdata
-									.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
+										.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
 
 									// 解析超时时间为时间戳
 									const endTime = new Date(endTimeString).getTime();
