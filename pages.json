@@ -890,6 +890,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/act/order/pay/payment/payment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活动订单支付",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/act/order/pay/success/success",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "活动订单支付成功页面",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

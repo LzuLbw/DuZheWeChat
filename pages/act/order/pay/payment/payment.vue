@@ -54,6 +54,8 @@
 				</view>
 			</view>
 		</view>
+
+		
 		<view class="pay">
 			<view class="btn" @tap="doDeposit">立即支付</view>
 			<view class="tis">
@@ -77,12 +79,12 @@
 				orderName:'',
 				paytype:'alipay',//支付类型
 				
+				// 整理活动订单数据
+				orderId: 0,
+				price: 0,
 			};
 		},
 		computed: {
-			...mapState({
-				orderNumber: state => state.order.orderNumber,
-			})
 		},
 		onLoad(e) {
 			this.amount = parseFloat(e.amount).toFixed(2);
@@ -90,12 +92,13 @@
 				key:'paymentOrder',
 				success: (e) => {
 					
+					console.log("================活动支付订单信息===========");
+					console.log(e);
 					
-					if(e.data.length>1){
-						this.orderName = '多商品合并支付'
-					}else{
-						this.orderName = e.data[0].name;
-					}
+					this.orderName = e.data[0].ordername;
+					
+					this.orderId = e.data[0].orderId;
+					this.price = e.data[0].price;
 					uni.removeStorage({
 						key:'paymentOrder'
 					})
@@ -109,18 +112,32 @@
 					url: "/shop/payment",
 					method: "POST",
 					data: {
-						orderId:this.orderNumber,
-						price:this.amount,
+						orderId:this.orderId,
+						price:this.price,
 						orderName:this.orderName
 					}
 				}).then((res) => {
 					console.log(res);
 					plus.runtime.openURL(res.paymentUrl);
 					setTimeout(()=>{
-						uni.hideLoading();
+
 						uni.showToast({
 							title:'支付成功'
 						});
+						
+						// 支付成功发起请求修改订单状态
+						// 【202305 模拟已经支付成功】
+						uni.request({
+							url: 'http://123.56.217.170:8080/actSignupinfo/payActOrderByActOrderId/' + this.orderId + '/' + this
+								.price,
+							method: 'GET',
+							data: {},
+							success: res => {
+								console.log(res);				
+							},
+							fail: () => {},
+							complete: () => {}
+						});	
 						setTimeout(()=>{
 							uni.redirectTo({
 								url:'../../pay/success/success?amount='+this.amount

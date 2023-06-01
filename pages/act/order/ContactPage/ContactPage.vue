@@ -78,6 +78,30 @@
 			let orderdatadetail = JSON.parse(decodeURIComponent(orderdata.data));
 			console.log(orderdatadetail);
 			this.resorderdata = orderdatadetail;
+			
+			// 获取用户信息
+			this.$store.dispatch('GetInfo').then(res => {
+				console.log("当前下单用户的昵称为：", res.user.nickName);
+				console.log("当前下单用户的ID为", res.user.userId);
+				this.currentuname = res.user.nickName;
+				this.currentuid = res.user.userId;
+				
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/getUserInfoByUserId/' + res.user.userId,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("--------------------------");
+						console.log(res);
+						
+						this.name = res.data.data.userName;
+						this.phone = res.data.data.phonenumber;
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
+			});
 
 
 		},
@@ -88,11 +112,28 @@
 				console.log("当前下单用户的ID为", res.user.userId);
 				this.currentuname = res.user.nickName;
 				this.currentuid = res.user.userId;
+				
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/getUserInfoByUserId/' + res.user.userId,
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log("--------------------------");
+						console.log(res);
+						
+						this.name = res.data.data.userName;
+						this.phone = res.data.data.phonenumber;
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 
 			});
 			this.name = '';
 			this.phone = '';
 			this.subtext = '提交订单';
+			
+
 		},
 
 		computed: {

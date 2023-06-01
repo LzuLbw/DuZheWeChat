@@ -37,6 +37,7 @@
 			<view style="margin: 20rpx;"> 下单时间: {{orderdata.ordertime}} </view>
 			<view style="margin: 20rpx;"> 商品总价: ￥{{orderdata.totalprice}} </view>
 			<view style="margin: 20rpx;"> {{paystatus}} {{orderdata.realpay}} </view>
+			<view style="margin: 20rpx;"> {{paytime}} {{orderdata.paytime}} </view>
 		</view>
 
 		<view
@@ -85,6 +86,7 @@
 
 				orderstatusa: '',
 				paystatus: "实付款: ￥",
+				paytime: '支付时间: ',
 
 				type: 'center',
 				msgType: 'success',
@@ -96,7 +98,10 @@
 
 		onLoad(e) {
 			console.log(e);
-			this.orderid = e.data;
+			this.orderid = BigInt(e.data);
+			
+			console.log(this.orderid);
+			
 			// 获取订单信息
 			uni.request({
 				url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' + this.orderid,
@@ -105,11 +110,16 @@
 				success: res => {
 					console.log(res.data.data);
 
-					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T",
-						" ");
+					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T"," ");
 					res.data.data[0].ordertime = res.data.data[0].ordertime.replace("T", " ");
+					
+					if(res.data.data[0].paytime != null) {
+						res.data.data[0].paytime = res.data.data[0].paytime.replace("T", " ");
+					}
 
 					this.orderdata = res.data.data[0];
+					console.log("=======================");
+					console.log(this.orderdata);
 
 					// console.log(this.orderdata.SessionStartDatetime);
 
@@ -122,6 +132,7 @@
 						this.orderstatusa = '已支付';
 						this.countshow = false;
 						// this.cancelshow = false;
+						
 						this.payshow = false;
 					} else {
 						this.orderstatusa = '已取消';
@@ -183,9 +194,13 @@
 				success: res => {
 					console.log(res.data.data);
 
-					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T",
-						" ");
+					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T"," ");
 					res.data.data[0].ordertime = res.data.data[0].ordertime.replace("T", " ");
+					
+					if(res.data.data[0].paytime != null) {
+						res.data.data[0].paytime = res.data.data[0].paytime.replace("T", " ");
+					}
+					
 
 					this.orderdata = res.data.data[0];
 
@@ -199,6 +214,8 @@
 					} else if (this.orderdata.orderstatus === 1) {
 						this.orderstatusa = '已支付';
 						this.countshow = false;
+						
+						
 					} else {
 						this.orderstatusa = '已取消';
 						this.cancelshow = false;
@@ -270,103 +287,135 @@
 			},
 			pay() {
 				console.log("点击了立即支付");
-
-				// 【202305 模拟已经支付成功】
-				uni.request({
-					url: 'http://123.56.217.170:8080/actSignupinfo/payActOrderByActOrderId/' + this.orderid + '/' + this
-						.orderdata.totalprice,
-					method: 'GET',
-					data: {},
-					success: res => {
-						console.log(res);
-						
-						
-						// 支付成功提示
-						this.messageToggle("支付成功!");
-
-
-						// 重新获取订单数据
-						// 获取订单信息
-						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' +
-								this
-								.orderid,
-							method: 'GET',
-							data: {},
+				
+				let paymentOrder = []; // 模拟柳哥封装的提交数据
+				let itemorder = {
+					name: this.orderdata.activity_maintitle,
+					orderId: this.orderdata.actorderid,
+					price: this.orderdata.totalprice,
+					ordername: this.orderdata.activity_maintitle
+				};
+				
+				paymentOrder.push(itemorder);
+				
+				uni.setStorage({
+					key:'paymentOrder',
+					data: paymentOrder,
+					success: () => {
+						uni.redirectTo({
+							url: '../order/pay/payment/payment?amount=' + this.orderdata.totalprice,
 							success: res => {
-								console.log(res.data.data);
-
-								res.data.data[0].SessionStartDatetime = res.data.data[0]
-									.SessionStartDatetime.replace("T",
-										" ");
-								res.data.data[0].ordertime = res.data.data[0].ordertime.replace(
-									"T", " ");
-
-								this.orderdata = res.data.data[0];
-
-								// console.log(this.orderdata.SessionStartDatetime);
-
-								// this.orderdata.SessionStartDatetime = this.orderdata.SessionStartDatetime.replace("T", " ");
-								// console.log(this.orderdata.SessionStartDatetime);
-
-								if (this.orderdata.orderstatus === 0) {
-									this.orderstatusa = '未支付';
-									
-								} else if (this.orderdata.orderstatus === 1) {
-									this.orderstatusa = '已支付';
-									this.countshow = false;
-								} else {
-									this.orderstatusa = '已取消';
-									this.countshow = false;
-									this.cancelshow = false;
-									this.payshow = false;
-								}
-
-
-								if (this.orderdata.orderstatus == 1) {
-									this.countdown = "已支付";
-									// this.
-								} else if (this.orderdata.orderstatus == 2) {
-									this.countdown = '已取消';
-								} else {
-									// 拿到超时时间
-									const endTimeString = this.orderdata
-										.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
-
-									// 解析超时时间为时间戳
-									const endTime = new Date(endTimeString).getTime();
-
-									// 使用 setInterval 更新倒计时
-									setInterval(() => {
-										const now = Date.now();
-										const remainingTime = endTime - now;
-
-										if (remainingTime > 0) {
-											const seconds = Math.floor(remainingTime /
-												1000);
-											const minutes = Math.floor(seconds / 60);
-											const hours = Math.floor(minutes / 60);
-											const days = Math.floor(hours / 24);
-
-											this.countdown =
-												`${minutes % 60}分钟 ${seconds % 60}秒`;
-										} else {
-											this.countdown = '已取消'; // 超过设定时间，显示超时信息
-										}
-									}, 1000);
-								}
-
+								console.log("打开支付页面成功");
 							},
-							fail: () => {},
+							fail: () => {
+								console.log("打开支付页面失败");
+							},
 							complete: () => {}
 						});
+					}
+				})
+				
+				
+				// 本地模拟支付
+				// 跳转到支付页面
+				
+
+				// // 【202305 模拟已经支付成功】
+				// uni.request({
+				// 	url: 'http://123.56.217.170:8080/actSignupinfo/payActOrderByActOrderId/' + this.orderid + '/' + this
+				// 		.orderdata.totalprice,
+				// 	method: 'GET',
+				// 	data: {},
+				// 	success: res => {
+				// 		console.log(res);
+						
+						
+				// 		// 支付成功提示
+				// 		this.messageToggle("支付成功!");
+
+
+				// 		// 重新获取订单数据
+				// 		// 获取订单信息
+				// 		uni.request({
+				// 			url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' +
+				// 				this
+				// 				.orderid,
+				// 			method: 'GET',
+				// 			data: {},
+				// 			success: res => {
+				// 				console.log(res.data.data);
+
+				// 				res.data.data[0].SessionStartDatetime = res.data.data[0]
+				// 					.SessionStartDatetime.replace("T",
+				// 						" ");
+				// 				res.data.data[0].ordertime = res.data.data[0].ordertime.replace(
+				// 					"T", " ");
+
+				// 				this.orderdata = res.data.data[0];
+
+				// 				// console.log(this.orderdata.SessionStartDatetime);
+
+				// 				// this.orderdata.SessionStartDatetime = this.orderdata.SessionStartDatetime.replace("T", " ");
+				// 				// console.log(this.orderdata.SessionStartDatetime);
+
+				// 				if (this.orderdata.orderstatus === 0) {
+				// 					this.orderstatusa = '未支付';
+									
+				// 				} else if (this.orderdata.orderstatus === 1) {
+				// 					this.orderstatusa = '已支付';
+				// 					this.countshow = false;
+				// 				} else {
+				// 					this.orderstatusa = '已取消';
+				// 					this.countshow = false;
+				// 					this.cancelshow = false;
+				// 					this.payshow = false;
+				// 				}
+
+
+				// 				if (this.orderdata.orderstatus == 1) {
+				// 					this.countdown = "已支付";
+				// 					// this.
+				// 				} else if (this.orderdata.orderstatus == 2) {
+				// 					this.countdown = '已取消';
+				// 				} else {
+				// 					// 拿到超时时间
+				// 					const endTimeString = this.orderdata
+				// 						.ordertimeout; // 示例数据，你需要替换为从数据库获取的值
+
+				// 					// 解析超时时间为时间戳
+				// 					const endTime = new Date(endTimeString).getTime();
+
+				// 					// 使用 setInterval 更新倒计时
+				// 					setInterval(() => {
+				// 						const now = Date.now();
+				// 						const remainingTime = endTime - now;
+
+				// 						if (remainingTime > 0) {
+				// 							const seconds = Math.floor(remainingTime /
+				// 								1000);
+				// 							const minutes = Math.floor(seconds / 60);
+				// 							const hours = Math.floor(minutes / 60);
+				// 							const days = Math.floor(hours / 24);
+
+				// 							this.countdown =
+				// 								`${minutes % 60}分钟 ${seconds % 60}秒`;
+				// 						} else {
+				// 							this.countdown = '已取消'; // 超过设定时间，显示超时信息
+				// 						}
+				// 					}, 1000);
+				// 				}
+
+				// 			},
+				// 			fail: () => {},
+				// 			complete: () => {}
+				// 		});
 
 
 
-					},
-					fail: () => {},
-					complete: () => {}
-				});
+				// 	},
+				// 	fail: () => {},
+				// 	complete: () => {}
+				// });
 
 				// // 发起支付
 				// uni.getProvider({
@@ -397,19 +446,18 @@
 
 						// 获取订单信息
 						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' +
-								this
-								.orderid,
+							url: 'http://123.56.217.170:8080/actSignupinfo/getOrderByActOrderId/' + this.orderid,
 							method: 'GET',
 							data: {},
 							success: res => {
 								console.log(res.data.data);
 
-								res.data.data[0].SessionStartDatetime = res.data.data[0]
-									.SessionStartDatetime.replace("T",
-										" ");
-								res.data.data[0].ordertime = res.data.data[0].ordertime.replace(
-									"T", " ");
+								res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T"," ");
+								res.data.data[0].ordertime = res.data.data[0].ordertime.replace("T", " ");
+									
+								if(res.data.data[0].paytime != null) {
+									res.data.data[0].paytime = res.data.data[0].paytime.replace("T", " ");
+								}
 
 								this.orderdata = res.data.data[0];
 
