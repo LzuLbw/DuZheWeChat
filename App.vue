@@ -130,11 +130,6 @@
 	.icon-dianhua-copy:before {
 		content: "\e621";
 	}
-
-	.icon-shoucang:before {
-		content: "\e645";
-	}
-
 	.icon-xuanzhong2:before {
 		content: "\e62f";
 	}
@@ -149,10 +144,6 @@
 
 	.icon-icon-test1:before {
 		content: "\e632";
-	}
-
-	.icon-bianji:before {
-		content: "\e646";
 	}
 
 	.icon-jiazailoading-A:before {
@@ -313,10 +304,6 @@
 
 	.icon-shouhoutuikuan:before {
 		content: "\e631";
-	}
-
-	.icon-gouwuche:before {
-		content: "\e609";
 	}
 
 	.icon-dizhi:before {
