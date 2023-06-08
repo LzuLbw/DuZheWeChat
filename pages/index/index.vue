@@ -93,7 +93,7 @@
 					},
 					{
 						icon:'/static/icon/act.png',
-						title:'活动',
+						title:'活动中心',
 						path:'/pages/act/act'
 					},
 					]
