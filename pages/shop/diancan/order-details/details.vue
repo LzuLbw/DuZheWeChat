@@ -59,10 +59,6 @@
 </template>
 
 <script>
-	
-
-
-	
 	//价格补0 
 	//const Price = require('e-commerce_price')
 	export default {
@@ -71,20 +67,20 @@
 				//Price,
 				overall: 1, //总共多少份
 				other_data: {
-					order_no:'1209307hfe19202',
-					order_time:'2021-11-9 20:22',
-					table_number:'001',
-					sett_amount:13
+					order_no: '1209307hfe19202',
+					order_time: '2023-03-30 15:00',
+					table_number: '001',
+					sett_amount: 30
 				},
 				comp_data: [],
 				goods_data: [{
-					goods_list:[{
-						quantity:2,
-						unit:'杯',
-						good_specs:'五分糖',
-						total_price:13,
-						image:[{
-							url:'/static/image/shop/juice.jpg'
+					goods_list: [{
+						quantity: 2,
+						unit: '杯',
+						good_specs: '五分糖',
+						total_price: 15,
+						image: [{
+							url: '/static/image/shop/budingnaicha.jpg'
 						}]
 					}]
 				}],
@@ -92,8 +88,8 @@
 			}
 		},
 		methods: {
-			
-			
+
+
 			open(index) {
 				this.$set(this.goods_data[index], 'goods_list', this.comp_data[index].goods_list)
 				this.$set(this.goods_data[index], 'max', 0)
@@ -106,42 +102,41 @@
 			//支付
 			pay() {
 				uni.showModal({
-				    title: '提示',
-				    content: '确认支付',
-				    success:(res)=>{
-						if(res.confirm){
-							uni.reLaunch({
-								url:'/pages/shop/diancan/my-order/my-order'
+					title: '提示',
+					content: '确认支付',
+					success: (res) => {
+						if (res.confirm) {
+							uni.redirectTo({
+								url: "/pages/shop/pay/payment/payment?amount=" + this.other_data.sett_amount
 							})
-									
-							}		
 						}
-					})
-				}
-				
-				
-				
-				
-				
-				
-						
-					},
-					onLoad(option) {
-						var id = option.id
-						var status = option.status
-						if (id != undefined && status != undefined) {
-							console.log('undefined')
-							this.get_menuother(id)
-							if (status == 'success') {
-								this.close_dish = false
-							}
-						} else {
-							console.log('yes')
-							
-						}
-
 					}
+				})
 			}
+
+
+
+
+
+
+
+		},
+		onLoad(option) {
+			var id = option.id
+			var status = option.status
+			if (id != undefined && status != undefined) {
+				console.log('undefined')
+				this.get_menuother(id)
+				if (status == 'success') {
+					this.close_dish = false
+				}
+			} else {
+				console.log('yes')
+
+			}
+
+		}
+	}
 </script>
 
 <style>

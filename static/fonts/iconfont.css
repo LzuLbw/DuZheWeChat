@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3598097 */
-  src: url('/static/fonts/iconfont.woff2?t=1673011207754') format('woff2'),
-       url('/static/fonts/iconfont.woff?t=1673011207754') format('woff'),
-       url('/static/fonts/iconfont.ttf?t=1673011207754') format('truetype');
+  src: url('/static/fonts/iconfont.woff2?t=1685973215843') format('woff2'),
+       url('/static/fonts/iconfont.woff?t=1685973215843') format('woff'),
+       url('/static/fonts/iconfont.ttf?t=1685973215843') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-tianjia:before {
+  content: "\e60e";
+}
+
+.icon-shoucang:before {
+  content: "\e6ab";
+}
+
+.icon-yishoucang:before {
+  content: "\e618";
+}
+
+.icon-bianji:before {
+  content: "\e8ac";
+}
+
+.icon-mywallet:before {
+  content: "\e632";
 }
 
 .icon-xiajiantou1:before {
@@ -49,10 +69,6 @@
   content: "\eaf3";
 }
 
-.icon-bianji:before {
-  content: "\e6b0";
-}
-
 .icon-icon4:before {
   content: "\e66b";
 }
@@ -67,14 +83,6 @@
 
 .icon-tuihuanhuo:before {
   content: "\e715";
-}
-
-.icon-yishoucang:before {
-  content: "\e624";
-}
-
-.icon-shoucang:before {
-  content: "\e666";
 }
 
 .icon-tongzhi:before {

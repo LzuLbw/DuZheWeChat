@@ -6,7 +6,7 @@
 				<view class="swiper-box">
 					<swiper circular="true" autoplay="true" @change="swiperChange">
 						<swiper-item v-for="swiper in swiperList" :key="swiper.swiper_id">
-							<image mode="widthFix" :src="'/static/image'+ (swiper.swiperUrl).substring(8)"
+							<image class="swiper-image" :src="swiper.swiperUrl"
 								@tap="toSwiper(swiper)"></image>
 						</swiper-item>
 					</swiper>
@@ -134,7 +134,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="loading-text">{{ loadingText }}</view>
+			<!-- <view class="loading-text">{{ loadingText }}</view> -->
 		</view>
 	</view>
 
@@ -224,6 +224,7 @@
 			},
 			//商品跳转
 			toGoods(id) {
+				console.log(id);
 				uni.navigateTo({
 					//url: '/pages/shop/goods/goods?id=' + id + ' &userId = '+this.userId
 					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
@@ -261,6 +262,7 @@
 					url: "/goods/swiper"
 				}).then((res) => {
 					this.swiperList = res;
+					console.log(this.swiperList);
 				}).catch(() => {
 					uni.showToast({
 						title: '请求失败',
@@ -300,47 +302,40 @@
 	}
 
 	.swiper-box {
-		width: 92%;
-		height: 30.7vw;
+		width: 100%;
+		height: 100%;
 		overflow: hidden;
 		border-radius: 15upx;
 		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
 		position: relative;
 		z-index: 1;
 
-		swiper {
-			width: 100%;
-			height: 30.7vw;
-
-			swiper-item {
-				image {
-					width: 100%;
-					height: 30.7vw;
-				}
-			}
-		}
-
-		.indicator {
-			position: absolute;
-			bottom: 20upx;
-			left: 20upx;
-			background-color: rgba(255, 255, 255, 0.4);
-			width: 150upx;
-			height: 5upx;
-			border-radius: 3upx;
-			overflow: hidden;
-			display: flex;
-
-			.dots {
-				width: 0upx;
-				background-color: rgba(255, 255, 255, 1);
-				transition: all 0.3s ease-out;
-
-				&.on {
-					width: (100%/3);
-				}
-			}
-		}
+		
+	}
+	.swiper-image{
+		width: 100%;
+		height: 100%;
+	}
+	.indicator {
+		position: absolute;
+		bottom: 20upx;
+		left: 20upx;
+		background-color: rgba(255, 255, 255, 0.4);
+		width: 150upx;
+		height: 5upx;
+		border-radius: 3upx;
+		overflow: hidden;
+		display: flex;
+	}
+	
+	.dots {
+		width: 0upx;
+		background-color: rgba(255, 255, 255, 1);
+		transition: all 0.3s ease-out;
+	}
+	
+	.on {
+		width: (100%/3);
 	}
 
 	.category-list {
@@ -356,15 +351,16 @@
 	}
 
 	.banner {
-		width: 92%;
+		width: 100%;
+		height: 100%;
 		margin: 40upx 4%;
-
-		image {
+	}
+	
+	.image {
 			width: 100%;
 			height: 20vw;
 			border-radius: 10vw;
 			box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
-		}
 	}
 
 	.category {
@@ -395,7 +391,7 @@
 	}
 
 	.promotion {
-		width: 92%;
+		width: 100%;
 		margin: 0 4%;
 	}
 
@@ -485,7 +481,7 @@
 	}
 
 	.promotion-image {
-		width: 18.86vw;
+		width: 100%;
 		height: 18.86vw;
 	}
 

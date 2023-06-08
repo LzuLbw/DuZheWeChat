@@ -168,14 +168,14 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{goodsData.comment.number}})</view>
-				<view class="arrow" @tap="toRatings">
-					<view class="show" @tap="showComments(goodsData.id)">
+				<view class="arrow" @tap="toRatings(goodsData.goodsId)">
+					<view class="show" >
 						查看全部
 						<view class="icon iconfont icon-xiangyou"></view>
 					</view>
 				</view>
 			</view>
-			<view class="comment" @tap="toRatings">
+			<view class="comment" @tap="toRatings(goodsData.goodsId)">
 				<view class="user-info">
 					<view class="face">
 						<image :src="goodsData.comment.userface"></image>
@@ -235,7 +235,7 @@
 				// 商品信息
 				goodsContent:{},
 				goodsData: {
-					id: 1,
+					goodsId: 0,
 					name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
 					price: "127.00",
 					number: 1,
@@ -254,10 +254,10 @@
 					],
 					spec: ["XS", "S", "M", "L", "XL", "XXL"],
 					comment: {
-						number: 102,
-						userface: '../../static/image/face.jpg',
-						username: '柳博望',
-						content: '很不错，印刷清楚，鉴定为全新书籍！'
+						number: 0,
+						userface: '/static/images/profile.jpg',
+						username: '',
+						content: ''
 					}
 				},
 				selectSpec: null, //选中规格
@@ -278,7 +278,10 @@
 			// #endif
 			//option为object类型，会序列化上个页面传递的参数
 			//console.log(option.cid); //打印出上个页面传递的参数。
+			console.log(option);
 			this.getData(option.id);
+			this.getGoodsComment(option.id);
+			this.goodsData.goodsId = option.id;
 		},
 		onReady() {
 			this.calcAnchor(); //计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -296,11 +299,11 @@
 			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-		onReachBottom() {
-			uni.showToast({
-				title: '触发上拉加载'
-			});
-		},
+		// onReachBottom() {
+		// 	uni.showToast({
+		// 		title: '触发上拉加载'
+		// 	});
+		// },
 		mounted() {
 
 		},
@@ -318,6 +321,30 @@
 					this.swiperList.push(this.goodsContent.swiperimgUrl1);
 					this.swiperList.push(this.goodsContent.swiperimgUrl2);
 					this.swiperList.push(this.goodsContent.swiperimgUrl3);
+					console.log(this.swiperList);
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
+			//请求商品评论
+			getGoodsComment(id){
+				console.log(id);
+				$http.request({
+					url: "/shop/selectGoodsComment",
+					method: "POST",
+					data:{
+						goodsId:id
+					}
+				}).then((res) => {
+					console.log(res);
+					console.log(res.length);
+					this.goodsData.comment.number = res.length;
+					
+					this.goodsData.comment.username = res[0].user_name;
+					this.goodsData.comment.content = res[0].commentContent
 				}).catch(() => {
 					uni.showToast({
 						title: '请求失败',
@@ -382,9 +409,9 @@
 				//this.toConfirmation();
 			},
 			//商品评论
-			toRatings() {
+			toRatings(goodsId) {
 				uni.navigateTo({
-					url: 'ratings/ratings'
+					url: 'ratings/ratings?goodsId='+ goodsId + ''
 				})
 			},
 			//跳转确认订单页面
@@ -409,10 +436,6 @@
 			// 		}
 			// 	})
 			// },
-			//跳转评论列表
-			showComments(goodsid) {
-
-			},
 			//选择规格
 			setSelectSpec(index) {
 				this.selectSpec = index;
@@ -555,7 +578,7 @@
 					})
 				})
 				uni.navigateTo({
-					url: '/pages/shop/cart/cart?userId= ' + this.userId + ''
+					url: '/pages/shop/cart/cart?userId=' + this.userId + ''
 				});
 			},
 			toShareWexin(){

@@ -491,6 +491,27 @@
 			}
 		},
 		{
+			"path": "pages/shop/goods/ratings/ratings",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/goods/comment/index",
+			"style": {
+				"navigationBarTitleText": "晒单评论",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/order/returnedPurchaseDetail",
+			"style": {
+				"navigationBarTitleText": "退款详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/social/social",
 			"style": {
 				"navigationBarTitleText": "社交",
@@ -567,7 +588,7 @@
 			"path": "pages/social/info/friend-info",
 			"style": {
 				"navigationBarTitleText": "好友主页",
-		 	"enablePullDownRefresh": true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -696,7 +717,7 @@
 			"style": {
 				"navigationBarTitleText": "预约成功",
 				"enablePullDownRefresh": false
-		 }
+			}
 		}, {
 			"path": "pages/social/components/find/nearby",
 			"style": {
@@ -768,7 +789,7 @@
 				"navigationBarTitleText": "申请发布活动",
 				"enablePullDownRefresh": false
 			}
-			
+
 		}, {
 			"path": "pages/act/editapplication/editapplication",
 			"style": {
@@ -844,71 +865,57 @@
 					"bounce": "none"
 				}
 			}
+		}, {
+			"path": "pages/act/signinandsignout/myrealact/myrealact",
+			"style": {
+				"navigationBarTitleText": "签到签退二维码",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/signinandsignout/manageact/manageact",
+			"style": {
+				"navigationBarTitleText": "扫码签到",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/order/SelectSession/SelectSession",
+			"style": {
+				"navigationBarTitleText": "下单",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/order/ContactPage/ContactPage",
+			"style": {
+				"navigationBarTitleText": "确认订单信息",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/orderdetail/orderdetail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/order/pay/payment/payment",
+			"style": {
+				"navigationBarTitleText": "活动订单支付",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/act/order/pay/success/success",
+			"style": {
+				"navigationBarTitleText": "活动订单支付成功页面",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/act/signinandsignout/myrealact/myrealact",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "签到签退二维码",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/signinandsignout/manageact/manageact",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "扫码签到",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/order/SelectSession/SelectSession",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "下单",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/order/ContactPage/ContactPage",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "确认订单信息",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/orderdetail/orderdetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "订单详情",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/order/pay/payment/payment",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "活动订单支付",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/act/order/pay/success/success",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "活动订单支付成功页面",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

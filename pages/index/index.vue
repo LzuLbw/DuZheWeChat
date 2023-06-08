@@ -65,11 +65,16 @@
 </template>
 
 <script>
+	
+	import {
+		getUserProfile
+	} from "@/api/system/user"
 
 	export default {
 
 		data() {
 			return {
+				userId:0,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
@@ -102,11 +107,17 @@
 
 		onLoad() {
 			this.loadData();
+			this.getUser();
 		},
 		onShow() {
 			//this.getSwiper();
 		},
 		methods: {
+			getUser() {
+				getUserProfile().then(response => {
+					this.userId = response.data.userId;
+				})
+			},
 			//导航点击的处理函数
 			navItemClick(url){
 				uni.navigateTo({
@@ -150,8 +161,8 @@
 			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
 				uni.navigateTo({
-					url: `/pages/shop/goods/goods?id=` + id
-				})
+					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
+				});
 			},
 			//getSwiper(){
 			//	const that = this;

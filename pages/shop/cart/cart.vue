@@ -151,13 +151,10 @@
 			//加入商品 参数 goods:商品数据
 
 			//商品跳转
-			toGoods(e) {
-				uni.showToast({
-					title: '商品' + e.id,
-					icon: "none"
-				});
+			toGoods(row) {
+				console.log(row);
 				uni.navigateTo({
-					url: '../../goods/goods'
+					url: '/pages/shop/goods/goods?id= ' + row.goods_id + '&userId=' + this.userId + ''
 				});
 			},
 			//跳转确认订单页面
