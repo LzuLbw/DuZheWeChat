@@ -17,7 +17,8 @@
         "modules" : {
             "Geolocation" : {},
             "Barcode" : {},
-            "Payment" : {}
+            "Payment" : {},
+            "Maps" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -57,12 +58,17 @@
                 "geolocation" : {
                     "system" : {
                         "__platform__" : [ "ios", "android" ]
+                    },
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "da8da87154831ebdb56e4065bc5f9610",
+                        "appkey_android" : "ad37b7001ffed82acca738cd8d1f1d6c"
                     }
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "",
-                        "appkey_android" : ""
+                        "appkey_ios" : "da8da87154831ebdb56e4065bc5f9610",
+                        "appkey_android" : "ad37b7001ffed82acca738cd8d1f1d6c"
                     }
                 },
                 "share" : {},

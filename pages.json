@@ -920,13 +920,13 @@
 		"selectedColor": "#FFD700",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"fontSize": "13px",
-		"iconWidth": "35px",
-		"spacing": "-5px",
+		"fontSize": "10px",
+		"iconWidth": "30px",
+		"spacing": "0px",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/icon/Home.png",
-				"selectedIconPath": "static/icon/Home-active.png",
+				"iconPath": "static/icon/home.png",
+				"selectedIconPath": "static/icon/home-active.png",
 				"text": "首页"
 			},
 			{
@@ -943,15 +943,15 @@
 			},
 			{
 				"pagePath": "pages/social/social",
-				"iconPath": "static/icon/social.png",
-				"selectedIconPath": "static/icon/social-active.png",
+				"iconPath": "static/icon/chat.png",
+				"selectedIconPath": "static/icon/chat-active.png",
 				"text": "社交"
 			},
 			{
-				"pagePath": "pages/act/act",
-				"iconPath": "static/icon/act.png",
-				"selectedIconPath": "static/icon/act-active.png",
-				"text": "活动"
+				"pagePath": "pages/mine/index",
+				"iconPath": "static/icon/self.png",
+				"selectedIconPath": "static/icon/self-active.png",
+				"text": "个人中心"
 			}
 		]
 	}
