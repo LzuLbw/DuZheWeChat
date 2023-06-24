@@ -156,26 +156,158 @@
 
 
 			<!-- 活动举办省市 -->
-<!-- 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
+			<!-- 			<view style="display: flex;justify-content: center;height: 35px;margin: 10px;">
 				<text style="margin-top: 8px;">活动举办省市：</text>
 				<u--input placeholder="请输入举办省市" border="surround" v-model="city" @change="change" clearable>
 				</u--input>
 			</view> -->
 
-			<view style="margin-bottom: 10px;">
-				<view style="display: flex;">
-					<text>活动举办省市：</text>
-					<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion">
-						<text style="background-color:darkmagenta; color: aliceblue;">点击选择</text>
-					</pick-regions>
+			<!-- 			
+			<view style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动举办省市：</text>
+				<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion">
+					<text style="background-color:darkmagenta; color: aliceblue;">点击选择</text>
+				</pick-regions>
+			</view>
+			
+			<view style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 100px;">当前选择省市区为: {{regionName}}</text>
+			</view> -->
+
+			<view style="display: flex;justify-content: left;height: 50px;margin: 10px;">
+				<view style="margin-bottom: 10px;">
+					<view style="display: flex;justify-content: left">
+						<text>活动举办省市：</text>
+						<pick-regions :defaultRegion="defaultRegionCode" @getRegion="handleGetRegion">
+							<text style="background-color:darkmagenta; color: aliceblue;">点击选择</text>
+						</pick-regions>
+					</view>
+					<view style="margin: 15px;"></view>
+					<view style="margin-top: 10px;margin-bottom: 10px">
+						<text style="margin-top: 100px;">当前选择省市区为: {{regionName}}</text>
+					</view>
 				</view>
-				<view style="margin-top: 10px;margin-bottom: 10px">
-					<text style="margin-top: 100px;">当前选择省市区为: {{regionName}}</text>
+			</view>
+			<!-- 票价信息 -->
+
+			<view style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动是否收费：</text>
+				<text v-if="!chargevalue" style="margin-top: 8px;margin-right: 8px;">免费</text>
+				<view style="margin-top: 4px;">
+					<u-switch v-model="chargevalue" @change="chargechange"></u-switch>
 				</view>
+				<text v-if="chargevalue" style="margin-top: 8px; margin-left: 8px;">收费</text>
+			</view>
+
+			<!-- 如果收费，添加票价信息 -->
+			<view v-if="chargevalue" style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">编辑各类票价：</text>
+				<view style="margin-top: 6px;">
+					<u-button text="新增票价种类" size="mini" type="warning" style="color: aliceblue;"
+						@click="addDomain"></u-button>
+				</view>
+
+			</view>
+
+			<view v-if="chargevalue" style="margin: 10px;">
+
+				<!-- 票价们 -->
+				<view v-for="(domain, index) in domains" style="height: 250rpx;display: flex; flex-wrap: wrap;">
+					<view style="width: 100%;display: flex;">
+						<text>票价 {{index}}</text>
+
+						<u-button text="删除" size="mini" style="width: 40rpx;" @click="removeDomain(domain)"></u-button>
+					</view>
+
+					<view style="width: 100%">
+						<u--input placeholder="请输入金额" type="digit" border="surround" v-model="domain.value"></u--input>
+					</view>
+
+					<view style="width: 100%;">
+						<u--input placeholder="请输入票种描述" border="surround" v-model="domain.desc"></u--input>
+					</view>
+
+				</view>
+
+			</view>
+
+			<!-- 单人限购数量 -->
+			<view style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">单人限购数量：</text>
+				<u-number-box v-model="ticketvalue" @change="valChange" :min="1" :max="20"></u-number-box>
+			</view>
+
+
+
+			<!-- 场次信息 -->
+			<view style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">活动场次：</text>
+				<text v-if="!sessionvalue" style="margin-top: 8px;margin-right: 8px;">单场次</text>
+				<view style="margin-top: 4px;">
+					<u-switch v-model="sessionvalue" @change="sessionchange"></u-switch>
+				</view>
+				<text v-if="sessionvalue" style="margin-top: 8px; margin-left: 8px;">多场次</text>
+			</view>
+
+			<!-- 如果单场次，添加唯一场的信息 -->
+			<!-- 如果多场次，添加场次信息 -->
+			<view v-if="!sessionvalue"
+				style="display: flex;justify-content: left;height: 220rpx;margin: 10px; flex-wrap: wrap;">
+
+
+				<view style="margin-bottom: 20rpx;">
+					<text style="margin-top: 8px;">编辑单场次：</text>
+					<text>场次 0</text>
+				</view>
+
+				<view>
+					<uni-datetime-picker v-model="singlesessioninfo.value" type="datetimerange" rangeSeparator="至" />
+					<view style="width: 100%;margin-top: 10rpx;">
+						<u--input placeholder="请输入此场次举办地点" border="surround"
+							v-model="singlesessioninfo.location"></u--input>
+					</view>
+				</view>
+
+			</view>
+
+			<!-- 如果多场次，添加场次信息 -->
+			<view v-if="sessionvalue" style="display: flex;justify-content: left;height: 35px;margin: 10px;">
+				<text style="margin-top: 8px;">编辑多场次：</text>
+
+				<view style="margin-top: 6px;">
+					<u-button text="新增场次信息" size="mini" type="warning" @click="addsessiondomain"></u-button>
+				</view>
+
+			</view>
+
+			<view v-if="sessionvalue" style="margin: 10px;">
+
+				<!-- 场次们 -->
+				<view v-for="(sessiondomain, index) in sessionsdomains"
+					style="height: 270rpx;display: flex;flex-wrap: wrap;">
+					<text>场次 {{index }}</text>
+					<u-button text="删除" size="mini" style="width: 20rpx;"
+						@click="removesessionDomain(sessiondomain)"></u-button>
+
+					<view>
+						<uni-datetime-picker v-model="sessiondomain.value" type="datetimerange" rangeSeparator="至" />
+						<view style="width: 100%;margin-top: 10rpx;">
+							<u--input placeholder="请输入此场次举办地点" border="surround"
+								v-model="sessiondomain.location"></u--input>
+						</view>
+					</view>
+
+				</view>
+
 			</view>
 
 
 			<!-- <u-button text="提交申请" @click="submit('dynamicForm')"></u-button> -->
+
+			<!-- 			<button class="button popup-success" @click="testform"><text
+					class="button-text success-text">提交申请</text></button>
+					
+			<view style="height: 100rpx;"></view> -->
 
 			<button class="button popup-success" @click="dialogToggle('success')"><text
 					class="button-text success-text">提交申请</text></button>
@@ -203,12 +335,30 @@
 	// import * as qiniu from 'qiniu-js';
 	import $store from '@/store/modules/social/test.js';
 	import pickRegions from '@/components/pick-regions/pick-regions.vue'
+	
+	import axios from 'axios'
+	
 	export default {
 		components: {
 			pickRegions
 		},
 		data() {
 			return {
+
+				singlesessioninfo: {
+					value: '',
+					location: '',
+				},
+
+				// 单人限购数量
+				ticketvalue: 0,
+
+				// 票价信息:
+				domains: [],
+
+				// 场次信息【单场次】
+				// 场次信息【多场次】
+				sessionsdomains: [],
 
 				region: [],
 				defaultRegion: ['甘肃省', '兰州市', '榆中县'],
@@ -265,7 +415,14 @@
 
 				belongtostation: "",
 				city: "",
-				stations: []
+				stations: [],
+
+
+				// 活动是否收费
+				chargevalue: false,
+				// 活动是否多场次
+				sessionvalue: false,
+
 			}
 		},
 
@@ -273,10 +430,14 @@
 			regionName() {
 				// 转为字符串
 				return this.region.map(item => item.name).join(' ')
-			}
+			},
+
+
 		},
 
 		onLoad() {
+
+
 
 			this.$store.dispatch('GetInfo').then(res => {
 				console.log("当前正在申请发布活动的用户名：", res.user.nickName);
@@ -318,31 +479,116 @@
 		},
 
 		onShow() {
-
+			console.log(uni.$u.config.v);
 		},
 
 
 		methods: {
+
+
+			testform() {
+				console.log("场次信息: ====================");
+				console.log(this.sessionsdomains);
+				console.log("价格信息: ====================");
+				console.log(this.domains);
+				console.log(this.chargevalue ? "收费活动" : "免费活动");
+				console.log(this.sessionvalue ? "多场次活动" : "单场次活动");
+
+				console.log("单场次活动信息: ========================");
+				console.log(this.singlesessioninfo);
+			},
+
+			addsessiondomain() {
+				this.sessionsdomains.push({
+					value: '',
+					location: this.realplace,
+					key: Date.now()
+				});
+			},
+
+			removesessionDomain(item) {
+				var index = this.sessionsdomains.indexOf(item);
+				if (index != -1) {
+					this.sessionsdomains.splice(index, 1)
+				}
+
+				// 如果场次已经减到1场了，开关自动跳到单场次
+				if (this.sessionsdomains.length == 1) {
+					this.sessionvalue = false;
+
+					// 并且自动把当前多场次剩下那场赋给单场次信息
+					this.singlesessioninfo.value = this.sessionsdomains[0].value;
+					this.singlesessioninfo.location = this.sessionsdomains[0].location;
+
+				}
+			},
+
+			removeDomain(item) {
+				var index = this.domains.indexOf(item);
+				if (index != -1) {
+					this.domains.splice(index, 1)
+				}
+
+				if (this.domains.length == 0) { // 如果价格信息都已经删完了，说明是个免费活动，开关自己跳回去
+					this.chargevalue = false;
+				}
+			},
+
+			valChange(e) {
+				console.log(e.value);
+				this.ticketvalue = e.value;
+			},
+
+			addDomain() {
+				this.domains.push({
+					value: '',
+					desc: '',
+					key: Date.now()
+				});
+			},
+
+			// 是否多场次开关变化
+			sessionchange() {
+				console.log(this.sessionvalue);
+
+				// 从单场次开到多场次时，如果单场次有信息，直接拿过来作为多场次的第一个
+				this.sessionsdomains.length = 0;
+				if (this.singlesessioninfo.value != '') {
+					this.sessionsdomains.push({
+						value: this.singlesessioninfo.value,
+						location: this.singlesessioninfo.location,
+						key: Date.now()
+					});
+				}
+
+			},
+
+			// 是否收费开关变化
+			chargechange(e) {
+				// console.log(e);
+				console.log(this.chargevalue);
+			},
+
 
 			// 获取选择的地区
 			handleGetRegion(region) {
 				this.region = region;
 				console.log(region);
 				// this.city = region;
-				
+
 				var res = "";
 				for (let i = 0; i < region.length; i++) {
 					console.log(region[i].name);
 					res += region[i].name;
 					res += " ";
 				}
-				
+
 				console.log(res);
 				this.city = res;
 			},
 
 
-			submit(ref) {
+			submit() {
 				// console.log("点击了提交按钮");
 				// console.log(this.maintitlevalue);
 				// console.log(this.subtitlevalue);
@@ -366,6 +612,8 @@
 				// console.log(this.place);
 
 				// console.log(this.matters);
+				let activityCharge = this.chargevalue ? 1 : 0;
+				let activityMultiplesessions = this.sessionvalue ? 1 : 0;
 
 				uni.request({
 					url: 'http://123.56.217.170:8080/actActivity/user/activity',
@@ -394,15 +642,165 @@
 						"activityAttrusername": this.uname,
 						"activityBelongtostation": this.belongtostation,
 						"activityCity": this.city,
+						"activityPurchasenumber": this.ticketvalue,
+						"activityCharge": activityCharge,
+						"activityMultiplesessions": activityMultiplesessions
 
 					},
 					success: res => {
 						console.log(res.data);
+
+						let actid = res.data;
+
+						// 这里拿到的数据是返回的活动ID, 我们接着根据这个id 为此活动添加价格信息和场次信息
+						// 如果是收费活动才调用这个方法:
+						if (this.chargevalue) {
+							this.addpriceitem(actid)
+						}
+
+						// 单场次多场次活动都要调用此方法进行场次新增
+						this.addsessionitem(actid);
+
 					},
 					fail: () => {},
 					complete: () => {}
 				});
 
+			},
+
+
+			// 请求添加价格信息的方法【活动是收费时才进行调用】
+			addpriceitem(actid) {
+
+				console.log(this.domains)
+				if (!this.chargevalue) {
+					console.log("这是一个免费活动")
+				} else {
+					console.log("这是一个收费活动, 票价种类信息如下: ")
+					// console.log(this.domains)
+
+					var postdata = [];
+
+					for (let i = 0; i < this.domains.length; i++) {
+						let item = {
+							"actid": actid,
+							"price": this.domains[i].value,
+							"pricedescription": this.domains[i].desc
+						};
+
+						postdata.push(item)
+					}
+
+					console.log(postdata);
+					// axios.post("http://123.56.217.170:8080/actActivity/addPriceitem", postdata).then(res => {
+					// 	console.log(res);
+					// })
+					
+					uni.request({
+						url: 'http://123.56.217.170:8080/actActivity/addPriceitem',
+						method: 'POST',
+						data: {
+							postdata
+						},
+						success: res => {
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					
+
+					// axios.post("http://123.56.217.170:8080/actActivity/addPriceitem", postdata).then(res => {
+
+					// })
+				}
+			},
+
+			// 请求添加场次信息的方法
+			addsessionitem(actid) {
+				if (this.sessionvalue) {
+					console.log("这是一个多场次活动");
+
+					var postsessiondata = [];
+					// console.log(this.sessionsdomains)
+
+					for (let i = 0; i < this.sessionsdomains.length; i++) {
+						let item = {
+							"actid": actid,
+							"sessionname": "场次" + i,
+							"sessionstartdatetime": this.sessionsdomains[i].value[0],
+							"sessionenddatetime": this.sessionsdomains[i].value[1],
+							"location": this.sessionsdomains[i].location
+						}
+						postsessiondata.push(item)
+					}
+					console.log(postsessiondata);
+					
+					uni.request({
+						url: 'http://123.56.217.170:8080/actActivity/addSessionItem',
+						method: 'POST',
+						data: {
+							postsessiondata
+						},
+						success: res => {
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
+					// axios.post("http://123.56.217.170:8080/actActivity/addSessionItem", postdata).then(res => {
+					// 	console.log(res)
+					// })
+
+				} else {
+					console.log("这是一个单场次活动")
+
+					var postsessiondata = [];
+					console.log(this.singlesessioninfo.value[0])
+					console.log(this.singlesessioninfo.value[1])
+
+					let item = {
+						"actid": actid,
+						"sessionname": "场次1",
+						"sessionstartdatetime": this.singlesessioninfo.value[0],
+						"sessionenddatetime": this.singlesessioninfo.value[1],
+						"location": this.singlesessioninfo.location
+					}
+
+					postsessiondata.push(item);
+
+					// uni.request({
+					// 	url: 'http://123.56.217.170:8080/actActivity/addSessionItem',
+					// 	method: 'POST',
+					// 	data: {
+					// 		postsessiondata
+					// 	},
+					// 	success: res => {
+					// 		console.log(res)
+					// 	},
+					// 	fail: () => {},
+					// 	complete: () => {}
+					// });
+
+					// axios.post("http://123.56.217.170:8080/actActivity/addSessionItem", postsessiondata).then(res => {
+					// 	console.log(res)
+					// })
+					
+					uni.request({
+						url: 'http://123.56.217.170:8080/actActivity/addSessionItem',
+						method: 'POST',
+						data: {
+							postsessiondata
+						},
+						success: res => {
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+
+				}
 			},
 
 			dialogConfirm() {

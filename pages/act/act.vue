@@ -580,6 +580,18 @@
 								this.endifif.push(false);
 							}
 						}
+						
+						this.actchargeif.length = 0;
+						// 拿到是否免费的信息，用于初始化index
+						for (let i = 0; i < this.AllActivityData.length; i++) {
+							// console.log(this.actchargeif);
+							if(!this.AllActivityData[i].activityCharge){
+								this.actchargeif.push({text: "免费", stylestyle: 'success'});
+							}else{
+								this.actchargeif.push({text: "付费", stylestyle: 'warning'});
+							}
+							
+						}
 
 						console.log(this.endifif);
 
@@ -622,6 +634,18 @@
 							} else {
 								this.endifif.push(false);
 							}
+						}
+						
+						this.actchargeif.length = 0;
+						// 拿到是否免费的信息，用于初始化index
+						for (let i = 0; i < this.AllActivityData.length; i++) {
+							// console.log(this.actchargeif);
+							if(!this.AllActivityData[i].activityCharge){
+								this.actchargeif.push({text: "免费", stylestyle: 'success'});
+							}else{
+								this.actchargeif.push({text: "付费", stylestyle: 'warning'});
+							}
+							
 						}
 
 						console.log(this.endifif);
@@ -689,6 +713,18 @@
 							} else {
 								this.endifif.push(false);
 							}
+						}
+						
+						this.actchargeif.length = 0;
+						// 拿到是否免费的信息，用于初始化index
+						for (let i = 0; i < this.AllActivityData.length; i++) {
+							// console.log(this.actchargeif);
+							if(!this.AllActivityData[i].activityCharge){
+								this.actchargeif.push({text: "免费", stylestyle: 'success'});
+							}else{
+								this.actchargeif.push({text: "付费", stylestyle: 'warning'});
+							}
+							
 						}
 
 						console.log(this.endifif);

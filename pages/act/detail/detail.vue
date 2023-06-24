@@ -140,7 +140,7 @@
 							class="maintitile">活动归属小站：</text style="white-space: nowrap;">
 						<!-- <text class="maintitilecontent">{{ActivityData.activityBelongtostation}}</text> -->
 						<uni-tag :text="ActivityData.activityBelongtostation" type="success" style="margin-left: -5rpx;"
-							@click="openstation(Activityid)" />
+							@click="openstation()" />
 						<br />
 					</view>
 
@@ -528,8 +528,11 @@
 
 						// console.log(registrationstarttime);
 						// console.log(new Date() > registrationstarttime);
+						
+						
+						// 获取当前活动的报名人数【下单人数】
 						uni.request({
-							url: 'http://123.56.217.170:8080/actSignupinfo/signupnum/' + this.Activityid,
+							url: 'http://123.56.217.170:8080/actActivity/getNumberActOrderByActId/' + this.Activityid,
 							method: 'GET',
 							data: {},
 							success: res => {
@@ -574,11 +577,36 @@
 			},
 
 			// 查看小站详情
-			openstation(id) {
-				console.log(id);
-				uni.navigateTo({
-					url: '/pages/station/station-detail?id=' + id,
-				})
+			openstation() {
+				// console.log(id);
+				
+				var id = 0;
+				
+				console.log(this.ActivityData.activityBelongtostation);
+				// 利用小站名查出小站唯一ID
+				
+				uni.request({
+					url: 'http://123.56.217.170:8080/actActivity/getAllStationInfo',
+					method: 'GET',
+					data: {},
+					success: res => {
+						console.log(res.data.data);
+						for(let i = 0; i < res.data.data.length; i ++){
+							if(res.data.data[i].name == this.ActivityData.activityBelongtostation){
+								id = res.data.data[i].id;
+							}
+						}
+						
+						uni.navigateTo({
+							url: '/pages/station/station-detail?id=' + id,
+						})
+						
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				
+				
 			},
 
 			// 切换选项卡
@@ -595,7 +623,7 @@
 					// console.log("????????????????????~~~~~~~~");
 					// console.log(this.ActivityData.activityAttachment);
 
-					if (this.ActivityData.activityAttachment[0] == "当" || this.ActivityData.activityAttachment === "") {
+					if (this.ActivityData.activityAttachment[0] == "当" || this.ActivityData.activityAttachment === "" || this.ActivityData.activityAttachment == null) {
 						console.log("哈哈哈哈");
 						// 弹出一个通知
 						this.messageToggle("当前活动暂无附件");

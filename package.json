@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^1.4.0",
     "qiniu-js": "^3.4.1",
     "tki-qrcode": "^0.1.6"
   }
