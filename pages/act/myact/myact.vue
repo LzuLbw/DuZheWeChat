@@ -92,16 +92,28 @@
 			<!-- 真正报名通过的活动信息 -->
 			<view class="actsignin-list">
 				<view class="actsignin-item" v-for="(item, index) in actsignpayList" :key="index"
-					@click="handleClick(item)">
+					@click="handleClick(item, index)">
 					<image class="actsignin-image" :src="item.activity_picurl"></image>
 					<view class="actsignin-content">
 						<view class="actsignin-title">{{ item.activity_maintitle }}</view>
 						<view class="actsignin-desc">{{ item.activity_subtitle }}</view>
 						<view class="actsignin-desc" style="margin-top: 20rpx;">{{ item.SessionStartDatetime }}</view>
 					</view>
+
+					<view>
+						<uni-tag :text="tagarray[index]" :type="tagtypes[index]" />
+					</view>
+
 				</view>
 			</view>
 
+		</view>
+
+		<view>
+			<!-- 提示信息弹窗 -->
+			<uni-popup ref="message" type="message">
+				<uni-popup-message :type="msgType" :message="messageText" :duration="1500"></uni-popup-message>
+			</uni-popup>
 		</view>
 
 
@@ -177,7 +189,19 @@
 
 
 				// 所有订单数据
-				actorderdata: []
+				actorderdata: [],
+
+				carryoutactids: [],
+
+				carryoutif: [],
+
+				type: 'center',
+				msgType: 'success',
+				messageText: '报名成功',
+				
+				
+				tagarray: [],
+				tagtypes: []
 
 			}
 		},
@@ -220,20 +244,29 @@
 				});
 			},
 
-			handleClick(item) {
+			handleClick(item, index) {
 				console.log(item);
 
-				// 跳转至生成二维码页面
-				uni.navigateTo({
-					url: '../signinandsignout/myrealact/myrealact?data=' + encodeURIComponent(JSON.stringify(item)),
-					success: res => {
-						console.log("打开生成二维码页面成功");
-					},
-					fail: () => {
-						console.log("打开生成二维码页面失败");
-					},
-					complete: () => {}
-				});
+				console.log(index);
+
+				if (this.carryoutif[index] == true) {
+					this.messageToggle("当前活动订单已消费");
+				} else {
+					// 跳转至生成二维码页面
+					uni.navigateTo({
+						url: '../signinandsignout/myrealact/myrealact?data=' + encodeURIComponent(JSON.stringify(
+							item)),
+						success: res => {
+							console.log("打开生成二维码页面成功");
+						},
+						fail: () => {
+							console.log("打开生成二维码页面失败");
+						},
+						complete: () => {}
+					});
+				}
+
+
 
 
 			},
@@ -396,6 +429,57 @@
 							}
 
 							this.actsignpayList = res.data.data;
+							console.log("actsignpayList: ==================");
+							console.log(this.actsignpayList);
+
+							// 这里请求的是所有的已支付订单信息【现在需要做一个已消费、或者已过期的演示】
+							// 1. 扫码之后状态变为已消费
+							// 2. 场次时间结束后未消费变为已过期
+
+							// 单独请求拿到活动进行情况中的数据
+							uni.request({
+								url: 'http://123.56.217.170:8080/actSignupinfo/getAllActCarryoutInfoByUserId/' +
+									this.currentuid,
+								method: 'GET',
+								data: {},
+								success: res => {
+									console.log(res.data.data);
+
+									this.carryoutactids.length = 0;
+									this.carryoutif.length = 0;
+									this.tagarray.length = 0;
+									this.tagtypes.length = 0;
+									// 把活动ID单独拿出来组个数组
+									for (let i = 0; i < res.data.data.length; i++) {
+										this.carryoutactids.push(parseInt(res.data.data[i].actid));
+									}
+
+									console.log(this.carryoutactids);
+
+									// 判断是否已经签到
+
+									for (let i = 0; i < this.actsignpayList.length; i++) {
+
+										if (this.carryoutactids.includes(this.actsignpayList[i]
+												.actid)) {
+											// console.log("有");
+											this.carryoutif.push(true);
+											this.tagarray.push("已消费");
+											this.tagtypes.push("success")
+										} else {
+											this.carryoutif.push(false);
+											this.tagarray.push("未消费");
+											this.tagtypes.push("warning")
+										}
+									}
+
+									console.log(this.carryoutif);
+
+								},
+								fail: () => {},
+								complete: () => {}
+							});
+
 
 						},
 						fail: () => {},
@@ -405,6 +489,8 @@
 
 
 				} else if (index === 1) {
+					
+					
 					console.log("查看我的活动订单");
 					this.show = false;
 					this.tagtag = false;
@@ -422,6 +508,9 @@
 							this.actorderdata.length = 0;
 							console.log("当前用户所有的订单信息");
 							console.log(res.data.data);
+							
+							// 如果活动已经消费，无法取消，直接变成已消费状态
+							
 
 							if (res.data.data.length === 0) {
 								this.show = true;
@@ -450,6 +539,8 @@
 								var dayOfWeek = daysOfWeek[dateObj.getDay()];
 
 								var formattedTime = year + '-' + month + '-' + day + ' (' + dayOfWeek + ') ';
+								
+								
 
 								this.actorderdata.push({
 
@@ -459,7 +550,7 @@
 									actid: res.data.data[i].activityid,
 									orderid: res.data.data[i].actorderid,
 									orderstatus: temp,
-									ordersession: formattedTime
+									ordersession: formattedTime,
 
 								})
 							}
@@ -471,6 +562,14 @@
 				}
 
 			},
+
+			messageToggle(type) {
+				this.msgType = type
+				this.messageText = `${type}`
+				this.$refs.message.open()
+			},
+
+
 			signupinfo() {
 				//已经报名
 				uni.request({

@@ -490,27 +490,27 @@
 				}
 			}
 		},
-		{
-			"path": "pages/shop/goods/ratings/ratings",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/shop/goods/comment/index",
-			"style": {
-				"navigationBarTitleText": "晒单评论",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/shop/order/returnedPurchaseDetail",
-			"style": {
-				"navigationBarTitleText": "退款详情",
-				"enablePullDownRefresh": false
-			}
-		},
+		// {
+		// 	"path": "pages/shop/goods/ratings/ratings",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/shop/goods/comment/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "晒单评论",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
+		// {
+		// 	"path": "pages/shop/order/returnedPurchaseDetail",
+		// 	"style": {
+		// 		"navigationBarTitleText": "退款详情",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// },
 		{
 			"path": "pages/social/social",
 			"style": {
@@ -915,7 +915,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/act/customerservice/customerservice",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "客服微信",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",
@@ -932,8 +941,8 @@
 		"spacing": "0px",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/icon/home.png",
-				"selectedIconPath": "static/icon/home-active.png",
+				"iconPath": "static/icon/Home.png",
+				"selectedIconPath": "static/icon/Home-active.png",
 				"text": "首页"
 			},
 			{

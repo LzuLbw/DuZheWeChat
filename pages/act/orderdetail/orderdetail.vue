@@ -92,6 +92,10 @@
 				msgType: 'success',
 				messageText: '这是一条成功提示',
 				value: '',
+				
+				currentuid: 0,
+				
+				carryoutactids: []
 
 			}
 		},
@@ -109,6 +113,10 @@
 				data: {},
 				success: res => {
 					console.log(res.data.data);
+					
+					this.currentuid = res.data.data[0].userid;
+					this.currentactid = res.data.data[0].actid;
+					
 
 					res.data.data[0].SessionStartDatetime = res.data.data[0].SessionStartDatetime.replace("T"," ");
 					res.data.data[0].ordertime = res.data.data[0].ordertime.replace("T", " ");
@@ -172,6 +180,33 @@
 							}
 						}, 1000);
 					}
+					
+					// 如果已经是消费过了的活动，设置无法取消了
+					
+					uni.request({
+						url: 'http://123.56.217.170:8080/actSignupinfo/getAllActCarryoutInfoByUserId/' + this.currentuid,
+						method: 'GET',
+						data: {},
+						success: res => {
+							
+							this.carryoutactids.length = 0;
+							
+							console.log("???????????????????????");
+							console.log(res.data.data);
+							
+							for (let i = 0; i < res.data.data.length; i++) {
+								this.carryoutactids.push(parseInt(res.data.data[i].actid));
+							}
+							
+							if(this.carryoutactids.includes(this.currentactid)){
+								this.cancelshow = false;
+							}
+							
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					
 
 					// if (this.countdown === '超时') {
 					// 	// 发起请求取消当前订单，【设置为已取消】
@@ -282,7 +317,20 @@
 			},
 			contactcustomerservice() {
 				console.log("点击了联系客服");
-				this.messageToggle("此功能暂未开放!");
+				// this.messageToggle("此功能暂未开放!");
+				
+				// 跳转到二维码页面
+				uni.redirectTo({
+					url: '../customerservice/customerservice',
+					success: res => {
+						console.log("打开客服微信页面成功");
+					},
+					fail: () => {
+						console.log("打开客服微信页面失败");
+					},
+					complete: () => {}
+				});
+				
 				// this.dialogToggle('info', "暂未开发此功能!");
 			},
 			pay() {

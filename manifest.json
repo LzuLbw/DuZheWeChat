@@ -18,7 +18,8 @@
             "Geolocation" : {},
             "Barcode" : {},
             "Payment" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Push" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -75,6 +76,12 @@
                 "payment" : {
                     "alipay" : {
                         "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "push" : {
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : false
                     }
                 }
             }

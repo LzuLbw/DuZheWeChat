@@ -3,23 +3,35 @@
 
 		<uni-notice-bar show-icon :text="currentTime" />
 
+		<view style="height: 30rpx;"></view>
+
 		<view style="text-align: center;">
-			<view style="margin: 20rpx;"> 活动ID: {{ actid }}</view>
-			<view style="margin: 20rpx;"> 活动名: {{ actname }}</view>
-			<view style="margin: 20rpx;"> 用户ID: {{ userid }}</view>
-			<view style="margin: 20rpx;"> 用户名: {{ username }}</view>
-			<view style="margin: 20rpx;"> 场次时间: {{ resorderdata.SessionStartDatetime }}</view>
-		</view>
 
+			<image :src="resorderdata.activity_picurl" style="width: 550rpx;height: 350rpx"></image><br>
 
-		<view style="display: flex; justify-content: center; margin-top: 50px;">
-			<view class="qrimg">
-				<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
-					:foreground="foreground" :pdground="pdground" :icon="icon" :iconSize="iconsize" :lv="lv"
-					:onval="onval" :loadMake="loadMake" :showLoading="showLoading" :loadingText="loadingText"
-					@result="qrR" />
+			<view style="display: flex; justify-content: center; margin-top: 50px;">
+				<view class="qrimg">
+					<tki-qrcode ref="qrcode" :cid="cid" :val="val" :size="size" :unit="unit" :background="background"
+						:foreground="foreground" :pdground="pdground" :icon="icon" :iconSize="iconsize" :lv="lv"
+						:onval="onval" :loadMake="loadMake" :showLoading="showLoading" :loadingText="loadingText"
+						@result="qrR" />
+				</view>
 			</view>
+			<view style="height: 30rpx;"></view>
+
+			<uni-group mode="card">
+				<view style="margin: 20rpx;"> <text>活动ID:</text> {{ actid }}</view>
+				<view style="margin: 20rpx;"> <text>活动名:</text> {{ actname }}</view>
+				<view style="margin: 20rpx;"> <text>用户ID:</text> {{ userid }}</view>
+				<view style="margin: 20rpx;"> <text>用户名:</text> {{ username }}</view>
+				<view style="margin: 20rpx;"> <text>场次时间:</text> {{ resorderdata.SessionStartDatetime }}</view>
+			</uni-group>
+
+			
 		</view>
+		
+		<view style="height: 20rpx;"></view>
+
 
 	</view>
 </template>
@@ -42,13 +54,13 @@
 				// 生成二维码的信息
 				cid: '',
 				val: "{}",
-				size: 200,
+				size: 300,
 				unit: 'rpx',
 				background: '#b4e9e2', // 背景色
 				foreground: '#309286', // 前景色
 				pdground: '#32dbc6', // 角标色
-				icon: '', // 二维码图标
-				iconsize: 40, // 二维码图标大小
+				icon: '../../../../static/icon/act.png', // 二维码图标
+				iconsize: 80, // 二维码图标大小
 				lv: 3, // 二维码容错级别 ， 一般不用设置，默认就行
 				onval: true, // val值变化时自动重新生成二维码
 				loadMake: true, // 组件加载完成后自动生成二维码
@@ -90,6 +102,8 @@
 
 			console.log("=======================");
 			console.log(this.resorderdata);
+
+			// this.icon = this.resorderdata.activity_picurl;
 
 			this.actid = this.resorderdata.actid;
 			this.actname = this.resorderdata.activity_maintitle;
