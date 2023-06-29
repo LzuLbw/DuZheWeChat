@@ -22,9 +22,6 @@
 
 			<cl-upload v-model="list" action="http://123.56.217.170:8080/common/upload" @onSuccess="onSuccess">
 			</cl-upload>
-			<!-- <xg-picker-media @confirm="onMediaConfirm"></xg-picker-media> -->
-			<!-- <u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple :maxCount="5"
-				:previewFullImage="true" deletable uploadText="图片/视频" accept="image|vedio"></u-upload> -->
 
 			<checkbox-group class="margin-top-base" name=""  @change="onAnonymousChange">
 				<label class="row-start-center">
