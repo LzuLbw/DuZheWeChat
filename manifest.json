@@ -1,6 +1,6 @@
 {
     "name" : "1",
-    "appid" : "__UNI__E662A03",
+    "appid" : "__UNI__971B1B8",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -62,14 +62,14 @@
                     },
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "da8da87154831ebdb56e4065bc5f9610",
-                        "appkey_android" : "ad37b7001ffed82acca738cd8d1f1d6c"
+                        "appkey_ios" : "ef959da8a989888d854f9b99c1a8b3a6",
+                        "appkey_android" : "ef959da8a989888d854f9b99c1a8b3a6"
                     }
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "da8da87154831ebdb56e4065bc5f9610",
-                        "appkey_android" : "ad37b7001ffed82acca738cd8d1f1d6c"
+                        "appkey_ios" : "ef959da8a989888d854f9b99c1a8b3a6",
+                        "appkey_android" : "ef959da8a989888d854f9b99c1a8b3a6"
                     }
                 },
                 "share" : {},

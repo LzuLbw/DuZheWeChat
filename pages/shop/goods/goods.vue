@@ -209,6 +209,8 @@
 	import {mapMutations} from 'vuex'
 	import uniNumberBox from '@/components/uni/uni-number-box/uni-number-box.vue'
 	import $http from "@/common/api/request.js"
+	import $store from '@/store/modules/social';
+	import {mapGetters} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -266,6 +268,9 @@
 				//商品描述html
 				descriptionStr: '<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
 			};
+		},
+		computed:{
+			...mapGetters(['loginUserInfo','sessionList'])
 		},
 		components:{
 			uniNumberBox
@@ -364,8 +369,18 @@
 			},
 			// 客服
 			toChat() {
+				let chattingUserInfoList = [];
+				this.sessionList.forEach( v=>{
+					console.log(v.name);
+					if(v.name.includes("客服")){
+						chattingUserInfoList.push(v);
+					}
+				});
+				console.log(chattingUserInfoList);
+				$store.state.chattingUserInfo = chattingUserInfoList[0];
+				console.log(this.sessionList);
 				uni.navigateTo({
-					url: "../msg/chat/chat?name=客服008"
+					url:'/pages/social/components/chat/person-chat'
 				})
 			},
 			// 分享
