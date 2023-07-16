@@ -866,7 +866,16 @@
 					"style": {
 						"navigationBarTitleText": "添加笔记"
 					}
-				}, {
+				}, 
+				{
+				            "path" : "pages/study/stuuploadvideo/stuuploadvideo",
+				            "style" :                                                                                    
+				            {
+				                "navigationBarTitleText": "",
+				                "enablePullDownRefresh": false
+				            }
+				            
+				        },{
 					"path": "pages/study/readddd/readddd",
 					"style": {
 						"navigationStyle": "custom",
