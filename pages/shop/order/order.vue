@@ -23,7 +23,7 @@
 						<view class="text">佣金</view>
 					</view> -->
 					<view class="box">
-						<view class="num">{{user.balance}}</view>
+						<view class="num">{{balance}}</view>
 						<view class="text">余额</view>
 					</view>
 				</view>
@@ -41,11 +41,17 @@
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
 			<view class="list">
-				<view class="box" v-for="(row,index) in mytoolbarList" :key="index" @tap="toPage(row.url)">
+				<view class="box" >
 					<view class="img">
-						<image :src="row.img"></image>
+						<image src="/static/image/shop/point.png" @tap="toKeep()"></image>
 					</view>
-					<view class="text">{{row.text}}</view>
+					<view class="text">我的收藏</view>
+				</view>
+				<view class="box" >
+					<view class="img">
+						<image src="/static/image/shop/addr.png" @tap="toAddress()"></image>
+					</view>
+					<view class="text">收货地址</view>
 				</view>
 			</view>
 		</view>
@@ -54,6 +60,7 @@
 	</view>
 </template>
 <script>
+	import $http from "@/common/api/request.js"
 	import { getUserProfile } from "@/api/system/user"
 	export default {
 		data() {
@@ -64,6 +71,7 @@
 				headerTop:null,
 				statusTop:null,
 				showHeader:true,
+				balance:0,
 				//个人信息,
 				user:{
 					username:'游客1002',
@@ -83,15 +91,16 @@
 				],
 				// 工具栏列表
 				mytoolbarList:[
-					{url:'',text:'我的收藏',img:'/static/image/shop/point.png'},
+					{url:'../../shop/keep/keep',text:'我的收藏',img:'/static/image/shop/point.png'},
 					{url:'../../shop/address/address',text:'收货地址',img:'/static/image/shop/addr.png'},
 					// {url:'',text:'账户安全',img:'/static/image/shop/security.png'},
 					// {url:'',text:'银行卡',img:'/static/image/shop/bank.png'},
 				]
 			}
 		},
-		onLoad() {
-			this.getUser();
+		onLoad(e) {
+		    this.userId = e.userId;
+			//this.getData();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
@@ -127,12 +136,6 @@
 			});
 		},
 		methods: {
-			getUser() {
-			  getUserProfile().then(response => {
-			    this.userId = response.data.userId;
-				console.log(this.userId);
-			  })
-			},
 			toOrderList(index){
 				uni.setStorageSync('tbIndex',index);
 				uni.navigateTo({
@@ -152,9 +155,10 @@
 				this.isfirst = false;
 			},
 			toDeposit(){
-				uni.navigateTo({
-					url:'../../shop/deposit/deposit'
-				})
+				// uni.navigateTo({
+				// 	url:'/pages/shop/deposit/deposit?userId=' + this.userId+'' 
+				// })
+				uni.showToast({title: '该模块开发中',icon:"none"});
 			},
 			toPage(url){
 				if(!url){
@@ -164,7 +168,35 @@
 					url:url
 				})
 				
-			}
+			},
+			toKeep(){
+				uni.navigateTo({
+					url: '/pages/shop/keep/keep?userId= '+this.userId+''
+				})
+			},
+			toAddress(){
+				uni.navigateTo({
+					url: '/pages/shop/address/address?userId= '+this.userId+''
+				})
+			},
+			getData(){
+				console.log(this.userId);
+				$http.request({
+					url: "/shop/selectBalance",
+					method: "POST",
+					data: {
+						userId:this.userId,
+					}
+				}).then((res) => {
+					console.log(res);
+					this.balance = res[0].balance;
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
 		}
 	} 
 </script>

@@ -52,7 +52,7 @@
 						<view class="number">共{{row.goods_num}}件商品</view>
 						<view class="sum">合计￥<view class="price">{{row.goods_nprice*row.goods_num}}</view>
 						</view>
-						<view class="nominal">(含运费 ￥{{row.freight}})</view>
+						<view class="nominal">(含运费 ￥0)</view>
 					</view>
 					<view class="btns">
 						<block v-if="row.order_status=='1'">
@@ -89,7 +89,6 @@
 </template>
 <script>
 	import $http from "@/common/api/request.js"
-import { login } from "../../../api/login";
 	export default {
 		data() {
 			return {

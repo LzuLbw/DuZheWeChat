@@ -490,27 +490,43 @@
 				}
 			}
 		},
-		// {
-		// 	"path": "pages/shop/goods/ratings/ratings",
-		// 	"style": {
-		// 		"navigationBarTitleText": "",
-		// 		"enablePullDownRefresh": false
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/shop/goods/comment/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "晒单评论",
-		// 		"enablePullDownRefresh": false
-		// 	}
-		// },
-		// {
-		// 	"path": "pages/shop/order/returnedPurchaseDetail",
-		// 	"style": {
-		// 		"navigationBarTitleText": "退款详情",
-		// 		"enablePullDownRefresh": false
-		// 	}
-		// },
+		{
+			"path": "pages/shop/goods/ratings/ratings",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/goods/comment/index",
+			"style": {
+				"navigationBarTitleText": "晒单评论",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/order/returnedPurchaseDetail",
+			"style": {
+				"navigationBarTitleText": "退款详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shop/keep/keep",
+			"style": {
+				"navigationBarTitleText": "我的收藏夹",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+		    "path" : "pages/shop/deposit/deposit",
+		    "style" : {
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTitleText":"充值",
+				"backgroundColorTop":"#ffffff",
+				"backgroundColorBottom":"#ffffff"
+			}
+		},
 		{
 			"path": "pages/social/social",
 			"style": {

@@ -264,6 +264,7 @@
 				},
 				selectSpec: null, //选中规格
 				isKeep: false, //收藏
+				isKeepValue:0,
 				num:1,
 				//商品描述html
 				descriptionStr: '<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
@@ -287,6 +288,7 @@
 			this.getData(option.id);
 			this.getGoodsComment(option.id);
 			this.goodsData.goodsId = option.id;
+			this.getDataKeep(option.id)
 		},
 		onReady() {
 			this.calcAnchor(); //计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -327,6 +329,27 @@
 					this.swiperList.push(this.goodsContent.swiperimgUrl2);
 					this.swiperList.push(this.goodsContent.swiperimgUrl3);
 					console.log(this.swiperList);
+				}).catch(() => {
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					})
+				})
+			},
+			getDataKeep(id){
+				$http.request({
+					url: "/shop/selectKeep",
+					method: "POST",
+					data:{
+						goodsId:id,
+						userId:this.userId
+					}
+				}).then((res) => {
+					if(res.length == 1){
+						this.isKeep = true
+					}else{
+						this.isKeep = false
+					}
 				}).catch(() => {
 					uni.showToast({
 						title: '请求失败',
@@ -396,6 +419,52 @@
 			//收藏
 			keep() {
 				this.isKeep = this.isKeep ? false : true;
+				if(this.isKeep){
+					this.isKeepValue = 1;
+					$http.request({
+						url: "/shop/keep",
+						method: "POST",
+						data:{
+							userId:this.userId,
+							goodsId:this.goodsContent.id,
+							goodsName:this.goodsContent.name,
+							goodsImgUrl:this.goodsContent.imgUrl,
+							goodsNprice:this.goodsContent.nprice,
+							goodsOprice:this.goodsContent.oprice,
+							isKeep:this.isKeepValue
+						}
+					}).then((res) => {
+						uni.showToast({
+							title: '收藏成功',
+							icon: 'none'
+						})
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+				}else{
+					this.isKeepValue = 0;
+					$http.request({
+						url: "/shop/delKeep",
+						method: "POST",
+						data:{
+							userId:this.userId,
+							goodsId:this.goodsContent.id
+						}
+					}).then((res) => {
+						uni.showToast({
+							title: '取消收藏',
+							icon: 'none'
+						})
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+				}
 			},
 			// 加入购物车
 			joinCart() {

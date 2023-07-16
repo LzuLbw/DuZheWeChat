@@ -88,11 +88,11 @@
 
 		</view>
 		<!-- 广告图 -->
-		<view class="banner">
+		<!-- <view class="banner">
 			<image mode="widthFix" src="/static/image/banner.jpg"></image>
-		</view>
+		</view> -->
 		<!-- 活动区 -->
-		<view class="promotion">
+		<!-- <view class="promotion">
 			<view class="promotion-text">优惠专区</view>
 			<view class="promotion-list">
 				<view class="promotion-column" v-for="(row, index) in Promotion" @tap="toPromotion(row)" :key="index">
@@ -115,7 +115,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="goods-title">
@@ -244,7 +244,7 @@
 			},
 			toOrder() {
 				uni.navigateTo({
-					url: '/pages/shop/order/order'
+					url: '/pages/shop/order/order?userId= ' + this.userId + ''
 				});
 			},
 			toCategoryList() {

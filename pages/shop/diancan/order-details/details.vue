@@ -68,8 +68,8 @@
 				overall: 1, //总共多少份
 				other_data: {
 					order_no: '1209307hfe19202',
-					order_time: '2023-03-30 15:00',
-					table_number: '001',
+					order_time: '2023-06-30 14:30',
+					table_number: '002',
 					sett_amount: 30
 				},
 				comp_data: [],
