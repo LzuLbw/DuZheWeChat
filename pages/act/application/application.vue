@@ -335,9 +335,6 @@
 	// import * as qiniu from 'qiniu-js';
 	import $store from '@/store/modules/social/test.js';
 	import pickRegions from '@/components/pick-regions/pick-regions.vue'
-	
-	import axios from 'axios'
-	
 	export default {
 		components: {
 			pickRegions

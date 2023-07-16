@@ -4,14 +4,14 @@
 			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/reader.jpg"></image>
 			<view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;">
 				<view style="text-align: center;line-height: 80rpx;color: #333;margin-right: 10rpx;font-weight: 600;">{{loginUserInfo.nickName}}</view>
-				<image :src="loginUserInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
+				<image :src="'http://123.56.217.170:8080'+loginUserInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
 			</view>
 		</view>
 		
 		<Dynamic v-for="(item,index) in articleList" :key="index"
 			:articleId="item.id"
 		    :imgList="toArray(item.imgList)" 
-		    :avatar="item.avatar"
+		    :avatar="'http://123.56.217.170:8080'+item.avatar"
 		    :name="item.name"
 		    :publishTime="toNumber(item.publishTime)"
 		    :content="item.content"

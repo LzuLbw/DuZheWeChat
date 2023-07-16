@@ -189,9 +189,9 @@ const store = new Vuex.Store({
 				let res = await userRequest.getPeronMessage({
 					sessionId: $store.state.personMessage[i].sessionId,
 					pageNum: $store.state.personMessage[i].pageNum,
-					pageSize: $store.state.personMessage[i].pageSize
+					pageSize: $store.state.personMessage[i].pageSize,
+					currentUserId:this.getters.loginUserInfo.userId
 				})
-				
 				let data = res.data
 				for(let i=0;i<$store.state.personMessage.length;i++){
 					if($store.state.personMessage[i].sessionId==data.sessionId){
@@ -225,7 +225,8 @@ const store = new Vuex.Store({
 				let res = await userRequest.getGroupMessage({
 					groupId: $store.state.groupMessage[i].groupId,
 					pageNum: $store.state.groupMessage[i].pageNum,
-					pageSize: $store.state.groupMessage[i].pageSize
+					pageSize: $store.state.groupMessage[i].pageSize,
+					currentSenderId:this.getters.loginUserInfo.userId
 				})
 				let data = res.data
 				for(let i=0;i<$store.state.groupMessage.length;i++){

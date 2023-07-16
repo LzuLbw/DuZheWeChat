@@ -89,7 +89,6 @@
 </template>
 <script>
 	import $http from "@/common/api/request.js"
-	import Logger from "qiniu-js/esm/logger";
 import { login } from "../../../api/login";
 	export default {
 		data() {

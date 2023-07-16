@@ -236,10 +236,22 @@ export default{
 		  }
 		});
 	},
-	//删除消息
+	//删除一条消息
 	deleteMessage(data){
 		return request({
 		  url: 'ry-vue/message/delete',
+		  method: 'POST',
+		  data,
+		  header:{
+			  'content-type': 'application/json',
+			  'token': $store.state.token
+		  }
+		});
+	},
+	//清空消息
+	clearMessage(data){
+		return request({
+		  url: 'ry-vue/message/clearMessage',
 		  method: 'POST',
 		  data,
 		  header:{

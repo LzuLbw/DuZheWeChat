@@ -8,9 +8,12 @@
 			<view class="talk-list" :style="{'padding-bottom':keyboardHeight+'rpx'}">
 				<view class="message-list" v-for="(item,index) in personMessage[s_index].list" :key="index" :id="`msg-${item.id}`">
 					<view v-show="index===0||timeShowAble(personMessage[s_index].list[index-1].sendTime,personMessage[s_index].list[index].sendTime)" class="time">{{timeShow(item.sendTime)}}</view>
-					<view v-if="item.isWithdrawn===1" class="time">{{item.senderId == loginUserInfo.userId ? '你撤回了一条消息':'对方撤回了一条消息'}}</view>
+					<view v-if="item.isWithdrawn===1 && item.senderId == loginUserInfo.userId" class="time" @click="reEdit()">你撤回了一条消息 重新编辑</view>
+					<view v-if="item.isWithdrawn===1 && item.senderId != loginUserInfo.userId" class="time">对方撤回了一条消息</view>
 					<view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
-						<image @tap="gotoPersonInfo(item.senderId)" :src="item.senderId == loginUserInfo.userId ? loginUserInfo.avatar:chattingUserInfo.avatar" mode="aspectFill" class="pic"></image>
+					<view v-if="item.isWithdrawn===0 && item.isShowMessage == false" class="time">你删除了一条消息</view>	
+					<view v-if="item.isWithdrawn===0 && item.isShowMessage == true" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
+						<image @tap="gotoPersonInfo(item.senderId)" :src="item.senderId == loginUserInfo.userId ? 'http://123.56.217.170:8080'+loginUserInfo.avatar:'http://123.56.217.170:8080'+chattingUserInfo.avatar" mode="aspectFill" class="pic"></image>
 						<view class="content" @longpress="onLongPress($event, item)">
 							<rich-text v-if="item.messageType==='text'" :nodes="replaceEmoji(item.content)"></rich-text>
 							<view v-if="item.messageType==='audio'">
@@ -26,6 +29,7 @@
 								<button style="background-color: deepskyblue;" @tap="downloadFile(item.content)">点击下载</button>
 							</view>
 						</view>
+					</view>
 					</view>
 				</view>
 			</view>
@@ -48,6 +52,8 @@
 	import $store from '@/store/modules/social';
 	import userRequest from '@/api/social/user.js';
 	import requestUrl from '@/api/social/url.js';
+
+	
 	export default {
 		data() {
 			return {
@@ -123,6 +129,22 @@
 			}
 		},
 		methods: {
+			//重新编辑
+			reEdit(){
+				for(let i=0;i<this.personMessage.length;i++){
+					if(this.personMessage[i].sessionId==this.chattingUserInfo.sessionId){
+						this.s_index = i;
+						break
+					}
+				}
+				let message = this.personMessage[this.s_index].list[this.personMessage[this.s_index].list.length-1].content;
+				console.log(message)
+				this.handReEdit(message)
+			
+			},
+			handReEdit(message){
+				this.$emit('update-message',message)
+			},			
 			gotoPersonInfo(senderId){
 				if(senderId==this.loginUserInfo.userId)
 				{
@@ -165,8 +187,10 @@
 					sessionId:this.chattingUserInfo.sessionId,
 					pageNum:this.personMessage[this.s_index].pageNum+1,
 					pageSize:this.personMessage[this.s_index].pageSize,
-					lastMessageId:this.personMessage[this.s_index].lastMessageId
+					lastMessageId:this.personMessage[this.s_index].lastMessageId,
+					currentUserId:this.loginUserInfo.userId
 				})
+				console.log(res)
 				let page = res.data.pageInfo
 				let current = Number(page.current)
 				let total = Number(page.total)
@@ -175,7 +199,7 @@
 				$store.state.personMessage[this.s_index].pageNum = current
 				this.lastPosition = page.records[0].id
 				$store.state.personMessage[this.s_index].list = page.records.reverse().concat($store.state.personMessage[this.s_index].list)
-				//console.log(res)
+				
 			},
 			//文件下载
 			downloadFile(content){
@@ -206,7 +230,7 @@
 			//撤回消息
 			//显示图片showImage
 			showImage(imageString, type){
-				console.log(imageString)
+				// console.log(imageString)
 				let image = JSON.parse(imageString);
 				if(type==='compress') return image.compressUrl;
 				else{
@@ -429,8 +453,8 @@
 <style lang="scss">
 	
 	page {
-	  // background-color: #E0E0E0  ;
-	  background-image: url('@/static/social/bg.webp');
+	  background-color: #E0E0E0  ;
+	  // background-image: url('@/static/social/bg.webp');
 	  font-size: 28rpx;
 	  box-sizing: border-box;
 	  color: #000000;

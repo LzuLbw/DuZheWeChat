@@ -43,7 +43,7 @@
 				<view class="comment-box" v-for="(item, index) in commentList" :key="index">
 					<view class="comment-box-item">
 						<view>
-							<image :src="item.avatar || emptyAvatar" mode="aspectFill" class="avatar" @tap="gotoPage(item.userId)"></image>
+							<image :src="'http://123.56.217.170:8080'+item.avatar || emptyAvatar" mode="aspectFill" class="avatar" @tap="gotoPage(item.userId)"></image>
 						</view>
 						<view class="comment-main">
 							<!-- 父评论体-start -->

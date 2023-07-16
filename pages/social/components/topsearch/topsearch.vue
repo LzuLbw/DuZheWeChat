@@ -6,9 +6,9 @@
 				<!-- <view class="navigate-bar-left-avatar" @tap="showDrawer()"> -->
 				<view class="navigate-bar-left-avatar">
 					<image class="navigate-bar-left-avatar-image"></image>
-					<!-- <image class="navigate-bar-left-avatar-image" :src="loginUserInfo.avatar"></image> -->
-					<view v-if="!isSocketOpen" class="navigate-bar-left-avatar-red-dot"></view>
-					<view v-if="isSocketOpen" class="navigate-bar-left-avatar-green-dot"></view>
+					<image class="navigate-bar-left-avatar-image" :src="'http://123.56.217.170:8080'+loginUserInfo.avatar" @click="intoPersonal()"></image>
+					<!-- <view v-if="!isSocketOpen" class="navigate-bar-left-avatar-red-dot"></view>
+					<view v-if="isSocketOpen" class="navigate-bar-left-avatar-green-dot"></view> -->
 				</view>
 			</view>
 			<!--搜索框-->
@@ -135,7 +135,12 @@
 				uni.navigateTo({
 					url:"../social/addfriend/addfriend"
 				})
-			}
+			},
+			intoPersonal(){
+				uni.navigateTo({
+						url:"/pages/social/info/person-info"
+					})
+				}
 		}
 	}
 </script>
@@ -151,6 +156,7 @@
         display: flex;
 		align-items: center;
 		height: 80upx;
+		justify-content: baseline;
 	}
 	.search-text{
 		padding: 0 40upx;
@@ -187,8 +193,9 @@
 		border-radius: 40%;
 	}
 	.navigate-bar-left-avatar-image{
-		width: 30px;height: 30px;border-radius: 50%;
-		margin-left: 10rpx;
+		width: 35px;height: 35px;border-radius: 50%;
+		margin-left: 30rpx;
+		
 	}
 	.navigate-bar-left-avatar{
 		margin-bottom: 5rpx;
@@ -216,5 +223,6 @@
 		width: 20%;
 		height: 100%;
 		padding: 4px;
+		margin-top: -80px;
 	}
 </style>

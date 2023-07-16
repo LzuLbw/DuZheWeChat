@@ -9,10 +9,10 @@
 		</view>
 		
 		<view class="icon-container">
-			<!-- <image class="input-icon" @tap="openDrawer(1)" src="@/static/social/icon/emoji.png"></image> -->
-			<!-- <image class="input-icon" @tap="selectImage()" src="@/static/social/icon/image.png"></image>
-			<image class="input-icon" @tap="selectVideo()" src="@/static/social/icon/video.png"></image> -->
-			<!-- #ifdef APP-PLUS -->
+			<image class="input-icon" @tap="openDrawer(1)" src="@/static/social/icon/emoji.png"></image>
+			<image class="input-icon" @tap="selectImage()" src="@/static/social/icon/image.png"></image>
+			<image class="input-icon" @tap="selectVideo()" src="@/static/social/icon/video.png"></image>
+			<!-- #ifdef APP-PLUS
 			<lsj-upload
 				style="width: 55rpx;height: 55rpx;hebackground-color: red;margin-left: 0rpx;"
 				class="input-icon"
@@ -25,11 +25,11 @@
 			>
 				<!-- <image  class="input-icon" src="@/static/social/icon/file.png"></image> -->
 			</lsj-upload>
-			<!-- #endif -->
+			
 			<!-- #ifdef H5 -->
 			<!-- <image class="input-icon" @tap="selectFile()" src="@/static/social/icon/file.png"></image> -->
 			<!-- #endif -->
-			<!-- <image class="input-icon" @tap="openDrawer(5)" src="@/static/social/icon/microphone.png"></image> -->
+			<image class="input-icon" @tap="openDrawer(5)" src="@/static/social/icon/microphone.png"></image> 
 		</view>
 		<view class="emoji-container" v-show="showDrawer===1">
 			<image class="emoji" v-for="(emoji,index) in emojiList" :key="index" @tap="text += emoji.alt" :src="'/static/social/emoji/big/'+emoji.url"></image>
@@ -65,27 +65,61 @@
 			 </view>
 		</view>
 		<view class="image-container" v-show="selectedImageimage">
-			<!-- <image @tap="selectImage()" style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedImage"></image> -->
+			<u-upload  
+			    :fileList="fileList1" 
+			    @afterRead="afterRead" 
+				@delete="deletePic" 
+				name="1" 
+				multiple
+				:maxCount="9" 
+				:previewFullImage="true" 
+				deletable 
+				uploadText="图片">
+			</u-upload>
 			<view style="display: flex;position: fixed;width: 90%;margin-left: 4%;bottom: 50rpx;">
-				<u-button @tap="imageCancel()" text="取消"  size="normal"></u-button>
+				<!-- <image @tap="selectImage()" style="width: 80%;height: 70%;overflow: hidden;margin-top: -50%;border-radius: 2%;" :src="selectedImage"></image> -->			
+				<u-button style="margin-right: 2%;" @tap="imageCancel()" text="取消"  size="normal"></u-button>
 				<u-button style="margin-left: 2%;" @tap="sendImage()" text="发送"  size="normal" class="send-btn-able" type="primary"></u-button>
 			</view>
-			<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
-				:maxCount="9" :previewFullImage="true" deletable uploadText="图片"></u-upload>
+			
 		</view>
-		<view class="video-container" v-show="selectedVideo!==null">
-			<video style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedVideo"></video>
+		<view class="video-container" v-show="selectedVideo">
+			<u-upload
+				:fileList="fileList2"
+				@afterRead="afterRead"
+				@delete="deletePic"
+				name="2"
+				multiple
+				:maxCount="10"
+				accept="video"
+				deletable
+				uploadText="视频"
+			></u-upload>
+			<!-- <video style="width: 80%;height: 70%;overflow: hidden;margin-top: 1%;border-radius: 2%;" :src="selectedVideo"></video> -->
 			<view style="display: flex;position: fixed;width: 90%;margin-left: 4%;bottom: 50rpx;">
 				<u-button @tap="videoCancel()" text="取消"  size="normal"></u-button>
 				<u-button style="margin-left: 2%;" @tap="sendVideo()" text="发送"  size="normal" class="send-btn-able" type="primary"></u-button>
 			</view>
 		</view>
-		<view class="file-container" v-show="selectedFile!==null">
+		<view class="file-container" v-show="selectedFile">
 			<view>
 				<!-- <image style="width: 100rpx;height: 100rpx;margin-top: 60rpx;" src="@/static/social/icon/clip.png"></image> -->
 				<view style="display: block;">
-					<view>{{selectedFile===null?'':selectedFile.name}}</view>
-					<view>{{selectedFile===null?'':(selectedFile.size/1048576).toFixed(2)+'MB'}}</view>
+					<u-upload
+						:fileList="fileList3"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="3"
+						size="(selectedFile.size/1048576).toFixed(2)+'MB'"
+						multiple
+						:maxCount="10"
+						:previewFullImage="true"
+						accept="file"
+						deletable
+						uploadText="文件"
+					></u-upload>
+					<!-- <view>{{selectedFile===null?'':selectedFile.name}}</view>
+					<view>{{selectedFile===null?'':(selectedFile.size/1048576).toFixed(2)+'MB'}}</view> -->
 				</view>
 			</view>
 			<view style="display: flex;position: fixed;width: 90%;margin-left: 4%;bottom: 50rpx;">
@@ -108,6 +142,8 @@
 	export default{
 		name: 'inputBoxOff',
 		props:{
+			message:String,
+			text:String,
 			maxImageMB:{
 				type: Number,
 				default: 5
@@ -187,8 +223,13 @@
 		},
 		data(){
 			return{
+				
 				selectedImageimage: false,
+				selectedVideo: false,
+				selectedFile: false,
 				fileList1: [],
+				fileList2: [],
+				fileList3: [],
 				picurl: [],
 				
 				isDisable: true,
@@ -236,7 +277,7 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://123.56.217.170/dev-api/common/upload',
+						url: 'http://123.56.217.170:8080/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {
@@ -246,16 +287,13 @@
 							
 							console.log(res);
 							url = JSON.parse(res.data).fileName;
-							
 							// console.log(eval(res.data));
-			
 							console.log("要存的url为：" + url);
 							this.picurl = url;
 			
 							setTimeout(() => {
 								resolve(res.data.data)
 							}, 1000)
-							this.sendImage();
 						}
 					});
 				})
@@ -269,50 +307,68 @@
 			//发送文件消息
 			sendFile(){
 				// #ifdef APP-PLUS
-				uni.showToast({
-					icon:'none',
-					title:'手机端暂时不行'
-				})
-				return
+				// uni.showToast({
+				// 	icon:'none',
+				// 	title:'手机端暂时不行'
+				// })
+				// return
 				// #endif
 				let that = this
 				uni.showLoading({
 					title:'正在上传文件'
 				})
-				uni.uploadFile({
-					url: requestUrl.getUrl()+'ry-vue/file/upload', //文件上传接口
-					filePath: this.selectedFile.url,
-					name: 'file',
-					fail(res) {
-						console.log(res)
-					},
-					success: (res) => {
-						console.log("----------------------------")
-						console.log(res)
-						uni.hideLoading();
-						let response = JSON.parse(res.data);
-						if(!response.success){
-							uni.showToast({
-								icon:'error',
-								title:response.Message
-							})
-						}else{
-							let fileString = {
-								name: response.data.name,
-								size: response.data.size,
-								url: response.data.download
-							}
+				var regExp = /(.*\/)*([^.]+).*/ig;
+				name = this.picurl.replace(regExp,"$2");
+				console.log(name);
+				console.log(this.picurl.size);
+				let fileString = {
+				    name: name,
+					size: (this.picurl.size/1048576).toFixed(2)+'MB',
+					url: this.picurl.download
+				}
+				
+				let message = {
+					type: 'file',
+					time: timeUtil.getFormatTime(new Date()),
+					content: JSON.stringify(fileString)
+				}
+				that.$emit('sendMessage', message);
+				that.fileCancel();
+				
+				// uni.uploadFile({
+				// 	url: requestUrl.getUrl()+'ry-vue/file/upload', //文件上传接口
+				// 	filePath: this.selectedFile.url,
+				// 	name: 'file',
+				// 	fail(res) {
+				// 		console.log(res)
+				// 	},
+				// 	success: (res) => {
+				// 		console.log("----------------------------")
+				// 		console.log(res)
+				// 		uni.hideLoading();
+				// 		let response = JSON.parse(res.data);
+				// 		if(!response.success){
+				// 			uni.showToast({
+				// 				icon:'error',
+				// 				title:response.Message
+				// 			})
+				// 		}else{
+				// 			let fileString = {
+				// 				name: response.data.name,
+				// 				size: response.data.size,
+				// 				url: response.data.download
+				// 			}
 							
-							let message = {
-								type: 'file',
-								time: timeUtil.getFormatTime(new Date()),
-								content: JSON.stringify(fileString)
-							}
-							that.$emit('sendMessage', message);
-							that.fileCancel();
-						}
-					}
-				});
+				// 			let message = {
+				// 				type: 'file',
+				// 				time: timeUtil.getFormatTime(new Date()),
+				// 				content: JSON.stringify(fileString)
+				// 			}
+				// 			that.$emit('sendMessage', message);
+				// 			that.fileCancel();
+				// 		}
+				// 	}
+				// });
 			},
 			//发送视频消息
 			sendVideo(){
@@ -320,30 +376,16 @@
 				uni.showLoading({
 					title:'正在上传视频'
 				})
-				uni.uploadFile({
-					url: requestUrl.getUrl()+'ry-vue/video/upload', //图片上传接口
-					filePath: this.selectedVideo,
-					name: 'video',
-					success: (res) => {
-						uni.hideLoading();
-						let response = JSON.parse(res.data);
-						if(!response.success){
-							uni.showToast({
-								icon:'error',
-								title:response.Message
-							})
-						}else{
-							let message = {
-								type: 'video',
-								time: timeUtil.getFormatTime(new Date()),
-								content: requestUrl.getUrl()+response.data.url
-							}
-							that.$emit('sendMessage', message);
-							that.videoCancel();
-						}
-					}
-				});
-				
+				let message = {
+					type: 'video',
+					time: timeUtil.getFormatTime(new Date()),
+					content:  this.picurl
+				}
+				that.$emit('sendMessage', message);
+				that.videoCancel();
+				that.selectedVideo = false;
+				$store.dispatch('getPersonMessage')
+				$store.dispatch('getGroupMessage')
 			},
 			//发送图片消息
 			sendImage(){
@@ -351,34 +393,20 @@
 				// uni.showLoading({
 				// 	title:'正在上传图片'
 				// })
-				uni.uploadFile({
-					// url: requestUrl.getUrl()+'ry-vue/image/upload', //图片上传接口
-					// filePath: this.selectedImage,
-					// name: 'image',
-					success: (res) => {
-						uni.hideLoading();
-						let response = JSON.parse(res.data);
-						console.log(response)
-						if(!response.success){
-							uni.showToast({
-								icon:'error',
-								title:response.Message
-							})
-						}else{
-							let imageString = {
-								originUrl:  requestUrl.getUrl()+response.data.url,
-								compressUrl: requestUrl.getUrl()+response.data.compressUrl
-							}
-							let message = {
-								type: 'image',
-								time: timeUtil.getFormatTime(new Date()),
-								content: JSON.stringify(imageString)
-							}
-							that.$emit('sendMessage', message);
-							that.imageCancel();
-						}
-					}
-				});
+				let imageString = {
+					"originUrl":  this.picurl,
+					"compressUrl": this.picurl
+				}
+				let message = {
+					type: 'image',
+					time: timeUtil.getFormatTime(new Date()),
+					content: JSON.stringify(imageString)
+				}
+				that.$emit('sendMessage', message);
+				that.imageCancel();
+				that.selectedImageimage = false;
+				$store.dispatch('getPersonMessage')
+				$store.dispatch('getGroupMessage')
 			},
 			//发送语音消息
 			sendAudio(){
@@ -425,7 +453,6 @@
 						}
 					}
 				});
-				
 			},
 			///发送文字
 			sendText(){
@@ -443,11 +470,32 @@
 					time: timeUtil.getFormatTime(new Date()),
 					content: this.text
 				}
-				this.$emit('sendMessage', message);
-				this.text = '';
-				$store.dispatch('getPersonMessage')
-				$store.dispatch('getGroupMessage')
+				if(this.text){ 
+				     uni.request({
+				      url:'http://123.56.217.170:8080/scanText',
+				      method:'POST',
+				      data:{
+				       text:this.text
+				      },
+				      success:res =>{
+				       console.log(res,"res")
+				       if(res.data.state == "block"){
+				        uni.showToast({
+				         icon:'error',
+				         title:'检测到不合法内容'
+				        })
+				       }else{
+				        this.$emit('sendMessage', message);
+				        this.text = '';
+				        $store.dispatch('getPersonMessage')
+				        $store.dispatch('getGroupMessage')
+				       }
+				      },
+				     })
+				    }
+				console.log(message);
 			},
+			
 			openDrawer(index){
 				if(this.showDrawer === index)	this.showDrawer = 0;
 				else this.showDrawer = index
@@ -527,7 +575,7 @@
 				if(this.showDrawer === 5) this.showDrawer = 0;
 			},
 			imageCancel(){
-				this.selectedImage = null;
+				this.selectedImageimage = null;
 				if(this.showDrawer === 2) this.showDrawer = 0;
 			},
 			videoCancel(){
@@ -547,89 +595,45 @@
 				}else{
 					this.selectedImageimage = false;
 				}
-				// let that = this
-				// uni.chooseImage({
-				// 	count: 1, //默认9
-				// 	sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				// 	sourceType: ['album','camera'], //从相册选择
-				// 	success: function (res) {
-				// 		//console.log(res.tempFilePaths[0])
-				// 		if(that.maxImageMB*1048576 < res.tempFiles[0].size){
-				// 			uni.showToast({
-				// 				icon:'none',
-				// 				title:'图片请限制在'+that.maxImageMB+'MB以内'
-				// 			})
-				// 		}else{
-				// 			that.showDrawer = 2;
-				// 			that.$nextTick(()=>{
-				// 				that.selectedImage = res.tempFilePaths[0];
-				// 				console.log(that.selectedImage)
-				// 			})	
-				// 		}
-							
-				// 	}
-				// });
 			},
 			selectVideo(){
-				var self = this;
-				uni.chooseVideo({
-					sourceType: ['camera', 'album'],
-					sizeType: ['compressed'],
-					success: function (res) {
-						// console.log(res)
-						// #ifdef APP-PLUS
-							if(self.maxVideoMB*1048576 < res.size){
-								uni.showToast({
-									icon:'none',
-									title:'视频请限制在'+self.maxVideoMB+'MB以内'
-								})
-							}
-						// #endif
-						// #ifdef H5
-							if(self.maxVideoMB*1048576 < res.tempFile.size){
-								uni.showToast({
-									icon:'none',
-									title:'视频请限制在'+self.maxVideoMB+'MB以内'
-								})
-							}
-								
-						// #endif
-						else{
-							self.showDrawer = 3;
-							self.$nextTick(()=>{
-								self.selectedVideo = res.tempFilePath;
-							})
-						}
-						
-					}
-				});
+				if(this.selectedVideo == false){
+					this.selectedVideo = true;
+				}else{
+					this.selectedVideo = false;
+				}
 			},
 			selectFile(){
-				var self = this;
+				//var self = this;
 				// #ifdef H5
-				uni.chooseFile({
-				  count: 1, //默认100
-				  extension: this.fileExtensions,
-					success: function (res) {
-						if(self.maxFileMB*1048576 < res.tempFiles[0].size){
-							uni.showToast({
-								icon:'none',
-								title:'文件请限制在'+self.maxFileMB+'MB以内'
-							})
-						}else{
-							self.showDrawer = 4;
-							self.$nextTick(()=>{
-								self.selectedFile = {
-									name: res.tempFiles[0].name,
-									size: res.tempFiles[0].size,
-									url: res.tempFilePaths[0]
-								}
-							})
-							// console.log(self.selectedFile)
-						}
+				if(this.selectedFile == false){
+					this.selectedFile = true;
+				}else{
+					this.selectedFile = false;
+				}
+				// uni.chooseFile({
+				//   count: 1, //默认100
+				//   extension: this.fileExtensions,
+				// 	success: function (res) {
+				// 		if(self.maxFileMB*1048576 < res.tempFiles[0].size){
+				// 			uni.showToast({
+				// 				icon:'none',
+				// 				title:'文件请限制在'+self.maxFileMB+'MB以内'
+				// 			})
+				// 		}else{
+				// 			self.showDrawer = 4;
+				// 			self.$nextTick(()=>{
+				// 				self.selectedFile = {
+				// 					name: res.tempFiles[0].name,
+				// 					size: res.tempFiles[0].size,
+				// 					url: res.tempFilePaths[0]
+				// 				}
+				// 			})
+				// 			// console.log(self.selectedFile)
+				// 		}
 					
-					}
-				});
+				// 	}
+				// });
 				// #endif
 			},
 			fileOnChange(files){
@@ -689,7 +693,7 @@
 	}
 	.icon-container{
 		//margin-top: -10rpx;
-		margin-top: -30rpx;
+		margin-top: 10rpx;
 		margin-bottom: 0rpx;
 		padding-left: 20rpx;
 		.input-icon{

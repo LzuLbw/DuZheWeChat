@@ -4,7 +4,7 @@
 			<image mode="aspectFill" style="width: 100%;height: 80%;" src="/static/social/img/reader.jpg"></image>
 			<view style="position: absolute;right: 25rpx;display: flex;bottom: 10%;">
 				<view style="text-align: center;line-height: 80rpx;color: #fff;margin-right: 10rpx;font-weight: 600;">{{personInfo.nickName}}</view>
-				<image :src="personInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
+				<image :src="'http://123.56.217.170:8080'+personInfo.avatar" style="border-radius: 50%;width: 120rpx;height: 120rpx;"></image>
 			</view>
 		</view>
 		

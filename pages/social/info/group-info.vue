@@ -191,7 +191,7 @@
 				let users = res1.data
 				this.urls = []
 				for(let i=0;i<users.length;i++){
-					this.urls.push(users[i].avatar)
+					this.urls.push('http://123.56.217.170:8080'+users[i].avatar)
 				}
 				for(let i=0;i<this.groupList.length;i++){
 					if(this.groupList[i].group_id===this.groupInfo.id){
