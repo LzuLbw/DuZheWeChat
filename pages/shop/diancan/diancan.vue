@@ -102,7 +102,10 @@
 						hideAlbum: true,
 						success: function(res) {
 							console.log(res.result);
-							void plus.runtime.openURL(res.result, function() {
+							this.table_number = res.result;
+							//console.log(this.table_number);
+							uni.redirectTo({
+								url: '/pages/shop/diancan/diancan?tableNumber='+this.table_number+''
 							})
 						}
 					})
@@ -112,6 +115,7 @@
 		},
 		computed:{
 			table_number_computed(){
+				console.log(this.table_number);
 				if(this.table_number == undefined){
 					return '点击选择桌号'
 				}else{
@@ -122,14 +126,14 @@
 		onLoad(e) {
 			console.log('in')
 			console.log(e)
-			if (e.number != undefined) {
-				this.table_number = e.number
+			if (e.tableNumber != undefined) {
+				this.table_number = e.tableNumber
 				wx.setStorageSync('table_num', this.table_number)
 				
 			} else {
 				console.log('1111')
 				
-				this.$refs.jpSelect.toOpen()
+				//this.$refs.jpSelect.toOpen()
 
 			}
 

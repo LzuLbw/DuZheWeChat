@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<messageBox ref="messageBox"></messageBox>
+			<messageBox  ref="messageBox" @update-message="updateMessage"></messageBox>
 		</view>
 		
 		<view>
@@ -9,6 +9,7 @@
 			@sendMessage="handleMessage" 
 			@bottomHeight="handleBottomHeight"
 			@keyboradHeight="handleKeyboradHeight"
+			:text="text"
 			 ref="inputBox"></inputBox>
 		</view>
 		
@@ -32,6 +33,8 @@
 			return {
 				emoji: '',
 				index: 0,
+				message:"",
+				text:"",
 			}
 		},
 		onUnload() {
@@ -55,7 +58,7 @@
 		},
 		onPageScroll(h) {
 			//this.$refs.inputBox.showDrawer = 0
-			if(h.scrollTop==0){
+			if(h.scrollTop===0){
 				this.$refs.messageBox.getHistoryMsg()
 			}
 		},
@@ -70,12 +73,23 @@
 			this.clearUnread()
 			this.showOnline()
 		},
+		// 下拉刷新
+		onPullDownRefresh(){
+		//刷新数据之后停止刷新
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},1000) 
+		},
 		methods: {
+			updateMessage(values){
+				this.text = values
+			},
 			//查看在线人数
 			showOnline(){
-				//let tip = this.onlineArray.indexOf(this.chattingUserInfo.chattingUserId)===-1?'离线':'在线'
+				let tip = this.onlineArray.indexOf(this.chattingUserInfo.chattingUserId)===-1?'离线':'在线'
 				uni.setNavigationBarTitle({
-					title:this.chattingUserInfo.name+'('+tip+')'
+					title:this.chattingUserInfo.name+'('+tip+')',
+					// title:this.chattingUserInfo.name
 				})
 			},
 			async clearUnread(){
@@ -103,6 +117,7 @@
 					 messageType: message.type,
 					 sessionId: this.chattingUserInfo.sessionId
 				 }
+				 console.log(m);
 				 let msg = {
 					 type: 'person-message',
 					 data: m

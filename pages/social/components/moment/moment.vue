@@ -35,6 +35,7 @@
 			:pattern="pattern"
 			:content="content"
 			:horizontal="'right'"
+			:vertical="'top'"
 			@trigger="trigger"
 		></uni-fab>
 	</view>

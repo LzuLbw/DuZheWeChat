@@ -64,22 +64,31 @@
             <view>关于我们</view>
           </view>
         </view>
-        <view class="list-cell list-cell-arrow" @click="handleToSetting">
+        <!-- <view class="list-cell list-cell-arrow" @click="handleToSetting">
           <view class="menu-item-box">
             <view class="iconfont icon-setting menu-icon"></view>
             <view>应用设置</view>
           </view>
-        </view>
+        </view> -->
       </view>
 	  
 	  <view class="menu-list">
+	    <view class="list-cell list-cell-arrow" @click="handleToSetting">
+	      <view class="menu-item-box">
+	        <view class="iconfont icon-setting menu-icon"></view>
+	        <view>应用设置</view>
+	      </view>
+	    </view>
+	  </view>
+	  
+	  <!-- <view class="menu-list">
 	    <view class="list-cell list-cell-arrow" @click="handleToOthers">
 	      <view class="menu-item-box">
 	        <view class="iconfont icon-setting menu-icon"></view>
 	        <view>其他服务</view>
 	      </view>
 	    </view>
-	  </view>
+	  </view> -->
 
     </view>
   </view>

@@ -14,7 +14,7 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
 			<swiper class="carousel" circular @change="swiperChange" autoplay="true">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item">
 					<image :src="item.imageUrl" />
 				</swiper-item>
 			</swiper>
@@ -65,11 +65,16 @@
 </template>
 
 <script>
+	
+	import {
+		getUserProfile
+	} from "@/api/system/user"
 
 	export default {
 
 		data() {
 			return {
+				userId:0,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
@@ -81,20 +86,20 @@
 						title:'每日阅读',
 						path:'/pages/paper/everyread'
 					},
-					{
-						icon:'/static/icon/squre.png',
-						title:'话题广场',
-						path:'/pages/squre/squre'
-					},
+					// {
+					// 	icon:'/static/icon/squre.png',
+					// 	title:'话题广场',
+					// 	path:'/pages/squre/squre'
+					// },
 					{
 						icon:'/static/icon/station.png',
 						title:'附近小站',
 						path:'/pages/station/station'
 					},
 					{
-						icon:'/static/icon/me.png',
-						title:'个人中心',
-						path:'/pages/mine/index'
+						icon:'/static/icon/act.png',
+						title:'活动中心',
+						path:'/pages/act/act'
 					},
 					]
 			};
@@ -102,11 +107,17 @@
 
 		onLoad() {
 			this.loadData();
+			this.getUser();
 		},
 		onShow() {
 			//this.getSwiper();
 		},
 		methods: {
+			getUser() {
+				getUserProfile().then(response => {
+					this.userId = response.data.userId;
+				})
+			},
 			//导航点击的处理函数
 			navItemClick(url){
 				uni.navigateTo({
@@ -150,8 +161,8 @@
 			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
 				uni.navigateTo({
-					url: `/pages/shop/goods/goods?id=` + id
-				})
+					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
+				});
 			},
 			//getSwiper(){
 			//	const that = this;

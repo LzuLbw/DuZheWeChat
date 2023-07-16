@@ -125,6 +125,7 @@ export default {
 				}
 				$store.state.totalUnread.message += session.unread
 				$store.state.sessionList.push(session)
+				console.log(session);
 			}
 			for(let i=0;i<$store.state.groupList.length;i++){
 				let session = {

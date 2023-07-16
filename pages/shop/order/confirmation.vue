@@ -217,7 +217,7 @@
 				console.log(this.goodsList);
 				for (let i = 0; i < len; i++) {
 					paymentOrder.push(this.goodsList[i]);
-					goodsid.push(this.goodsList[i].id);
+					goodsid.push(this.goodsList[i].goods_id);
 					goodsName.push(this.goodsList[i].name);
 					goodsUrl.push(this.goodsList[i].imgUrl);
 					goodsPrice.push(this.goodsList[i].nprice);

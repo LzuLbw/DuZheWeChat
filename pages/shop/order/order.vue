@@ -83,7 +83,7 @@
 				],
 				// 工具栏列表
 				mytoolbarList:[
-					{url:'../../shop/keep/keep',text:'我的收藏',img:'/static/image/shop/point.png'},
+					{url:'',text:'我的收藏',img:'/static/image/shop/point.png'},
 					{url:'../../shop/address/address',text:'收货地址',img:'/static/image/shop/addr.png'},
 					// {url:'',text:'账户安全',img:'/static/image/shop/security.png'},
 					// {url:'',text:'银行卡',img:'/static/image/shop/bank.png'},
@@ -158,11 +158,12 @@
 			},
 			toPage(url){
 				if(!url){
-					uni.showToast({title: '模板未包含此页面',icon:"none"});return;
+					this.$modal.showToast('模块建设中~');
 				}
 				uni.navigateTo({
 					url:url
 				})
+				
 			}
 		}
 	} 

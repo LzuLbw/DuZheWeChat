@@ -106,7 +106,7 @@
 			uploadFilePromise(url) {
 				return new Promise((resolve, reject) => {
 					let a = uni.uploadFile({
-						url: 'http://123.56.217.170/dev-api/common/upload',
+						url: 'http://123.56.217.170:8080/common/upload',
 						filePath: url,
 						name: 'file',
 						formData: {
@@ -236,41 +236,78 @@
 			
 			operate(){
 				
-				var uid = getApp().globalData.uid;
-				console.log(uid);
-				
-				uni.request({
-					url: 'http://123.56.217.170:8080/ry-vue/group/create',
-					method: 'POST',
-					
-					data: {
+				// var uid = getApp().globalData.uid;
+				// console.log(uid);
+				if(this.groupId==-1){
+					uni.request({
+						url: 'http://123.56.217.170:8080/ry-vue/group/create',
+						method: 'POST',
 						
-						"id" : uid,
-						"name" : this.name,
-						"avatar" : this.picurl,
-						"introduction" : this.introduction,
+						data: {
+							
+							"id" : this.loginUserInfo.userId,
+							"name" : this.name,
+							"avatar" : this.picurl,
+							"introduction" : this.introduction,
+							
+						},
+						success: res => {
+							uni.showToast({
+								icon:'success',
+								title:'创建成功'
+							}),
+							uni.navigateTo({
+								url:'/pages/social/list/group-list'
+							}),
+							console.log(id);
+							//$store.dispatch('getGroupList')
+							console.log(res);
+							
+						},
+						fail: () => {
+							uni.showToast({
+								icon:'error',
+								title:'创建失败'
+							})
+						},
+						complete: () => {}
+					});
+				}else{
+					uni.request({
+						url: 'http://123.56.217.170:8080/ry-vue/group/update',
+						method: 'POST',
 						
-					},
-					success: res => {
-						uni.showToast({
-							icon:'success',
-							title:'创建成功'
-						}),
-						uni.navigateTo({
-							url:'/pages/social/list/group-list'
-						}),
-						$store.dispatch('getGroupList')
-						console.log(res);
-						
-					},
-					fail: () => {
-						uni.showToast({
-							icon:'error',
-							title:'创建失败'
-						})
-					},
-					complete: () => {}
-				});
+						data: {
+							
+							"id" : this.groupId,
+							"name" : this.name,
+							"avatar" : this.picurl,
+							"introduction" : this.introduction,
+							
+						},
+						success: res => {
+							uni.showToast({
+								icon:'success',
+								title:'修改成功'
+							}),
+							uni.navigateTo({
+								url:'/pages/social/list/group-list'
+							}),
+							console.log(id);
+							//$store.dispatch('getGroupList')
+							console.log(res);
+							
+						},
+						fail: () => {
+							uni.showToast({
+								icon:'error',
+								title:'修改失败'
+							})
+						},
+						complete: () => {}
+					});
+				}
+			
 				
 				
 				

@@ -27,8 +27,8 @@
 		},
 		methods: {
 			toUser() {
-				uni.switchTab({
-					url: '/pages/tabBar/user'
+				uni.navigateTo({
+					url: '/pages/shop/order/order'
 				});
 			}
 		},

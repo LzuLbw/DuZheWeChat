@@ -75,7 +75,8 @@
 			return {
 				amount:0,
 				orderName:'',
-				paytype:'alipay'//支付类型
+				paytype:'alipay',//支付类型
+				
 			};
 		},
 		computed: {
@@ -88,6 +89,8 @@
 			uni.getStorage({
 				key:'paymentOrder',
 				success: (e) => {
+					
+					
 					if(e.data.length>1){
 						this.orderName = '多商品合并支付'
 					}else{

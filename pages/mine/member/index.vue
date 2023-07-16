@@ -6,7 +6,7 @@
 		 :autoplay="false" :interval="3000" :duration="1000" :current="bigIdx">
 
 			<template v-for="(vip, i) in vips">
-				<swiper-item :key="'vip_'+i">
+				<swiper-item :key="i">
 					<view :class="['swiper-item',bigIdx === i ? 'big' : 'small']" :style="{background:vip.bg,'box-shadow':vip.shadow}">
 						<image class="img" src="/static/mine/member/icon_vip.png"></image>
 						<text class="title">{{levelrow.level}}{{vip.title}}</text>
@@ -24,7 +24,7 @@
 
 		<scroll-view class="slider" scroll-x="true">
 			<template v-for="(task,i) in taskList" v-if="task.status == 0">
-				<view :key="'task_'+i" class="s_item">
+				<view :key="i" class="s_item">
 					<view class="content">
 						<image :src="task.thumbUrl" class="img"></image>
 						<text class="name">{{task.name}}</text>
@@ -45,7 +45,7 @@
 		<view class="footer">
 			<view class="welfare">
 				<template v-for="(info,i) in welfare">
-					<view class="item" :key="'welfare_'+i">
+					<view class="item" :key="i">
 						<view class="border">
 							<image class="img" :src="info.icon" @click="routerItem(info.url)"></image>
 						</view>
@@ -69,6 +69,7 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		data() {
 			return {
 				i:0,
+				form:{},
 				// 总条数
 				total: 0,
 				ss: '',
@@ -186,8 +187,20 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		  //通过用户id得到用户积分表
 		  getScore_info_sub(userID){
 			  getUser_score(userID).then(response => {
-			    this.user_score = response.data
-				this.getLevel()
+				  
+				  let res = response.data
+				  if(res == null){
+				  	this.user_score.userId = this.user.userId
+				  	addUser_score(this.user_score).then(response => {
+				  		this.user_score = response.data;
+				  		this.getLevel()
+				  	});
+				  }else{
+					this.user_score = response.data
+					this.getLevel()
+				  }
+				  
+			    
 				// alert(this.user_score.totalScore)
 				// this.ss = 'nihao';
 				// this.getList()
@@ -195,29 +208,28 @@ import { listLevelscoremap, getLevelscoremap, delLevelscoremap, addLevelscoremap
 		  },
 		  /** 查询用户等级积分映射列表,用总积分得到等级 */
 		  getLevel(){
-			  this.ss = '11';
-			  listLevelscoremap().then(response => {
-			           this.levelscoremapList = response.rows;
-			           this.total = response.total;
-					   this.i = 0;
-					   if(this.user_score.totalScore > this.levelscoremapList[this.total-1].totalScore){
-					   			// alert('积分已达上限')
-								getLevelscoremap(this.total-1).then(response => {
-										this.levelrow = response.data
-									});
-								return
-					   }
-						while(this.i < this.total){
-							if(this.user_score.totalScore < this.levelscoremapList[this.i].totalScore){
-								getLevelscoremap(this.i).then(response => {
-								        this.levelrow = response.data
-								      });
-								break;
-							}
-							 this.i++;
-					  }
-					  
-			   });
+		  			  listLevelscoremap().then(response => {
+		  			           this.levelscoremapList = response.rows;
+		  			           this.total = response.total;
+		  					   this.i = 0;
+		  					   if(Number(this.user_score.totalScore) > Number(this.levelscoremapList[this.total-1].totalScore)){
+		  					   			// alert('积分已达上限')
+		  								getLevelscoremap(this.total-1).then(response => {
+		  										this.levelrow = response.data
+		  									});
+		  								return
+		  					   }
+		  						while(this.i < this.total){
+		  							if(Number(this.user_score.totalScore) < Number(this.levelscoremapList[this.i].totalScore)){
+		  								getLevelscoremap(this.i).then(response => {
+		  								        this.levelrow = response.data
+		  								      });
+		  								break;
+		  							}
+		  							 this.i = Number(this.i) + 1;
+		  					  }
+		  					  
+		  			   });
 		  },
 		  //查询表格得到任务信息列表
 		  getTask_info(){

@@ -7,12 +7,12 @@
 						<u-avatar shape="square" size="40" icon="bell-fill" fontSize="26" randomBgColor colorIndex="18"></u-avatar>
 						<u-badge style="position: absolute;top: -10upx;right: -10upx;" :type="'error'" max="99" :value="totalUnread.notice"></u-badge>
 					</view>
-					<text class="list__item__user-name">通知</text>
+					<text class="list__item__name">通知</text>
 				</view>
 				<u-line></u-line>
 				<view class="list__item" @tap="gotoPage(1)">
 					<u-avatar shape="square" size="40" icon="weixin-fill" fontSize="26" randomBgColor colorIndex="9"></u-avatar>
-					<text class="list__item__user-name">读友圈</text>
+					<text class="list__item__name">读友圈</text>
 				</view>
 				<u-line></u-line>
 				<!-- <view class="list__item" @tap="gotoPage(2)">
@@ -33,8 +33,9 @@
 						<view class="list__item" @tap="gotoFriendInfo(item1.id)">
 							<image v-if="item1.url" class="list__item__avatar" :src="'http://123.56.217.170:8080'+item1.url"></image>
 							<image v-if="!item1.url" class="list__item__avatar" :src="base64Avatar"></image>
-							
+						     
 							<text class="list__item__user-name">{{item1.name}}</text>
+							<u-line></u-line>
 						</view>
 					</view>
 				</u-index-item>
@@ -110,8 +111,9 @@
 		},
 		onLoad() {
 			uni.hideTabBar();
+
 			this.list = getList(1);
-			console.log(1111);
+			console.log(1111,this.list);
 		},
 		created() {
 			
@@ -158,17 +160,24 @@
 			justify-content: space-between;
 		}
     .list__item__avatar{
-			height: 40px;
-			width: 40px;
+			height: 85rpx;
+			width: 80rpx;
 			border-radius: 3px;
 			float: left;
 		}
     .list__item__user-name{
-		    align-items: center;
+		    // align-items: center;
 			font-size: 16px;
-			margin-left: 2upx;
+			margin-left: 22upx;
+			line-height: 40px;
 			color: black;
 		}
+		.list__item__name{
+			    align-items: center;
+				font-size: 16px;
+				margin-left: 22upx;
+				color: black;
+			}
     .list__footer{
 			color: royalblue;
 			font-size: 14px;

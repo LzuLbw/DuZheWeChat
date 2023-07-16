@@ -36,7 +36,6 @@
 				删除收货地址
 			</view>
 		</view> -->
-
 	</view>
 </template>
 
@@ -208,6 +207,9 @@
 </script>
 
 <style scoped>
+	.icon {
+		font-size: 26upx;
+	}
 	.my-add-path {
 		padding-left: 20rpx;
 	}
@@ -234,17 +236,5 @@
 		height: 120upx;
 		justify-content: center;
 		align-items: center;
-
-		.btn {
-			box-shadow: 0upx 5upx 10upx rgba(0, 0, 0, 0.4);
-			width: 70%;
-			height: 80upx;
-			border-radius: 80upx;
-			background-color: #f06c7a;
-			color: #fff;
-			justify-content: center;
-			align-items: center;
-			font-size: 30upx;
-		}
 	}
 </style>

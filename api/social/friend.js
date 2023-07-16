@@ -23,5 +23,20 @@ export default{
 			'token': $store.state.token
 		}
 	  });
-	}
+	},
+	
+	
+	// 删除好友
+	 deleteSession(data) {
+	  return request({
+	      url: 'ry-vue/friend/delete',
+	      method: 'POST',
+	      data,
+	  	header:{
+	  		'content-type': 'application/json',
+	  		'token': $store.state.token
+	  	}
+	    });
+	  }
+	
 }

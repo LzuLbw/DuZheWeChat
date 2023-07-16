@@ -17,7 +17,7 @@
 						<view class="list-title">{{k.cat_name}}</view>
 						<view class="right-content">
 							<view class="right-item" v-for="(j,idx) in k.children" :key="idx">
-								<image class="right-img" :src= "'/static/image'+ (j.icon).substring(8)" mode="" @tap="toCatDetail(j.cat_id)"></image>
+								<image class="right-img" :src= "j.icon" mode="" @tap="toCatDetail(j.cat_id)"></image>
 								<view class="right-name">{{j.cat_name}}</view>
 							</view>
 						</view>

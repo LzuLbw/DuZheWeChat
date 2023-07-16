@@ -17,13 +17,13 @@
         <view class="list-cell list-cell-arrow">
           <view class="menu-item-box">
             <view>官方邮箱</view>
-            <view class="text-right">ruoyi@xx.com</view>
+            <view class="text-right">duzhe.com</view>
           </view>
         </view>
         <view class="list-cell list-cell-arrow">
           <view class="menu-item-box">
             <view>服务热线</view>
-            <view class="text-right">400-999-9999</view>
+            <view class="text-right">000000</view>
           </view>
         </view>
         <view class="list-cell list-cell-arrow">
@@ -38,7 +38,7 @@
     </view>
 
     <view class="copyright">
-      <view>Copyright &copy; 2022 ruoyi.vip All Rights Reserved.</view>
+      <view>Copyright &copy; 2022 duzhe.com All Rights Reserved.</view>
     </view>
   </view>
 </template>

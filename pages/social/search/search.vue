@@ -25,7 +25,8 @@
 				<view v-show="hasResult" style="width: 90%;margin-left: 5%;margin-top: 20rpx;">
 					<u-row @tap="gotoPage('friend', item.userId)" class="row" customStyle="margin-bottom: 10px" v-for="(item,index) in personList" :key="index">
 					    <u-col span="2">
-					        <u-avatar :src="item.avatar" shape="square"></u-avatar>
+							<u-avatar :src="'http://123.56.217.170:8080'+item.avatar"shape="square"></u-avatar>
+					        <u-avatar v-if="item.type==='group'" :src="item.avatar"  shape="square"></u-avatar>
 					    </u-col>
 					    <u-col span="10">
 					        <view>{{item.nickName}}</view>
@@ -60,6 +61,8 @@
 
 <script>
 	import userRequest from '@/api/social/user.js';
+    import {mapGetters} from 'vuex';
+	import $store from '@/store/modules/social';
 	export default {
 		data() {
 			return {
@@ -69,7 +72,9 @@
 				personList: []
 			}
 		},
-		
+		computed:{
+			...mapGetters(['loginUserInfo','sessionList'])
+		},
 		methods: {
 			async search(){
 				this.keyword = this.keyword.trim();

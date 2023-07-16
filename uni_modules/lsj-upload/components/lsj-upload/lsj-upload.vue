@@ -1,7 +1,7 @@
 <template>
 	<view class="lsj-file" :style="[getStyles]">
 		<view ref="lsj" class="hFile" :style="[getStyles]" @click="onClick">
-			<slot><view class="defview" :style="[getStyles]">附件上传</view></slot>
+			<!-- <slot><view class="defview" :style="[getStyles]">附件上传</view></slot> -->
 		</view>
 	</view>
 </template>

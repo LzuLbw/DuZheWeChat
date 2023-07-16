@@ -1,13 +1,20 @@
 <template>
 	<view>
-		
 		<uni-list-wx>
 			 <uni-list-wx :border="true">
+				
 				<view class="list">
-					<view class="flex_col" @longpress="onLongPress" :class="{'active':pickerUserIndex==index}" @tap="listTap(item)" v-for="(item,index) in sessionList"
-					 :key="index" :data-index="index">
+					<view class="flex_col" 
+					@longpress="onLongPress" 
+					:class="{'active':pickerUserIndex==index}" 
+					@tap="listTap(item)" 
+					v-for="(item,index) in sessionList"
+					:key="index" :data-index="index">
 						<view class="avatar-container">
-							<image :src="item.avatar" mode="aspectFill" style="border-radius: 10%;"></image>
+						
+							<image v-if="item.type==='person'" :src="'http://123.56.217.170:8080'+item.avatar" mode="aspectFill" style="border-radius: 10%;"></image>
+							<image v-if="item.type==='group'" :src="item.avatar" mode="aspectFill" style="border-radius: 10%;"></image>
+							
 							<u-badge style="position: absolute;right: -10upx;top: -10upx;" :type="'error'" max="99" :value="item.unread"></u-badge>
 						</view>
 						<view class="flex_grow">
@@ -16,6 +23,13 @@
 								<view class="time">{{item.updateTime}}</view>
 							</view>
 							<view class="info">{{item.lastMessage}}</view>
+							<!-- <view class="unread" v-if="item.type==='person' && !item.unread ">已读</view>
+							<view class="unread" v-if="item.type==='person' && item.unread ">未读</view -->
+						</view>
+					</view>
+					<view class="shade" v-show="showShade" @tap="hidePop">
+						<view class="pop" :style="popStyle" :class="{'show':showPop}">
+							<view v-for="(item,index) in popButton" :key="index" @tap="pickerMenu" :data-index="index">{{item}}</view>
 						</view>
 					</view>
 				</view>
@@ -36,6 +50,7 @@
 	export default{
 		data() {
 			return {
+				personInfo:{},
 				keyword:'',
 				uploadShow: false,
 				title: '读者小站',
@@ -61,15 +76,20 @@
 				/* 显示操作弹窗 */
 				showPop: false,
 				/* 弹窗按钮列表 */
-				popButton: ["tip"],
+				popButton: ["置顶","删除记录","移除"],
 				/* 弹窗定位样式 */
 				popStyle: "",
 				/* 选择的用户下标 */
-				pickerUserIndex: -1
+				pickerUserIndex: -1,
+				//
+				lstmsg:[],
+				// delete
+				deleteData:[],
+				
 			}
 		},
 		computed:{
-			...mapGetters(['loginUserInfo','isSocketOpen','sessionList','totalUnread'])
+			...mapGetters(['loginUserInfo','isSocketOpen','sessionList','totalUnread','friendList'])
 		},
 		onPullDownRefresh() {
 			///重新获取连接websocket
@@ -84,6 +104,7 @@
 						icon:'success',
 						title:'刷新成功！'
 					})
+				     $store.dispatch('initSessionList')
 				}
 				else{
 					uni.showToast({
@@ -92,12 +113,24 @@
 					})
 				}
 				uni.stopPullDownRefresh()
-			},500)
+			},100)
+		},
+		mounted(){
+			// this.fuiltList()
+			
 		},
 		methods: {
-			timeShowFormat(time){
-				return timeUtil.timeShowFormat(timeUtil.getFormatTime(Number(time)));
-			},
+		// fuiltList(){
+		// 	this.lstmsg = this.sessionList.filter((item,index)=>{
+		// 		console.log(this.deleteData.includes(item.sessionId));
+		// 		return !this.deleteData.includes(item.sessionId);
+		// 		// return true;
+		// 	})
+		// 	console.log(this.lstmsg);
+		// },
+		timeShowFormat(time){
+			return timeUtil.timeShowFormat(timeUtil.getFormatTime(Number(time)));
+		},
 		listTap(item) {
 			//console.log(item)
 			/* 因弹出遮罩问题，所以需要在遮罩弹出的情况下阻止列表事件的触发 */
@@ -105,7 +138,7 @@
 				return;
 			}
 			//
-			//console.log("列表触摸事件触发")
+			console.log("列表触摸事件触发")
 			if(item.type=='person'){
 				$store.state.chattingUserInfo = item;
 				uni.navigateTo({
@@ -156,6 +189,7 @@
 			});
 		},
 		/* 隐藏弹窗 */
+		/* 隐藏弹窗 */
 		hidePop() {
 			this.showPop = false;
 			this.pickerUserIndex = -1;
@@ -165,29 +199,110 @@
 		},
 		/* 选择菜单 */
 		pickerMenu(e) {
+			console.log(e);
 			let index = Number(e.currentTarget.dataset.index);
-			//console.log(`第${this.pickerUserIndex+1}个用户,第${index+1}个按钮`);
-			// 在这里开启你的代码秀
+			let element  = this.pickerUserIndex
+			
+			// if(!this.deleteData.includes(this.lstmsg[element].sessionId)){
+			// 	this.deleteData.push(this.lstmsg[element].sessionId)
+			// 	console.log(this.deleteData);
+			// 	this.fuiltList()
+			// }
+			
+			console.log(this.sessionList[element].sessionId);
+			console.log(`第${element}个用户`);
+			console.log(index);
+			// this.fuiltList();
+			switch(index){
+				case 0:
+				//置顶
+				let session = this.sessionList.splice(element,1);
+				$store.state.sessionList = session.concat($store.state.sessionList)
+				break;
+				case 1:
+				this.clearMessage();
+				break;
+				case 2:
+				let session1 = this.sessionList.splice(element,1);
+				this.sessionList = session1.concat($store.state.sessionList)
+				
+				break;
+			}
 		
-			uni.showToast({
-				title: '读者',
-				icon: "none",
-				mask: true,
-				duration: 600
-			});
-		
-			/* 
-			 因为隐藏弹窗方法中会将当前选择的用户下标还原为-1,
-			 如果行的菜单方法存在异步情况，请在隐藏之前将该值保存，或通过参数传入异步函数中
-			 */
 			this.hidePop();
-		}
+		},
+		
+		//清空消息
+		clearMessage(){
+			let element  = this.pickerUserIndex
+			let sessionId =  this.sessionList[element].sessionId
+			//console.log(sessionId+"11111111");
+			let that = this
+			uni.showModal({
+				cancelText:'取消',
+				confirmText:'清空',
+				title:'确认清空消息吗？',
+				success(res) {
+					if(res.confirm){
+						that.postDelete(sessionId)
+					}
+				}
+			})
+		},
+		async postDelete(sessionId){
+			let res = await userRequest.clearMessage({
+				sessionId:sessionId,
+			})
+			uni.showToast({
+				title:'删除成功',
+				icon:'success'
+			})
+			$store.dispatch('initSessionList')
+/* 			let session = $store.state.sessionList.splice(this.pickerUserIndex,-1);
+			$store.state.sessionList = session.concat($store.state.sessionList)
+			$store.dispatch('getPersonMessage')
+			$store.dispatch('initSessionList') */
+		},
+		
+		// hidePop() {
+		// 	this.showPop = false;
+		// 	this.pickerUserIndex = -1;
+		// 	setTimeout(() => {
+		// 		this.showShade = false;
+		// 	}, 250);
+		// },
+		// /* 选择菜单 */
+		// pickerMenu(e) {
+		// 	let index = Number(e.currentTarget.dataset.index);
+		// 	//console.log(`第${this.pickerUserIndex+1}个用户,第${index+1}个按钮`);
+		// 	// 在这里开启你的代码秀
+		
+		// 	uni.showToast({
+		// 		title: '读者',
+		// 		icon: "none",
+		// 		mask: true,
+		// 		duration: 600
+		// 	});
+		
+		// 	/* 
+		// 	 因为隐藏弹窗方法中会将当前选择的用户下标还原为-1,
+		// 	 如果行的菜单方法存在异步情况，请在隐藏之前将该值保存，或通过参数传入异步函数中
+		// 	 */
+		// 	this.hidePop();
+		// }
 	}
 	}
 	
 </script>
 
 <style scoped lang="scss">
+	.unread{
+		font-size: 10rpx;
+		color: #999;
+		margin-top: -30upx;
+		float: right;
+		margin-right: 20upx;
+	}
 	.alertTips {
 		line-height: 80rpx;
 		background-color: #fcfcfc;
@@ -291,6 +406,50 @@
 				top: -1px;
 				right: 0;
 				transform:scaleY(0.5);	/* 1px像素 */
+			}
+		}
+	}
+	/* 遮罩 */
+	.shade {
+		position: fixed;
+		z-index: 100;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		-webkit-touch-callout: none;
+	
+		.pop {
+			position: fixed;
+			z-index: 101;
+			width: 200upx;
+			box-sizing: border-box;
+			font-size: 28upx;
+			text-align: left;
+			color: #333;
+			background-color: #fff;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+			line-height: 80upx;
+			transition: transform 0.15s ease-in-out 0s;
+			user-select: none;
+			-webkit-touch-callout: none;
+			transform: scale(0, 0);
+	
+			&.show {
+				transform: scale(1, 1);
+			}
+	
+			&>view {
+				padding: 0 20upx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				user-select: none;
+				-webkit-touch-callout: none;
+	
+				&:active {
+					background-color: #f3f3f3;
+				}
 			}
 		}
 	}

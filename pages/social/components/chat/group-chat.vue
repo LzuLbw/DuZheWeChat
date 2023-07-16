@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<groupMessageBox ref="messageBox"></groupMessageBox>
+			<groupMessageBox ref="messageBox" @update-message="updateMessage"></groupMessageBox>
 		</view>
 		
 		<view>
@@ -9,6 +9,7 @@
 			@sendMessage="handleMessage" 
 			@bottomHeight="handleBottomHeight"
 			@keyboradHeight="handleKeyboradHeight"
+			:text="text"
 			 ref="inputBox"></inputBox>
 		</view>
 		
@@ -30,7 +31,8 @@
 		data() {
 			return {
 				emoji: '',
-				
+				message:"",
+				text:"",
 			}
 		},
 		watch:{
@@ -58,6 +60,13 @@
 			this.clearUnread()
 			this.showOnline()
 		},
+		// 下拉刷新
+		onPullDownRefresh(){
+		//刷新数据之后停止刷新
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},1000) 
+		},
 		onNavigationBarButtonTap(e) {
 			if(e.index === 0){
 				uni.navigateTo({
@@ -66,6 +75,10 @@
 			}
 		},
 		methods: {
+			updateMessage(values){
+				this.text = values
+			},
+			
 			//查看在线人数
 			async showOnline(){
 				let res = await userRequest.groupMember({id:this.chattingGroupInfo.sessionId})

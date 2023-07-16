@@ -62,8 +62,8 @@
 		margin-top: 10rpx;
 	}
 	.group-avatar{
-		width: 100rpx;
-		height: 100rpx;
+		width: 80rpx;
+		height: 90rpx;
 		border-radius: 10rpx;
 	}
 		.demo-layout {

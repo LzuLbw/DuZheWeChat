@@ -2,9 +2,11 @@
 	<view>
 		<view class="top">
 			<image class="background" style="width: 100%;" mode="aspectFill" @tap="preViewImage(personInfo.background)" src="/static/social/img/reader.jpg"></image>
-			<image class="avatar" @tap="preViewImage(personInfo.avatar)" :src="personInfo.avatar"></image>
+			<image class="avatar" @tap="preViewImage(personInfo.avatar)" :src="'http://123.56.217.170:8080'+personInfo.avatar" mode="aspectFill"></image>
 			<view v-show="isFriend" @tap="show1 = true" class="btn">修改备注</view>
+			<view v-show="isFriend" @click="clearMessage" class="btn1">清空记录</view>
 		</view>
+		
 		<view class="middle">
 			<view class="name-container">
 				<text selectable="true" class="name">{{personInfo.nickName}}</text>
@@ -30,6 +32,8 @@
 			<view class="btn" @tap="gotoChat()" v-show="isFriend">发消息</view>
 			<view  v-show="!isFriend" class="btn" @tap="show=true">加好友</view>
 			<view @tap="gotoPage('space')" class="btn">进空间</view>
+			<view v-show="isFriend" @click="handleDelete()"
+			class="btn">删除好友</view>
 		</view>
 		
 		<u-popup
@@ -120,15 +124,17 @@
 	import friendRequest from '@/api/social/friend.js';
 	import {mapGetters} from 'vuex';
 	import $store from '@/store/modules/social';
+	
 	export default{
 		computed:{
-			...mapGetters(['friendList','loginUserInfo','sessionList'])
+			...mapGetters(['friendList','loginUserInfo','sessionList','chattingUserInfo'])
 		},
 		data(){
 			return{
 				personInfo:{},
 				show : false,
 				show1 : false,
+				allData:[],
 				popupData: {
 					overlay: true,
 					mode: 'center',
@@ -143,12 +149,72 @@
 				friendId:0
 			}
 		},
-		onLoad(options){
+		onLoad(options){			
 			let id = options.id;
 			this.getPersonInfo(id),
 			console.log(this.personInfo)
+			console.log(this.chattingUserInfo)
 		},
 		methods:{
+			
+			//清空消息
+			clearMessage(){
+				let sessionId = this.chattingUserInfo.sessionId;
+				console.log(sessionId+"11111111");
+				let that = this
+				uni.showModal({
+					cancelText:'取消',
+					confirmText:'清空',
+					title:'确认清空消息吗？',
+					success(res) {
+						if(res.confirm){
+							that.postClear(sessionId)
+						}
+					}
+				})
+			},
+			async postClear(sessionId){
+				let res = await userRequest.clearMessage({
+					sessionId:sessionId,
+				})
+				uni.showToast({
+					title:'删除成功',
+					icon:'success'
+				})
+				$store.dispatch('getPersonMessage')
+			},
+			
+			    /** 删除好友操作 */
+			    async handleDelete() {
+			     	let sessionId = this.chattingUserInfo.sessionId;
+			     	 console.log(sessionId+"11111111");
+			     	let that = this
+			     	uni.showModal({
+			     		cancelText:'取消',
+			     		confirmText:'删除',
+			     		title:'确认删除',
+			     		success(res) {
+			     			if(res.confirm){
+			     				that.postDelete(sessionId)
+			     			}
+			     		}
+			     	})
+			     },
+			     async postDelete(sessionId){
+			     	let res = await friendRequest.deleteSession({
+			     		sessionId:sessionId
+			     	})
+			     	uni.showToast({
+			     		title:'删除成功',
+			     		icon:'success'
+			     	})
+					$store.dispatch('getFriendList')
+					uni.navigateTo({
+						url:'/pages/social/components/friend/friend'
+					})
+			     },		    
+			
+			
 			gotoChat(){
 				//console.log(this.personInfo)
 				if(!this.isFriend){
@@ -310,7 +376,7 @@
 		.btn{
 			position: absolute;
 			bottom: 15rpx;
-			right: 50rpx;
+			right: 200rpx;
 			background-color: royalblue;
 			padding: 15rpx;
 			color: white;
@@ -318,6 +384,19 @@
 			font-weight: 600;
 		}
 		.btn:active{
+			background-color: royalblue;
+		}
+		.btn1{
+			position: absolute;
+			bottom: 15rpx;
+			right: 45rpx;
+			background-color: royalblue;
+			padding: 15rpx;
+			color: white;
+			border-radius: 8rpx;
+			font-weight: 600;
+		}
+		.btn1:active{
 			background-color: royalblue;
 		}
 	}

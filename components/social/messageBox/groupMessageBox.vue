@@ -8,9 +8,12 @@
 			<view class="talk-list" :style="{'padding-bottom':keyboardHeight+'rpx'}">
 				<view class="message-list" v-for="(item,index) in groupMessage[s_index].list" :key="index" :id="`msg-${item.id}`">
 					<view v-show="index===0||timeShowAble(groupMessage[s_index].list[index-1].sendTime,groupMessage[s_index].list[index].sendTime)" class="time">{{timeShow(item.sendTime)}}</view>
-					<view v-if="item.isWithdrawn===1" class="time">{{item.senderName+'撤回了一条消息'}}</view>
+					<view v-if="item.isWithdrawn===1 && item.senderId == loginUserInfo.userId" class="time" @click="reEdit()">你撤回了一条消息 重新编辑</view>
+					<view v-if="item.isWithdrawn===1 && item.senderId == !loginUserInfo.userId" class="time">{{item.senderName+'撤回了一条消息'}}</view>
 					<view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
-						<image @tap="gotoPersonInfo(item.senderId)" :src="item.avatar" mode="aspectFill" class="pic"></image>
+					 <view v-if="item.isWithdrawn===0 && item.isShowGroupMessage == false" class="time">你删除了一条消息</view>
+					<view v-if="item.isWithdrawn===0 && item.isShowGroupMessage == true " class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">	
+						<image @tap="gotoPersonInfo(item.senderId)" :src="item.senderId == loginUserInfo.userId ? 'http://123.56.217.170:8080'+loginUserInfo.avatar:'http://123.56.217.170:8080'+item.avatar" mode="aspectFill" class="pic"></image>
 						<view style="position: relative;">
 							<text :class="item.senderId == loginUserInfo.userId ? 'message-name-right':'message-name-left'">{{item.senderName}}</text>
 							<view class="content" @longpress="onLongPress($event, item)">
@@ -29,7 +32,7 @@
 								</view>
 							</view>
 						</view>
-						
+						</view>
 					</view>
 				</view>
 			</view>
@@ -135,6 +138,23 @@
 			
 		},
 		methods: {
+			reEdit(){
+				for(let i=0;i<this.groupMessage.length;i++){
+					if(this.groupMessage[i].sessionId==this.chattingGroupInfo.sessionId){
+						this.s_index = i;
+						break
+					}
+				}
+				let message = this.groupMessage[this.s_index].list[this.groupMessage[this.s_index].list.length-1].content;
+				console.log(message)
+				this.handReEdit(message)
+			
+			},
+			handReEdit(message){
+				this.$emit('update-message',message)
+			},
+			
+			
 			gotoPersonInfo(senderId){
 				if(senderId==this.loginUserInfo.userId)
 				{
@@ -193,7 +213,8 @@
 					groupId:this.chattingGroupInfo.sessionId,
 					pageNum:this.groupMessage[this.s_index].pageNum+1,
 					pageSize:this.groupMessage[this.s_index].pageSize,
-					lastMessageId:this.groupMessage[this.s_index].lastMessageId
+					lastMessageId:this.groupMessage[this.s_index].lastMessageId,
+					currentUserId:this.chattingGroupInfo.senderId
 				})
 				let page = res.data.pageInfo
 				let current = Number(page.current)
@@ -423,7 +444,7 @@
 					title:'删除成功',
 					icon:'success'
 				})
-				$store.dispatch('groupMessage')
+				$store.dispatch('getGroupMessage')
 			}
 		}
 	}
@@ -450,7 +471,8 @@
 	// }
 	.background-color{
 		position: fixed;
-		background-color: #333;
+		//background-color: #333;
+		background-image: url('@/static/social/bg.webp');
 		z-index: -1;
 		width: 100%;
 		height: 100%;

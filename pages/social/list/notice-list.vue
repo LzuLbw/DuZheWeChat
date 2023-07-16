@@ -35,7 +35,8 @@
 <script>
 	import {mapGetters} from 'vuex';
 	import userRequest from '@/api/social/user.js';
-	import $store from '@/store/modules/social/test.js';
+	// import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default{
 		computed:{
 			...mapGetters(['noticeList','loginUserInfo'])
@@ -44,6 +45,13 @@
 			return{
 				indexList:['']
 			}
+		},
+		onPullDownRefresh() {
+			///从新获取消息列表
+			$store.dispatch('getNoticeList')
+			setTimeout(()=>{
+				uni.stopPullDownRefresh()
+			},100)
 		},
 		onLoad() {
 			console.log('进入通知页面')

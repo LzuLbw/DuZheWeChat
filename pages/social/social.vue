@@ -4,7 +4,7 @@
 		<view>
 			<u-tabs-swiper ref="uTabs" :list="list" :current="current" @change="tabsChange" :is-scroll="false" swiperWidth="750" style="background-color:whitesmoke;"></u-tabs-swiper>
 		</view>
-		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish" style="width:100% ;height:1000rpx">
+		<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish" style="width:100% ;height:3000rpx">
 			<swiper-item class="swiper-item"  :key="0">
 				<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
 					<ChatList></ChatList>
@@ -37,10 +37,7 @@
 	import Moment from './components/moment/moment.vue'
 	// import Find from './components/find/find.vue'
 	import { getUserProfile } from "@/api/system/user" 
-	//import userRequest from '@/api/social/user.js'
-	// import websocket from '@/api/social/websocket.js';
-	// import $store from '@/store/modules/social/test.js';
-	//import $store from '@/store/modules/social/test.js';
+	import $store from '@/store/modules/social';
 	export default {
 		components:{
 			Topsearch,
@@ -90,6 +87,31 @@
 		// },
 		onShow() {
 			this.getUser()
+		},
+		// 下拉刷新
+		onPullDownRefresh(){
+			///重新获取连接websocket
+			if(!$store.state.isSocketOpen){
+				websocket.initConnect()
+			}
+		///从新获取消息列表
+		$store.dispatch('getFriendList')
+		setTimeout(()=>{
+			if($store.state.isSocketOpen){
+				uni.showToast({
+					icon:'success',
+					title:'刷新成功！'
+				})
+			     $store.dispatch('initSessionList')
+			}
+			else{
+				uni.showToast({
+					icon:'error',
+					title:'刷新失败！'
+				})
+			}
+			uni.stopPullDownRefresh()
+		},100)
 		},
 		methods: {
 			// tabs通知swiper切换

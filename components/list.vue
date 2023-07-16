@@ -10,7 +10,7 @@
 							<view class="time">{{ item.createTime }}</view>
 						</view>
 						<view class="right view">
-							<image src="http://qiniu.lijiqi.ltd/icon_view.png"></image>
+							<image src="../static/images/readcount.png"></image>
 							<text>{{ item.count }}</text>
 						</view>
 					</view>
