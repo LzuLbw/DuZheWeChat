@@ -1,11 +1,22 @@
 <template>
-	 <view class="content" style="background: white;">
+	 <view class="content" >
 	 	<view class="widget_style" >
 	 		<input placeholder-class="widget_input_placehold" v-model="title" class="widget_input " :style="style1" :placeholder="placehold" />
 	 		<view class="widget_button" :style="style2" @click="onClickSearch">{{buttonText}}</view>
 	 	</view>
-	<view>
-	<view  v-for="(item,index) in searchlist" :key="index">
+	<view><view v-for="(item,index) in searchlist" :key="index">
+			<view @click="godetails(item)" >
+				<uni-card :cover="searchlist[index].img">
+					<view>
+						<text class="uni-body" style="font-size: 17px;">《{{item.title}}》</text><br>
+						<text class="uni-body">{{item.creatTime}}</text>
+						<image class="uni-body" src="../../../static/icon/viewnummmm.png" style="width: 30px;height: 20px;margin-left: 170px;"></image>
+						<text class="uni-body">{{item.viewNum}}</text>
+					</view>
+				</uni-card>
+			</view>
+		</view>
+	<!-- <view  v-for="(item,index) in searchlist" :key="index">
 	 <view style="font-size: 20px;text-align: center;" @click="godetails(item)">{{item.title}}</view>
 	 <image v-if="item.img" :src="item.img" style="width: 100%;height: 150px;" @click="godetails(item)"></image>
 	 <view style="display: flex;">
@@ -16,7 +27,7 @@
 	 					 
 	 				 </view>
 	 </view>
-	</view><br/>
+	</view><br/> -->
 	</view></view>
 </template>
 

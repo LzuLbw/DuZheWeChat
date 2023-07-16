@@ -873,7 +873,8 @@
 			"style": {
 				"navigationBarTitleText": "添加笔记"
 			}
-		}, {
+		}, 
+		{
 			"path": "pages/study/readddd/readddd",
 			"style": {
 				"navigationStyle": "custom",
@@ -881,7 +882,15 @@
 					"bounce": "none"
 				}
 			}
-		}, {
+		}, 
+		{
+			"path": "pages/study/allnote/allnote",
+			"style": {
+				"navigationBarTitleText": "所有笔记"
+				
+			}
+		},
+		{
 			"path": "pages/study/addnote/addnote",
 			"style": {
 				"navigationBarTitleText": "",
@@ -889,7 +898,54 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/study/updatenote/updatenote",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+      
+		
+        ,{
+            "path" : "pages/study/studyvideo/studyvideo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/study/allnote/text",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/study/studyvideo/text",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/study/stuuploadvideo/stuuploadvideo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "读者小站",

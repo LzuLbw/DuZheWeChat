@@ -4,7 +4,7 @@
 		<view >
 		<!-- 标题 -->
 			<view class="uni-form-item uni-column" >
-				<input   class="uni-input title" v-model="title" focus placeholder="标题" />
+				<input   class="uni-input title" style="color: cornflowerblue;" v-model="title" focus placeholder="标题" />
 			</view>
 		<!-- 线 -->
 			<view class="seg_line_box" style="margin-top: 7%;">
@@ -34,7 +34,8 @@
 				creatTime:'',
 				content:'',
 				title:'',
-				itemList:{}
+				itemList:{},
+				bookId:1
 				// noteData:{
 				// 	title:'',
 				// 	content:''
@@ -48,25 +49,26 @@
 			console.log(e);
 			console.log(e.id);
 			this.id = e.id;
+			console.log(this.id +'这是什么的id');
 		
-			uni.request({
-				url: 'http://123.56.217.170:8080/note/findById/' + e.id,
-				method: 'GET',
-				data: {},
-				success: res => {
-					console.log(res.data+'---------------');
+		// 	uni.request({
+		// 		url: 'http://123.56.217.170:8080/note/findById/' + e.id,
+		// 		method: 'GET',
+		// 		data: {},
+		// 		success: res => {
+		// 			console.log(res.data+'---------------');
 		
-					this.itemList = res.data;
-					console.log(this.itemList);
-					this.title = this.itemList[0].title;
-					this.content = this.itemList[0].content;
+		// 			this.itemList = res.data;
+		// 			console.log(this.itemList);
+		// 			// this.title = this.itemList[0].title;
+		// 			// this.content = this.itemList[0].content;
 		
 		
 		
-				},
-				fail: () => {},
-				complete: () => {}
-			});
+		// 		},
+		// 		fail: () => {},
+		// 		complete: () => {}
+		// 	});
 		
 		
 		},
@@ -74,13 +76,15 @@
 		
 		methods: {
 			insert(){
+				console.log(this.id+'天剑笔记的id');
 				uni.request({
 					url:'http://123.56.217.170:8080/note/insert/',
 					method: 'POST',
 					data: {
 						userId:$store.state.loginUserInfo.userId,
 						content:this.content,
-						title:this.title
+						title:this.title,
+						bookId:this.id,
 						
 					},
 					dataType:'json',
@@ -120,8 +124,7 @@
 
 <style>
 	.title{
-		font-size: 30px;
-		font-weight: bold;
+		font-size: 17px;
 		margin-left: 15px;
 	}
 	.seg_line_box {

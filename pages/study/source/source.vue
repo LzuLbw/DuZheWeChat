@@ -40,7 +40,7 @@
 
 			getVideoList() {
 				uni.request({
-					 url: 'http://localhost:8081/video/all',
+					 url: 'http://123.56.217.170:8081/video/all',
 					// dataType: 'json',
 					success: (res) => {
 						console.log(res.data);

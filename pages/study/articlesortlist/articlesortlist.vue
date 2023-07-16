@@ -5,7 +5,7 @@
 		<input placeholder-class="widget_input_placehold" v-model="content" class="widget_input " :style="style1" :placeholder="placehold" />
 		<view class="widget_button" :style="style2" @click="onClickSearch">{{buttonText}}</view>
 	</view>
-	<view class="box" v-for="(item,index) in bookList " :key="index"  style="background: white;">
+	<view @click="gotodetails(item.id)" class="box" v-for="(item,index) in bookList " :key="index"  style="background: white;">
 		<image style="width: 86px;height: 106px;;" v-if="item.img" :src="item.img"  @click="gotodetails(item.id)">
 		</image>
 		<text v-if="item.content" :src="'/static/image'+(item.content).substring(8)"></text>

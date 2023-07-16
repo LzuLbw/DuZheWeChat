@@ -5,7 +5,10 @@
 		<view class="author">{{item.author}}</view>
 		<view class="content">{{item.content}}</view>
 		</scroll-view>
-		
+		<view class="box" style="position: relative;margin-left: 650rpx;" @tap="keep" >
+			<view @click="addcollection(id)"  class="icon iconfont" :class="[isKeep?'icon-yishoucang':'icon-shoucang']"></view>
+			<view @click="addcollection(id)" class="text" >{{isKeep?'已':''}}收藏</view>
+		</view>
 		
 			<!-- 是评论的大部分呀 -->
 			<view class="hb-comment">
@@ -32,7 +35,7 @@
 					<view class="comment-box" v-for="(item, index) in commentData" :key="index" >
 						<view class="comment-box-item">
 							<view>
-								<image :src="item.avatarUrl || emptyAvatar" mode="aspectFill" class="avatar"></image>
+								<image :src="'http://123.56.217.170:8080'+item.avatar || emptyAvatar" mode="aspectFill" class="avatar"></image>
 							</view>
 							<view class="comment-main">
 								<!-- 父评论体-start -->
@@ -72,7 +75,7 @@
 								<view class="comment-sub-box">
 									<view class="comment-sub-item" v-for="each in item.children">
 										<view>
-											<image :src="each.avatarUrl || emptyAvatar" mode="aspectFill" class="avatar">
+											<image :src="'http://123.56.217.170:8080'+item.avatar|| emptyAvatar" mode="aspectFill" class="avatar">
 											</image>
 										</view>
 										<view class="comment-main">
@@ -166,6 +169,7 @@
 		// },
 		data() {
 			return {
+				isKeep: false, //收藏
 				"emptyAvatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABF5JREFUWEfFl11oHFUUx//nbmKwxdJ9qFL7YPEhRJC2gljjF60WG0WsoNkWfSnZ7Jy7FVPF0AoKpmBFqyIG3Jk7G1iIQXHbBz+KbbGtRfBbMe2LseKjiVDoiqIhwZ0jV3fb3cnM7kQCuU+7M+ec/+9+nHPPEJZ50DLrY1EApVJp9fz8/BYRuZ2INgDYWJvAWRE5R0RnZmZmPh4ZGZlPOrFEAMVi8e4gCPYSUZ+IXGGFgiCYIaJpKyQi1yql1orIFgAXARxRSvm5XO67diBtAYwxRQCDAE4RUUkpdWxwcNCKLBiu665TSj0kIpqIbgTgMzO3gmgJYIz5CMB9AIaZ+bXGQMVi8RoRuZeI/lZKHc1ms3/U34+Pj6+cnZ3dC+AggGPMfH8cRCyAMUZqThlmPlwPUCgU0qlUyq7Kww1BrbjHzPsahYwx/QDK9hkzR2pFPjTGnAWwIexkjOkRkRIR3Rozo5Miskdr/VMIxE7mHDPXD+2l1wsA6nseBMHmfD7/dSjQOwB2tTlYC/bddd1blFJfARhj5lyjfxNA7bSfitpz3/d3iYgFaDuUUjeHM8AY8zSAV5VS9+RyudP1IE0Axpj3Aaxk5m1hFc/zPiWiO9uq/2dwiJn3h22NMScB/MnMOxYAjI6Orurq6rpgU0hrXYpw/hFAd0KAD5n5wbCt7/t7ROT1ubm5NUNDQ7/b95dWwHXd7Uqp452dnVcPDAxciACwDlclAbAFynGcdRGr2EtEnwdB0JfP5080ARhjDhLRbY7jbI0SMcZUAKxOAgDgN2ZOx8SxGfEiMz/bBOD7/lgQBCu01o/GOH4PYFNCgElmvinK1vf9X2xxchzHVtfLW2CMOQpgipmHYwBeBtBUaOJgRKSgtX48Js63AH5l5geaADzPe1cpddFxnHyM42YAXyZYAXt+epn557iVFJHzWuudYYDnlFJ9juPcESfi+35JRHa3gdjPzIfibIwxNtPe0Fq/EAZ4hIhcZl4T5+y67nql1CcA1kfZENFnrSZQ6ycqItKvtT4SBthIRJMdHR092WzW5nzk8H1/WEReiQHY4TjOB3G+nuf9qyEim7TW9r65fAjL5fKVlUrlPICXmPnNFquwWym1oFBZ+yAItubz+TMtAJ4gon3pdLo7k8nMNgHYP7ZeE5EWkbuYeaYx0NjY2HXValUDeApAV4zIJIADzPxe+H2hULg+lUp9U6sBl3qLprugXC6nKpXKF0R02nGcZ2wQ3/e3ichOEckQ0aoEWQDbsgF4a3p6eqLeH3qeN0FE3el0ujeTyVTrcaKuY1uIjIg8CaCfiLYnEW1hY4WPi8gEgMeY+e1G27iGxHYxtptZynGYmTPhgK1asqWEiBRfcAjDdMaYpYCIFW8LUMuM54nIsb3/YvbDXskiYtuzA6382n4X1CDWAnCSgNSFa98ETakcWbwWMytjzAoAPUEQ3JBKpXrs75r/VLVanVJK/VC7Uf9KGjfRCiQN9n/slh3gHz9i4jC+FVL5AAAAAElFTkSuQmCC",
 				commentData: [],
 				placeholder: "请输入评论",
@@ -237,6 +241,39 @@
 		},
 	
 		methods:{
+			addcollection(id){
+				this.id=id;
+					console.log(this.id+"文章id");
+					uni.request({
+						url:'http://123.56.217.170:8080/collection/insert/',
+						method: 'POST',
+						data: {
+							articleId:this.id,
+							userId:$store.state.loginUserInfo.userId,
+						},
+						dataType:'json',
+						success: (res) => {
+					
+							// uni.showModal({
+							// 	content:'成功加入',
+							// 	showCancel:false,
+							// 	success:function(res){
+							// 		if(res.confirm){
+							// 			console.log("成功加入");
+							// 		}else if(res.cancel){
+							// 			console.log("没有加入");
+							// 		}
+									
+							// 	}
+							// })
+						}
+					});
+			},
+			//收藏
+			keep() {
+				this.isKeep = this.isKeep ? false : true;
+			this.addcollection();
+			},
 			
 			to_push(e){
 				
@@ -366,32 +403,7 @@
 					}
 					});
 					},
-			// 点赞评论
-			// like(id) {
-			// 	this.$emit('like', id);
-			// },
-			// 点赞完成-本地修改点赞结果
-			// likeComplete(id) {
-			// 	for (var i in this.commentData.content) {
-			// 		if (this.commentData.content[i].id == id) {
-			// 			this.commentData.content[i].hasLike ? this.commentData.content[i].likeNum-- : this.commentData
-			// 				.content[i].likeNum++;
-			// 			this.commentData.content[i].hasLike = !this.commentData.content[i].hasLike;
-			// 			return
-			// 		 }
-					// for (var j in this.commentData.comment[i].children) {
-					// 	if (this.commentData.comment[i].children[j].id == commentId) {
-					// 		this.commentData.comment[i].children[j].hasLike ? this.commentData.comment[i].children[j]
-					// 			.likeNum-- : this.commentData.comment[i].children[j].likeNum++;
-					// 		this.commentData.comment[i].children[j].hasLike = !this.commentData.comment[i].children[j]
-					// 			.hasLike;
-					// 		return
-					// 	}
-					// }
-			// 	}
-			// },
-			
-
+		
 		} 
 	}
 </script>
@@ -458,7 +470,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 20rpx 0;
+		padding: 50rpx 0;
+		
 	}
 
 	.comment-box {

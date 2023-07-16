@@ -2,11 +2,11 @@
 	
 	<view>
 		<view>
-			<image class="addimg" src="../../../static/icon/addnote.png" @click="addnote" ></image>
+			<image class="addimg" src="../../../static/icon/addnote.png" @click="addnote(id)" ></image>
 		</view>
-		<view :data-index="index"  class="content order-item" @touchstart="drawStart" @touchmove="drawMove" @touchend="drawEnd" :style="'right:'+item.right+'px'" v-for="(item,index) in itemList" :key="index">
+		<view :data-index="index"  class="content order-item" @touchstart="drawStart" @touchmove="drawMove" @touchend="drawEnd" :style="'right:'+item.right+'px'" v-for="(item,index) in sortData" :key="index">
 			<view @click="details(item.id)">
-			<view style="font-size: 20px;font-weight: bold;">{{item.title}} </view>
+			<view style="font-size: 17px;color: cornflowerblue;"># {{item.title}} #</view>
 			<view style="font-size: 15px;">{{item.content}}</view>
 			<view style="font-size: 14px;">{{item.creatTime}} </view>
 			</view>
@@ -29,15 +29,19 @@
 					delBtnWidth: 120,
 					content:'',
 					title:'',
-					creatTime:''
+					creatTime:'',
+					bookId:'',
+					sortData:[]
 				
 			}
 		},
-		onLoad:function(){
+		onLoad:function(e){
 		 // this.showBook();
+		 this.id=e.id;
+		 console.log("这是书的id++"+this.id);
 		 let userId = $store.state.loginUserInfo.userId
 		 uni.request({
-		  url:'http://123.56.217.170:8080/note/findUser/' +userId,
+		  url:'http://localhost:8080/note/findUser/' +userId,
 		  method:'GET',
 		  data: {},
 		  success: (res) => {
@@ -47,14 +51,40 @@
 		  
 		   this.itemList=res.data;
 		   
-		   console.log("===========>");
+		   console.log("===========+++++>");
 		   console.log(this.itemList);
+		   
+		   for (var i = 0; i < this.itemList.length; i++) {
+		    if(this.id==this.itemList[i].bookId){
+				// this.sortData.push(this.itemList[0]);
+				
+				console.log(this.itemList[i].id+'0.000.0.0');
+				this.getData(this.itemList[i].id);
+			
+			}
+			console.log("+0+0+0+0+0+0");
+			console.log(this.sortData);
+			console.log("+0+0+0+0+0+0+");
+			
+		   }
 		   
 		  },
 		 });
 		 },
 	
 		methods: {
+			getData(id){
+				uni.request({
+					url:'http://localhost:8080/note/findById/'+id,
+					method:'GET',
+					data:{},
+					success: (res) => {
+						console.log(res.data);
+						this.sortData.push(res.data[0]);
+						
+					}
+				})
+			},
 			
 			details(id){
 					uni.navigateTo({
@@ -69,9 +99,11 @@
 					});
 			},
 			
-			addnote(){
+			addnote(id){
+				var id=this.id;
+				console.log('添加笔记跳转的书的id'+id);
 				uni.navigateTo({
-					url:'/pages/study/addnote/addnote'
+					url:'/pages/study/addnote/addnote?id='+id,
 				})
 			},
 			
