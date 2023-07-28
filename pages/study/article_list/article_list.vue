@@ -17,10 +17,10 @@
 				<image @click="gotoshell" src="../../../static/icon/study_shell.png" style="width: 60upx;height: 60upx;margin-left: 40px;"></image>
 				<view style="margin-left: 40px;">书架</view>
 				</view>
-				<!-- <view>
+				<view>
 				<image @click="gotonote" src="../../../static/icon/note.png" style="width: 60upx;height: 60upx;margin-left: 40px;"></image>
 				<view style="margin-left: 40px;">笔记</view>
-				</view> -->
+				</view>
 				<view>
 				<image @click="gotocollection" src="../../../static/icon/collection.png" style="width: 60upx;height: 60upx;margin-left: 40px;"></image>
 				<view style="margin-left: 40px;">收藏</view>

@@ -11,14 +11,14 @@
 		        :scroll-into-view="'scroll-item-'+clickedNavIndex" 
 		        :show-scrollbar="false"
 		        :scroll-with-animation="true">
-		        <view class="list" v-for="(item,index) of listBook" :key="index" :id="'scroll-item-'+index">
+		        <view class="list" v-for="(item,index) in listBook" :key="index" :id="'scroll-item-'+index">
 		            <view class="title"><text>《{{item.name}}》笔记</text></view>
-		           <view class="item-container">
-		                <view class=" content order-item" :data-index="index" v-for="(item,index) of itemList" :key="index">
-		                    <view @click="details(item.id)">
-		                    <view style="font-size: 17px;color: cornflowerblue;"># {{item.title}} #</view>
-		                    <view style="font-size: 15px;">{{item.content}}</view>
-		                    <view style="font-size: 14px;">{{item.creatTime}} </view>
+		            <view class="item-container">
+		                <view class=" content order-item" :data-index="index" v-for="(item1,index) in getDetail(finalList,item.id)" :key="index">
+		                    <view @click="details(item1.id)">
+		                    <view style="font-size: 17px;color: cornflowerblue;"># {{item1.title}} #</view>
+		                    <view style="font-size: 15px;">{{item1.content}}</view>
+		                    <view style="font-size: 14px;">{{item1.creatTime}} </view>
 		                    </view>
 		                    
 		                </view>
@@ -51,79 +51,50 @@ export default {
 	onLoad:function(e){
 		let userId = $store.state.loginUserInfo.userId
 		uni.request({
-			url: 'http://123.56.217.170:8080/book/all',
-			 success: (res) => {
-				 console.log(res.data);
-				 console.log("+++++++");
-		          this.listBook =res.data;
-						  for (var i = 0; i < this.listBook.length; i++) {
-						   this.getData(this.listBook[i].id);
-						  }
-						  },
-					})
-	 // uni.request({
-	 //  url:'http://localhost:8080/note/findUser/' +userId,
-	 //  method:'GET',
-	 //  data: {},
-	 //  success: (res) => {
-	 //   this.itemList=res.data;
-	 //   console.log("===========+++++>");
-	 //   console.log(this.itemList);
-	 //   console.log("===========+++++>");
-	   
-	   // for (var i = 0; i < this.itemList.length; i++) {
-	   //  this.getData(this.itemList[i].bookId);
-	   // }
-	   // console.log(this.bookData);
-	   // console.log("==========++++==================");
-	   
-	   // for(var j=0;j<listBook.length;j++){
-	   // for(var i=0;i<this.itemList.length;i++){
-		  //  if(this.itemList[i].bookId==this.listBook[j].id){
-			 //   console.log(this.itemList[i].bookId+'11111');
-		  //  }
-		   
-	   // }
-	   // }
-	 //  },
-	 // });
+			url: 'http://localhost:8080/book/all',
+			success: (res) => {
+		        this.listBook =res.data;
+				this.getData();
+			},
+		})
 	 },
 		
 	methods: {
-		getData(id){
+		getDetail(finalList,bookId){
+			let result = []
+			for(var i=0;i<this.finalList.length;i++){
+				if(finalList[i].bookId == bookId){
+					result = result.concat(finalList[i])
+					
+				}
+			}
+			if(bookId == 9){
+				console.log(result)
+			}
+			return result;
+		},
+		getData(){
 			let userId = $store.state.loginUserInfo.userId
 		 uni.request({
-		  url:'http://123.56.217.170:8080/note/findUser/' +userId,
+		  url:'http://localhost:8080/note/findUser/' +userId,
 		  method:'GET',
 		  data: {},
 		  success: (res) => {
 		   this.itemList=res.data;
-		   console.log("===========+++++>是itemlist");
-		   console.log(this.itemList);
-		   console.log("===========+++++>");
-		   // console.log(id+"++++++")
 		   for(var j=0;j<this.itemList.length;j++){
-			   if(this.itemList[j].bookId==id){
-			   		// this.finalList.push(res)
-					console.log(this.itemList[j].bookId+"ccccccc")
-					var bookId=this.itemList[j].bookId
-					uni.request({
-						url:'http://123.56.217.170:8080/note/findById/' +bookId,
-						method:'GET',
-						data:{},
+				   uni.request({
+				   	url:'http://localhost:8080/note/findById/' +this.itemList[j].id,
+				   		method:'GET',
+				   		data:{},
 						success: (res) => {
-							console.log(res)
-							console.log(res.data)
-							console.log("////////////////////")
-							this.finalList=res.data;
-							console.log(this.finalList+"最后查出来的结果")
+							this.finalList.push(res.data[0]);
 							
 						}
-					})
-						   
-			   }
-		   }				
-			   // console.log(this.finalList+"mmmmmm")
+				   })
+				}
+						
+			   
+			   console.log("+++++++");
 		  
 		   }
 		 });

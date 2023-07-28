@@ -57,7 +57,7 @@
 							<view class="comment-box" v-for="(item, index) in commentData" :key="index" >
 								<view class="comment-box-item">
 									<view>
-										<image :src="'http://123.256.217.170:8008' || emptyAvatar" mode="aspectFill" class="avatar"></image>
+										<image :src="'http://123.56.217.170:8080' +item.avatar  || emptyAvatar" mode="aspectFill" class="avatar"></image>
 									</view>
 									<view class="comment-main">
 										<!-- 父评论体-start -->
@@ -97,7 +97,7 @@
 										<view class="comment-sub-box">
 											<view class="comment-sub-item" v-for="each in item.children">
 												<view>
-													<image :src="each.avatarUrl || emptyAvatar" mode="aspectFill" class="avatar">
+													<image :src="'http://localhost:8008' +item.avatar || emptyAvatar" mode="aspectFill" class="avatar">
 													</image>
 												</view>
 												<view class="comment-main">
@@ -250,7 +250,7 @@
 			// });
 			
 			 uni.request({
-			 	url: "http://123.56.217.170:8080/video/getVideo",
+			 	url: "http://localhost:8080/video/getVideo",
 			 		method: "GET",
 				success: (res) => {
 					console.log(res.data);
@@ -309,7 +309,7 @@
 				this.videoId=videoId;
 				console.log('这是当前视频的id'+this.videoId);
 				uni.request({
-					url:'http://123.56.217.170:8080/videoStudy/getVideo/'+this.videoId,
+					url:'http://localhost:8080/videoStudy/getVideo/'+this.videoId,
 					method:'GET',
 					data: {},
 					success: (res) => {
@@ -400,7 +400,7 @@
 					success:function(res){
 						if(res.confirm){
 							uni.request({
-									url:'http://123.56.217.170:8080/videocomment/deleteById/'+id,
+									url:'http://localhost:8080/videocomment/deleteById/'+id,
 									method: 'DELETE',
 									data: {},
 									success: (res) => {
@@ -467,7 +467,7 @@
 				console.log(this.videoId+"这是查找的id");
 				getApp().globalData.videoId = videoId
 				uni.request({
-					url:'http://123.56.217.170:8080/videocomment/findList/'+this.videoId,
+					url:'http://localhost:8080/videocomment/findList/'+this.videoId,
 								// url:'http://localhost:8080/videocomment/findList/'+this.videoId,
 								method:'GET',
 								data: {},

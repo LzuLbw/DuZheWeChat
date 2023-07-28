@@ -136,7 +136,7 @@
 								<view class="btn-click" @click="to_push"  >发布</view>
 							</view>
 						</view>
-						<textarea class="textarea" v-model="commentReq.content" :placeholder="placeholder" :adjust-position="false" :show-confirm-bar="false"
+						<textarea class="textarea" v-model="commentReq.content"  :placeholder="placeholder" :adjust-position="false" :show-confirm-bar="false"
 							@blur="blur" @focus="focusOn" :focus="focus" maxlength="800"></textarea>
 					</view>
 				</view>
@@ -275,6 +275,7 @@
 			this.addcollection();
 			},
 			
+			
 			to_push(e){
 				
 				this.articleId=e.id;
@@ -288,28 +289,65 @@
 						// this.alist=res.data;
 					},
 				});
-			
-					uni.request({
-						url:'http://123.56.217.170:8080/comment/insert/',
-						method: 'POST',
-						data: {
-							// creatTime:this.year,
-							content:this.commentReq.content.trim(),
-							articleId:this.id,
-							userId:$store.state.loginUserInfo.userId
-							// creatTime:this.da.yearTime,
-							
-						},
-						dataType:'json',
-						success: (res) => {
-							console.log(res.data);
-							this.content='';
-							
-						}
+			if(this.TextScsnn()==true){
+				uni.request({
+					url:'http://123.56.217.170:8080/comment/insert/',
+					method: 'POST',
+					
+					data: {
+						content:this.commentReq.content.trim(),
+						articleId:this.id,
+						userId:$store.state.loginUserInfo.userId
+					},
+					
+					dataType:'json',
+					
+					success: (res) => {
+						this.TextScsnn();
+						console.log('jinlaillllll')
+						console.log(res.data);
+						this.content='';
 						
-					});
+					}
+					
+				});
+			}else{
+				console.log("111111111111111111")
+			}
+			console.log("第一次进来进行检测")
+					
 				this.closeInput();
 
+			},
+			
+			TextScsnn(){
+				if(this.commentReq.content){
+								     uni.request({
+								      url:'http://localhost:8080/scanText',
+								      method:'POST',
+								      data:{
+								       text:this.commentReq.content
+								      },
+								      success:res =>{
+								       console.log(res,"res")
+								       if(res.data.state == "block"){
+								        uni.showToast({
+								         icon:'error',
+								         title:'检测到不合法内容'
+								        })
+										this.closeInput();
+								       }else{
+								        this.commentReq.pId = null
+								        this.commentReq.content = ''
+								        this.commentData.push(res.data);
+								        uni.showToast({
+								        	icon:'success'
+								        })
+								        this.closeInput();
+								       }
+								      },
+								     })
+								    }
 			},
 			// 回复评论.
 			// reply(pUser, reUser, pId) {
@@ -403,6 +441,29 @@
 					}
 					});
 					},
+		//文本检测
+		// checkText(){
+		// 	console.log("zaiganma------------");
+		// 			if(this.commentReq.content){
+		// 			     uni.request({
+		// 			      url:'http://localhost:8080/scanText',
+		// 			      method:'POST',
+		// 			      data:{
+		// 			       text:this.commentReq.content
+		// 			      },
+		// 			      success:res =>{
+		// 			       console.log(res,"res")
+		// 			       if(res.data.state == "block"){
+		// 			        uni.showToast({
+		// 			         icon:'error',
+		// 			         title:'检测到不合法内容!'
+		// 			        })
+		// 			       }
+		// 			      },
+		// 			     })
+		// 			    }
+		// 				console.log("aaaa");
+		// 		}
 		
 		} 
 	}

@@ -862,6 +862,15 @@
 					}
 				},
 				{
+						    "path" : "pages/study/allnote/text",
+						    "style" :                                                                                    
+						    {
+						        "navigationBarTitleText": "",
+						        "enablePullDownRefresh": false
+						    }
+						    
+						},
+				{
 					"path": "pages/study/addnote/addnote",
 					"style": {
 						"navigationBarTitleText": "添加笔记"
