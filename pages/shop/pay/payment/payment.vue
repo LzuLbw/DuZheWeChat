@@ -76,7 +76,7 @@
 				amount:0,
 				orderName:'',
 				paytype:'alipay',//支付类型
-				
+				userId:0
 			};
 		},
 		computed: {
@@ -86,11 +86,10 @@
 		},
 		onLoad(e) {
 			this.amount = parseFloat(e.amount).toFixed(2);
+			this.userId = e.userId;
 			uni.getStorage({
 				key:'paymentOrder',
 				success: (e) => {
-					
-					
 					if(e.data.length>1){
 						this.orderName = '多商品合并支付'
 					}else{
@@ -104,35 +103,66 @@
 		},
 		methods:{
 			doDeposit(){
-				console.log(this.paytype);
-				$http.request({
-					url: "/shop/payment",
-					method: "POST",
-					data: {
-						orderId:this.orderNumber,
-						price:this.amount,
-						orderName:this.orderName
-					}
-				}).then((res) => {
-					console.log(res);
-					plus.runtime.openURL(res.paymentUrl);
-					setTimeout(()=>{
-						uni.hideLoading();
-						uni.showToast({
-							title:'支付成功'
-						});
+				if(this.paytype == "alipay"){
+					console.log(this.paytype);
+					$http.request({
+						url: "/shop/payment",
+						method: "POST",
+						data: {
+							orderId:this.orderNumber,
+							price:this.amount,
+							orderName:this.orderName
+						}
+					}).then((res) => {
+						console.log(res);
+						plus.runtime.openURL(res.paymentUrl);
 						setTimeout(()=>{
-							uni.redirectTo({
-								url:'../../pay/success/success?amount='+this.amount
+							uni.hideLoading();
+							uni.showToast({
+								title:'支付成功'
 							});
-						},300);
-					},700)
-				}).catch(() => {
-					uni.showToast({
-						title: '请求失败',
-						icon: 'none'
+							setTimeout(()=>{
+								uni.redirectTo({
+									url:'/pages/shop/pay/success/success?amount= '+this.amount+'&userId= '+this.userId+''
+								});
+							},300);
+						},700)
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
 					})
-				})
+				}
+				if(this.paytype == "pocketpay"){
+					console.log("点击钱包支付");
+					$http.request({
+						url: "/shop/pocketPayment",
+						method: "POST",
+						data: {
+							userId:this.userId,
+							price:this.amount
+						}
+					}).then((res) => {
+						console.log(res);
+						setTimeout(()=>{
+							uni.hideLoading();
+							uni.showToast({
+								title:'支付成功'
+							});
+							setTimeout(()=>{
+								uni.redirectTo({
+									url:'/pages/shop/pay/success/success?amount= '+this.amount+'&userId= '+this.userId+''
+								});
+							},300);
+						},700)
+					}).catch(() => {
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						})
+					})
+				}
 			}
 		}
 	}

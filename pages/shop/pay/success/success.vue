@@ -19,16 +19,19 @@
 	export default {
 		data() {
 			return {
-				amount:0
+				amount:0,
+				userId:0
 			};
 		},
 		onLoad(e) {
+			console.log(e);
+			this.userId = e.userId;
 			this.amount = parseFloat(e.amount).toFixed(2);
 		},
 		methods: {
 			toUser() {
 				uni.navigateTo({
-					url: '/pages/shop/order/order'
+					url: '/pages/shop/order/order?userId=' + this.userId+''
 				});
 			}
 		},

@@ -119,7 +119,7 @@ export default {
 		fetchStoreList(longitude, latitude){
 			var that = this;
 			uni.request({
-				url:'http://210.26.122.22:8080/readerstation/list',
+				url:'http://123.56.217.170:8080/readerstation/list',
 				data:{
 					x:longitude,
 					y:latitude
