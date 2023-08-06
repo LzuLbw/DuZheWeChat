@@ -175,7 +175,7 @@
 		.list__item__name{
 			    align-items: center;
 				font-size: 16px;
-				margin-left: 22upx;
+				margin-left: 2upx;
 				color: black;
 			}
     .list__footer{

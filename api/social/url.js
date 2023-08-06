@@ -1,5 +1,5 @@
 
-const url = '123.56.217.170:8080'
+const url = 'localhost:8080'
 
 function getRequestUrl() {
   return 'http://'+url+'/';

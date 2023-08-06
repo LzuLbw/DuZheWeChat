@@ -357,14 +357,35 @@
 					articleId:this.articleId,
 					content: this.commentReq.content.trim()
 				})
-				this.commentReq.pId = null
-				this.commentReq.content = ''
-				this.closeInput();
-				this.commentList.push(res.data);
-				uni.showToast({
-					icon:'success'
-				})
-				this.Article.commentNum++
+				if(this.commentReq.content){
+				     uni.request({
+				      url:'http://localhost:8080/scanText',
+				      method:'POST',
+				      data:{
+				       text:this.commentReq.content
+				      },
+				      success:res =>{
+				       console.log(res,"res")
+				       if(res.data.state == "block"){
+				        uni.showToast({
+				         icon:'error',
+				         title:'检测到不合法内容'
+				        })
+						this.closeInput();
+				       }else{
+				        this.commentReq.pId = null
+				        this.commentReq.content = ''
+				        this.commentList.push(res.data);
+						this.Article.commentNum++
+				        uni.showToast({
+				        	icon:'success'
+				        })
+				        this.closeInput();
+				       }
+				      },
+				     })
+				    }
+				
 				//console.log(res)
 			},
 			// 点赞评论

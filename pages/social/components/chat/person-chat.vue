@@ -88,8 +88,8 @@
 			showOnline(){
 				let tip = this.onlineArray.indexOf(this.chattingUserInfo.chattingUserId)===-1?'离线':'在线'
 				uni.setNavigationBarTitle({
-					title:this.chattingUserInfo.name+'('+tip+')',
-					// title:this.chattingUserInfo.name
+					//title:this.chattingUserInfo.name+'('+tip+')',
+					 title:this.chattingUserInfo.name
 				})
 			},
 			async clearUnread(){

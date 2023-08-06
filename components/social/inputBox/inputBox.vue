@@ -402,12 +402,32 @@
 					time: timeUtil.getFormatTime(new Date()),
 					content: JSON.stringify(imageString)
 				}
-				that.$emit('sendMessage', message);
-				that.imageCancel();
-				that.selectedImageimage = false;
-				$store.dispatch('getPersonMessage')
-				$store.dispatch('getGroupMessage')
-			},
+				if(this.picurl){
+					uni.request({
+						url:'http://localhost:8080/scanImage',
+						method:'POST',
+						data:{
+							image:this.picurl
+						},
+						success:res =>{
+							console.log(res,"res")
+							if(res.data.state != "pass"){
+								uni.showToast({
+									icon:'error',
+									title:'检测到图片不合法'
+								})
+							}else{
+								that.$emit('sendMessage', message);
+									that.imageCancel();
+									that.selectedImageimage = false;
+									$store.dispatch('getPersonMessage')
+									$store.dispatch('getGroupMessage')
+								}
+							},
+						})
+				}
+				
+		},
 			//发送语音消息
 			sendAudio(){
 				// #ifdef APP-PLUS
@@ -472,7 +492,7 @@
 				}
 				if(this.text){ 
 				     uni.request({
-				      url:'http://123.56.217.170:8080/scanText',
+				      url:'http://localhost:8080/scanText',
 				      method:'POST',
 				      data:{
 				       text:this.text

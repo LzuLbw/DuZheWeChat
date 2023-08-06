@@ -349,7 +349,7 @@
 		touch-callout: none;
 	
 		&>view {
-			padding: 24upx 30upx;
+			padding: 13upx 30upx;
 			position: relative;
 	
 			&:active,
@@ -378,6 +378,7 @@
 				.info {
 					color: #999;
 					font-size: 24upx;
+					margin-top: -5upx;
 				}
 	
 				.time {

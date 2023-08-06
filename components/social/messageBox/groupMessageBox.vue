@@ -10,7 +10,7 @@
 					<view v-show="index===0||timeShowAble(groupMessage[s_index].list[index-1].sendTime,groupMessage[s_index].list[index].sendTime)" class="time">{{timeShow(item.sendTime)}}</view>
 					<view v-if="item.isWithdrawn===1 && item.senderId == loginUserInfo.userId" class="time" @click="reEdit()">你撤回了一条消息 重新编辑</view>
 					<view v-if="item.isWithdrawn===1 && item.senderId == !loginUserInfo.userId" class="time">{{item.senderName+'撤回了一条消息'}}</view>
-					<view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
+					<!-- <view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' "> -->
 					 <view v-if="item.isWithdrawn===0 && item.isShowGroupMessage == false" class="time">你删除了一条消息</view>
 					<view v-if="item.isWithdrawn===0 && item.isShowGroupMessage == true " class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">	
 						<image @tap="gotoPersonInfo(item.senderId)" :src="item.senderId == loginUserInfo.userId ? 'http://123.56.217.170:8080'+loginUserInfo.avatar:'http://123.56.217.170:8080'+item.avatar" mode="aspectFill" class="pic"></image>
@@ -32,7 +32,7 @@
 								</view>
 							</view>
 						</view>
-						</view>
+						<!-- </view> -->
 					</view>
 				</view>
 			</view>
@@ -452,8 +452,8 @@
 <style lang="scss">
 	
 	page {
-	  // background-color: #333;
-	  background-image: url('@/static/social/bg.webp');
+	   background-color: #E0E0E0;
+	  // background-image: url('@/static/social/bg.webp');
 	  font-size: 28rpx;
 	  box-sizing: border-box;
 	  color: #000000;

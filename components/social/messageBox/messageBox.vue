@@ -10,7 +10,7 @@
 					<view v-show="index===0||timeShowAble(personMessage[s_index].list[index-1].sendTime,personMessage[s_index].list[index].sendTime)" class="time">{{timeShow(item.sendTime)}}</view>
 					<view v-if="item.isWithdrawn===1 && item.senderId == loginUserInfo.userId" class="time" @click="reEdit()">你撤回了一条消息 重新编辑</view>
 					<view v-if="item.isWithdrawn===1 && item.senderId != loginUserInfo.userId" class="time">对方撤回了一条消息</view>
-					<view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
+					<!-- <view v-if="item.isWithdrawn===0" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' "> -->
 					<view v-if="item.isWithdrawn===0 && item.isShowMessage == false" class="time">你删除了一条消息</view>	
 					<view v-if="item.isWithdrawn===0 && item.isShowMessage == true" class="item flex_col" :class=" item.senderId == loginUserInfo.userId ? 'push':'pull' ">
 						<image @tap="gotoPersonInfo(item.senderId)" :src="item.senderId == loginUserInfo.userId ? 'http://123.56.217.170:8080'+loginUserInfo.avatar:'http://123.56.217.170:8080'+chattingUserInfo.avatar" mode="aspectFill" class="pic"></image>
@@ -30,7 +30,7 @@
 							</view>
 						</view>
 					</view>
-					</view>
+					<!-- </view> -->
 				</view>
 			</view>
 		</view>

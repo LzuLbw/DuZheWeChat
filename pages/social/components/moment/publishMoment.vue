@@ -1,17 +1,6 @@
 <template>
 	<view>
 		<view>
-			<!--弹出公告-->
-			<!--  <uni-popup :show="show">
-				   <view class="gonggao" :class="donghua">
-					   <image src="/static/social/img/gonggao.png" mode="aspectFit"></image>
-					   <view class="zhuyi">1.涉及黄色，政治，广告及骚扰信息，涉及黄色，政治，广告及骚扰信息</view>
-					   <view class="zhuyi">2.涉及黄色，政治，广告及骚扰信息，涉及黄色，政治，广告及骚扰信息</view>
-					   <view class="zhuyi">3.涉及黄色，政治，广告及骚扰信息，涉及黄色，政治，广告及骚扰信息</view>
-					   <view class="zhuyi">一经核实将被封禁，情节严重者永久封禁！</view>
-					   <button type="default" @tap="ttt">我知道了</button>
-				   </view>
-			</uni-popup> -->
 			<view style="margin-top: 40rpx;">
 			    <textarea v-model="text" @keyup="checkText()" maxlength="1000" 
 				placeholder="在这里说出你的想法吧~(限制1000字)" 
@@ -313,6 +302,42 @@
 		},
 		checkText(){
 			this.text = this.text.trim();
+			if(this.text){
+			     uni.request({
+			      url:'http://localhost:8080/scanText',
+			      method:'POST',
+			      data:{
+			       text:this.text
+			      },
+			      success:res =>{
+			       console.log(res,"res")
+			       if(res.data.state == "block"){
+			        uni.showToast({
+			         icon:'error',
+			         title:'检测到不合法内容!'
+			        })
+			       }
+			      },
+			     })
+			    }
+			if(this.picurl){
+				uni.request({
+					url:'http://localhost:8080/scanImage',
+					method:'POST',
+					data:{
+						image:this.picurl
+					},
+					success:res =>{
+						console.log(res,"res")
+						if(res.data.state != "pass"){
+							uni.showToast({
+								icon:'error',
+								title:'检测到图片不合法'
+							})
+						}
+						},
+					})
+			}
 			if(this.text.length>1000){
 				uni.showToast({
 					title:'最多1000个字哦~',
