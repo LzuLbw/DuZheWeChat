@@ -320,24 +320,24 @@
 			      },
 			     })
 			    }
-			if(this.picurl){
-				uni.request({
-					url:'http://localhost:8080/scanImage',
-					method:'POST',
-					data:{
-						image:this.picurl
-					},
-					success:res =>{
-						console.log(res,"res")
-						if(res.data.state != "pass"){
-							uni.showToast({
-								icon:'error',
-								title:'检测到图片不合法'
-							})
-						}
-						},
-					})
-			}
+			// if(this.picurl){
+			// 	uni.request({
+			// 		url:'http://localhost:8080/scanImage',
+			// 		method:'POST',
+			// 		data:{
+			// 			image:this.picurl
+			// 		},
+			// 		success:res =>{
+			// 			console.log(res,"res")
+			// 			if(res.data.state != "pass"){
+			// 				uni.showToast({
+			// 					icon:'error',
+			// 					title:'检测到图片不合法'
+			// 				})
+			// 			}
+			// 			},
+			// 		})
+			// }
 			if(this.text.length>1000){
 				uni.showToast({
 					title:'最多1000个字哦~',
