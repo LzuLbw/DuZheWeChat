@@ -54,17 +54,23 @@
 
 <script>
 	import { listPrize, getPrize, delPrize, addPrize, updatePrize } from "@/api/readerstation-member/prize";
+	import { listUser_score, getUser_score, delUser_score, addUser_score, updateUser_score } from "@/api/readerstation-member/user_score";
+	
+	import { getUserProfile } from "@/api/system/user";
 	export default {
 		data() {
 			return {
 				data:{},
-				userinfo:'1'
+				userinfo:'1',
+				userId:'',
+				user_score:''
 			}
 		},
 		onLoad(o) {
 			// var id = o.id
 			var that = this
 			this.getgoodinfo(o.id)
+			// this.getUser_scoreinfo
 		},
 		onShareAppMessage() {
 			
@@ -94,7 +100,7 @@
 			duihuan:function(){
 				var that = this
 				if(this.userinfo){
-					if(this.userinfo.money < this.data.price){
+					if(this.usableScore < this.data.score){
 						uni.showToast({
 							title:'积分不足',
 							icon:'none'
@@ -102,8 +108,23 @@
 					}else{
 						uni.showModal({
 							title:'确认兑换',
-							content:'兑换此商品需要'+that.data.price+'积分,确认兑换吗?',
+							content:'兑换此商品需要'+that.data.score+'积分,确认兑换吗?',
+							
 							complete(res) {
+								// alert(1)
+								// alert(that.user_score.usableScore)
+								// this.user_score.totalScore = Number(this.user_score.totalScore) + Number(this.data.score)
+								that.user_score.usableScore = Number(that.user_score.usableScore) - Number(that.data.score)
+								// alert(this.user_score.totalScore)
+								
+								updateUser_score(that.user_score).then(response => {
+									uni.showToast({
+										title:'兑换成功'
+									})
+								});
+								
+								
+								
 								console.log(res)
 								// var that = this
 								if(res.confirm){
@@ -146,14 +167,25 @@
 				// alert(id)
 				getPrize(id).then(response => {
 				        this.data = response.data;
-						// alert(this.data)
 				      });
-				// alert(this.data)
-				// var that = this
-				// // this.$u.post('getgoodsinfo').then(res=>{
-				// 	// console.log(res)
-				// 	that.data = u
-				// })
+				this.getUser_scoreinfo();  
+				
+					  // alert(this.$store.state.user.uid)
+				
+				
+			},
+			
+			getUser_scoreinfo:function(){
+				// alert(1)
+				getUserProfile().then(response => {
+					this.userId = response.data.userId;
+					// alert(this.userId)
+					getUser_score(response.data.userId).then(response => {
+						// alert(1)
+					        this.user_score = response.data;
+							// alert(this.user_score.usableScore)
+					});
+				})
 			},
 			gomycard:function(){
 				uni.switchTab({

@@ -44,7 +44,8 @@ import { getUser } from "@/api/system/user";
 		data() {
 			return {
 				form:{},
-					user_scoreList:[],
+				user:[],
+				user_scoreList:[],
 				status: "加载更多",
 				joinStatus: 0,
 				active: 1,
@@ -83,10 +84,27 @@ import { getUser } from "@/api/system/user";
 			        this.user_scoreList = response.rows;
 			        this.totalCount = response.total;
 					
+					this.user_scoreList.forEach(
+						function(element){
+							
+							getUser(element.userId).then(response => {
+								element.userId = response.data.nickName
+							})
+					}
+					)
+					
+				  // getUser(1).then(response => {
+				  // 	  this.user = response.data
+					 //  alert(1)
+				  // 	alert(this.user.nickName)
+				  // })
 					// that.QuserName()
 					
 			      });
-				  
+				  // getUser(1).then(response => {
+				  // 	  this.user = response.data
+					 //  alert(this.user.name)
+				  // })
 			    },
 				
 			/** 修改操作 */

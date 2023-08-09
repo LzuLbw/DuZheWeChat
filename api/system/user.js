@@ -47,9 +47,15 @@ export function getMemberProfile() {
 //   })
 // }
 // 查询用户详细
+// export function getUser(userId) {
+//   return request({
+//     url: '/system/user/' + parseStrEmpty(userId),
+//     method: 'get'
+//   })
+// }
 export function getUser(userId) {
   return request({
-    url: '/system/user/' + parseStrEmpty(userId),
+    url: '/system/user/'+userId,
     method: 'get'
   })
 }
