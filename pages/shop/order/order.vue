@@ -100,7 +100,7 @@
 		},
 		onLoad(e) {
 		    this.userId = e.userId;
-			//this.getData();
+			this.getData();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
@@ -155,10 +155,10 @@
 				this.isfirst = false;
 			},
 			toDeposit(){
-				// uni.navigateTo({
-				// 	url:'/pages/shop/deposit/deposit?userId=' + this.userId+'' 
-				// })
-				uni.showToast({title: '该模块开发中',icon:"none"});
+				uni.navigateTo({
+					url:'/pages/shop/deposit/deposit?userId=' + this.userId+'' 
+				})
+				//uni.showToast({title: '该模块开发中',icon:"none"});
 			},
 			toPage(url){
 				if(!url){
