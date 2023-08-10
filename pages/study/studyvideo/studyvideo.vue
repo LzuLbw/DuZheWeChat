@@ -226,7 +226,8 @@
 				maskClick: true,
 				videoList:'',
 				videoId:1,
-			 videoUrl:''
+			 videoUrl:'',
+			 video_url:''
 			}
 		},  // [0,1,2,3,4,5,6,7,8,9,10,11,12]
 		
@@ -278,13 +279,42 @@
 			this.playVideo();
 		},
 		methods: {
+			TextScsnn(){
+				if(this.commentReq.content){
+								     uni.request({
+								      url:'http://localhost:8080/scanText',
+								      method:'POST',
+								      data:{
+								       text:this.commentReq.content
+								      },
+								      success:res =>{
+								       console.log(res,"res")
+								       if(res.data.state == "block"){
+								        uni.showToast({
+								         icon:'error',
+								         title:'检测到不合法内容'
+								        })
+										this.closeInput();
+								       }else{
+								        this.commentReq.pId = null
+								        this.commentReq.content = ''
+								        this.commentData.push(res.data);
+								        uni.showToast({
+								        	icon:'success'
+								        })
+								        this.closeInput();
+								       }
+								      },
+								     })
+								    }
+			},
 			playVideo() {
 				this.index = (this.index + 1) % this.videoSources.length
 				this.presentVideo = this.videoSources[this.index]
 				this.saveVideoId(this.presentVideo.videoId)
-				// let _this = this;
-				// let currentId = 'myVideo' + this.current; // 获取当前视频id
-				// this.videoContent = uni.createVideoContext(currentId, _this).play();
+				let _this = this;
+				let currentId = 'myVideo' + this.current; // 获取当前视频id
+				this.videoContent = uni.createVideoContext(currentId, _this).play();
 				// 获取视频列表
 				let trailer = this.videoList;
 				trailer.forEach((item, index) => { // 获取json对象并遍历, 停止非当前视频
@@ -318,26 +348,48 @@
 						// this.alist=res.data;
 					},
 				});
-			
-					uni.request({
-						url:'http://localhost:8080/videocomment/insert/',
-						method: 'POST',
-						data: {
-							// creatTime:this.year,
-							content:this.commentReq.content.trim(),
-							videoId:this.videoId,
-							userId:$store.state.loginUserInfo.userId
-							// creatTime:this.da.yearTime,
-							
-						},
-						dataType:'json',
-						success: (res) => {
-							console.log(res.data);
-							this.content='';
-							
-						}
+			if(this.TextScsnn()==true){
+				uni.request({
+					url:'http://localhost:8080/videocomment/insert/',
+					method: 'POST',
+					data: {
+						// creatTime:this.year,
+						content:this.commentReq.content.trim(),
+						videoId:this.videoId,
+						userId:$store.state.loginUserInfo.userId
+						// creatTime:this.da.yearTime,
 						
-					});
+					},
+					dataType:'json',
+					success: (res) => {
+						console.log(res.data);
+						this.content='';
+						
+					}
+					
+				});
+			}else{
+				uni.request({
+					url:'http://localhost:8080/videocomment/insert/',
+					method: 'POST',
+					data: {
+						// creatTime:this.year,
+						content:this.commentReq.content.trim(),
+						videoId:this.videoId,
+						userId:$store.state.loginUserInfo.userId
+						// creatTime:this.da.yearTime,
+						
+					},
+					dataType:'json',
+					success: (res) => {
+						console.log(res.data);
+						this.content='';
+						
+					}
+					
+				});
+			}
+				
 				this.closeInput();
 				},
 				// 回复评论.

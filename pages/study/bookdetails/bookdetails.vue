@@ -322,7 +322,35 @@ export default {
 	
 	// },
 	methods: {
-		
+		TextScsnn(){
+			if(this.commentReq.content){
+							     uni.request({
+							      url:'http://localhost:8080/scanText',
+							      method:'POST',
+							      data:{
+							       text:this.commentReq.content
+							      },
+							      success:res =>{
+							       console.log(res,"res")
+							       if(res.data.state == "block"){
+							        uni.showToast({
+							         icon:'error',
+							         title:'检测到不合法内容'
+							        })
+									this.closeInput();
+							       }else{
+							        this.commentReq.pId = null
+							        this.commentReq.content = ''
+							        this.commentData.push(res.data);
+							        uni.showToast({
+							        	icon:'success'
+							        })
+							        this.closeInput();
+							       }
+							      },
+							     })
+							    }
+		},
 		to_push(e){
 			
 			this.bookId=e.id;
@@ -337,7 +365,27 @@ export default {
 					// this.alist=res.data;
 				},
 			});
-		
+		if(this.TextScsnn()==true){
+			uni.request({
+				url:'http://localhost:8080/bookcomment/insert/',
+				method: 'POST',
+				data: {
+					// creatTime:this.year,
+					content:this.commentReq.content.trim(),
+					bookId:this.id,
+					userId:$store.state.loginUserInfo.userId
+					// creatTime:this.da.yearTime,
+					
+				},
+				dataType:'json',
+				success: (res) => {
+					console.log(res.data);
+					this.content='';
+					
+				}
+				
+			});
+		}else{
 				uni.request({
 					url:'http://localhost:8080/bookcomment/insert/',
 					method: 'POST',
@@ -357,6 +405,8 @@ export default {
 					}
 					
 				});
+			}
+				
 			this.closeInput();
 			},
 			// 回复评论.

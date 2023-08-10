@@ -312,7 +312,27 @@
 					
 				});
 			}else{
-				console.log("111111111111111111")
+				uni.request({
+					url:'http://123.56.217.170:8080/comment/insert/',
+					method: 'POST',
+					
+					data: {
+						content:this.commentReq.content.trim(),
+						articleId:this.id,
+						userId:$store.state.loginUserInfo.userId
+					},
+					
+					dataType:'json',
+					
+					success: (res) => {
+						this.TextScsnn();
+						console.log('jinlaillllll')
+						console.log(res.data);
+						this.content='';
+						
+					}
+					
+				});
 			}
 			console.log("第一次进来进行检测")
 					

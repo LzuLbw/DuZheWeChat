@@ -25,10 +25,10 @@
 				<image @click="gotocollection" src="../../../static/icon/collection.png" style="width: 60upx;height: 60upx;margin-left: 40px;"></image>
 				<view style="margin-left: 40px;">收藏</view>
 				</view>
-				<view>
+			<!-- 	<view>
 				<image @click="gotovideo" src="../../../static/icon/video.png" style="width: 60upx;height: 60upx;margin-left: 40px;"></image>
 				<view style="margin-left: 40px;">视频</view>
-				</view>
+				</view> -->
 			</view>
 		<br/>
 		

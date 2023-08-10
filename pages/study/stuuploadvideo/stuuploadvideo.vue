@@ -12,12 +12,17 @@
 				</image>
 				<video :src="src" style="video"></video>
 			</view>
+			<view>
+				<textarea  v-model="description" placeholder="请输入简介"></textarea>
+			</view>
 		</view>
 		<button class="sub-button" @click="subVieo">提交</button>
 	</view>
 </template>
 
 <script>
+	import $store from '@/store/modules/social';
+	
 	export default {
 		data() {
 			return {
@@ -26,7 +31,15 @@
 				addVideo: true,
 				fileList1: [],
 				picurl: "",
+				description:"",
+				video_url:''
 			}
+		},
+		onLoad:function(){
+			let userId = $store.state.loginUserInfo.userId
+			console.log(userId+"++1111110000...")
+			
+			
 		},
 		methods: {
 			// 新增图片
@@ -115,6 +128,11 @@
 					this.showVideo = false,
 					this.addVideo = true
 			},
+			back(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			
 			subVieo(){
 				let url = this.picurl
@@ -122,17 +140,19 @@
 				console.log("0.0.0.0");
 				if (url) {
 					uni.request({
-						url: "http://123.56.217.170:8080/video/addVideo",
+						url: "http://localhost:8080/video/insert",
 						method: "POST",
 							data: {
-								videoUrl: url
+								video_url: url,
+								userId:$store.state.loginUserInfo.userId,
+								description:this.description,
 							},
 							
 						success: (res) => {
 							console.log("只此昂了");
 							console.log(res.data);
 							
-							if (res.data.success) {
+							if (res.data!=null) {
 								uni.showToast({
 									title: '添加成功',
 									//将值设置为 success 或者直接不用写icon这个参数
@@ -140,6 +160,12 @@
 									//显示持续时间为 2秒
 									duration: 2000
 								})
+								// uni.navigateBack({
+								// 	delta:1
+								// })
+								setTimeout(()=>{
+									this.back();
+								},2000)
 								this.DelImg()
 							} else {
 								uni.showToast({
