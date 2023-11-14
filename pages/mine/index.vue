@@ -114,13 +114,13 @@
     },
     methods: {
       handleToInfo() {
-        this.$tab.navigateTo('/pages/mine/info/index')
+        this.$tab.navigateTo('/pagesD/mine/info/index')
       },
       handleToEditInfo() {
-        this.$tab.navigateTo('/pages/mine/info/edit')
+        this.$tab.navigateTo('/pagesD/mine/info/edit')
       },
       handleToSetting() {
-        this.$tab.navigateTo('/pages/mine/setting/index')
+        this.$tab.navigateTo('/pagesD/mine/setting/index')
       },
 	  handleToOthers() {
 	    this.$tab.navigateTo('/pages/others/index')
@@ -129,7 +129,7 @@
         this.$tab.reLaunch('/pages/login')
       },
       handleToAvatar() {
-        this.$tab.navigateTo('/pages/mine/avatar/index')
+        this.$tab.navigateTo('/pagesD/mine/avatar/index')
       },
       handleLogout() {
         this.$modal.confirm('确定注销并退出系统吗？').then(() => {
@@ -139,23 +139,23 @@
         })
       },
       handleHelp() {
-        this.$tab.navigateTo('/pages/mine/help/index')
+        this.$tab.navigateTo('/pagesD/mine/help/index')
       },
       handleAbout() {
-        this.$tab.navigateTo('/pages/mine/about/index')
+        this.$tab.navigateTo('/pagesD/mine/about/index')
       },
       handleMember() {
-        this.$tab.navigateTo('/pages/mine/member/index')
+        this.$tab.navigateTo('/pagesD/mine/member/index')
       },
       handleShop() {
         // this.$modal.showToast('模块建设中~')
-		this.$tab.navigateTo('/pages/shop/order/order')
+		this.$tab.navigateTo('/pagesA/shop/order/order')
       },
 	  handleAct() {
-	  		this.$tab.navigateTo('/pages/act/myact/myact')
+	  		this.$tab.navigateTo('/pagesB/act/myact/myact')
 	  },
 	  handleBook() {
-	  		this.$tab.navigateTo('/pages/study/articleshell/articleshell')
+	  		this.$tab.navigateTo('/pagesC/study/articleshell/articleshell')
 	  }
     }
   }

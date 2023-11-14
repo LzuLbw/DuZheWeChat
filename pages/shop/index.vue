@@ -21,7 +21,7 @@
 		<view class="category-list">
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/book.png" @tap="toCategoryDetail(1)">
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/book.png" @tap="toCategoryDetail(1)">
 					</image>
 				</view>
 				<view class="category-text">书籍</view>
@@ -29,7 +29,7 @@
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/stationery.png"
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/stationery.png"
 						@tap="toCategoryDetail(2)"></image>
 				</view>
 				<view class="category-text">文具</view>
@@ -37,7 +37,7 @@
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/wenchuang.png" @tap="toCategoryDetail(3)">
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/wenchuang.png" @tap="toCategoryDetail(3)">
 					</image>
 				</view>
 				<view class="category-text">文创产品</view>
@@ -45,21 +45,21 @@
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/foods.png" @tap="toDiancan()"></image>
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/foods.png" @tap="toDiancan()"></image>
 				</view>
 				<view class="category-text">食品</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/coffee.png" @tap="toDiancan()"></image>
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/coffee.png" @tap="toDiancan()"></image>
 				</view>
 				<view class="category-text">饮料</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/category.png" @tap="toCategoryList()">
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/coffee.png" @tap="toCategoryList()">
 					</image>
 				</view>
 				<view class="category-text">分类</view>
@@ -67,21 +67,21 @@
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/cart.png" @tap="toCart()"></image>
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/cart.png" @tap="toCart()"></image>
 				</view>
 				<view class="category-text">购物车</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/address.png" @tap="toAddress()"></image>
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/address.png" @tap="toAddress()"></image>
 				</view>
 				<view class="category-text">地址</view>
 			</view>
 
 			<view class="category">
 				<view class="category-img">
-					<image class="category-image" src="/static/image/category/order.png" @tap="toOrder()"></image>
+					<image class="category-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/order.png" @tap="toOrder()"></image>
 				</view>
 				<view class="category-text">订单</view>
 			</view>
@@ -119,9 +119,9 @@
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="goods-title">
-				<image class="goods-image" src="/static/image/hua.png"></image>
+				<image class="goods-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/shop/hua.png"></image>
 				猜你喜欢
-				<image class="goods-image" src="/static/image/hua.png"></image>
+				<image class="goods-image" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/shop/hua.png"></image>
 			</view>
 			<view class="product-list">
 				<view class="product" v-for="(item,index) in productList" :key="index" @tap="toGoods(item.id)">
@@ -227,34 +227,34 @@
 				console.log(id);
 				uni.navigateTo({
 					//url: '/pages/shop/goods/goods?id=' + id + ' &userId = '+this.userId
-					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
+					url: '/pagesA/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
 				});
 			},
 			//购物车跳转
 			toCart() {
 				uni.navigateTo({
-					url: '/pages/shop/cart/cart?userId= ' + this.userId + ''
+					url: '/pagesA/shop/cart/cart?userId= ' + this.userId + ''
 				});
 			},
 			//我的地址跳转
 			toAddress() {
 				uni.navigateTo({
-					url: '/pages/shop/address/address?userId= ' + this.userId + ''
+					url: '/pagesA/shop/address/address?userId= ' + this.userId + ''
 				});
 			},
 			toOrder() {
 				uni.navigateTo({
-					url: '/pages/shop/order/order?userId= ' + this.userId + ''
+					url: '/pagesA/shop/order/order?userId= ' + this.userId + ''
 				});
 			},
 			toCategoryList() {
 				uni.navigateTo({
-					url: '/pages/shop/category/category?userId= ' + this.userId + ''
+					url: '/pagesA/shop/category/category?userId= ' + this.userId + ''
 				});
 			},
 			toDiancan() {
 				uni.navigateTo({
-					url: '/pages/shop/diancan/diancan'
+					url: '/pagesA/shop/diancan/diancan'
 				});
 			},
 			initSwiper() {
@@ -286,7 +286,7 @@
 			},
 			toCategoryDetail(categoryId) {
 				uni.navigateTo({
-					url: '/pages/shop/category/categoryDetail?categoryId=' + categoryId + '&userId=' + this.userId + ''
+					url: '/pagesA/shop/category/categoryDetail?categoryId=' + categoryId + '&userId=' + this.userId + ''
 				})
 			}
 		}

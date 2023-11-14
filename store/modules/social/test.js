@@ -5,7 +5,6 @@ import Vuex from 'vuex'
 import messageRequest from '@/api/social/message.js';
 import $store from '@/store/modules/social/index.js';
 import friendRequest from '@/api/social/friend.js';
-import stringUtil from '@/utils/social/stringUtil.js';
 import userRequest from '@/api/social/user.js';
 import { fail } from 'assert';
 Vue.use(Vuex)

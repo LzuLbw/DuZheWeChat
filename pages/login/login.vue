@@ -57,8 +57,8 @@
 
 <script>
 	let _this;
-	import wInput from '../../components/watch-login/watch-input.vue' //input
-	import wButton from '../../components/watch-login/watch-button.vue' //button
+	import wInput from '@/components/watch-login/watch-input.vue' //input
+	import wButton from '@/components/watch-login/watch-button.vue' //button
 	import { getCodeImg } from '@/api/login'
 	
 	export default {
@@ -175,7 +175,7 @@
 </script>
 
 <style>
-	@import url("../../components/watch-login/css/icon.css");
+	@import url("@/components/watch-login/css/icon.css");
 	@import url("./css/main.css");
 	.login-code-img {
 	  height: 45px;

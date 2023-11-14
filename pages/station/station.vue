@@ -14,7 +14,7 @@
 			:longitude="longitude" 
 			:markers="markers" 
 			show-location="true">
-			<image class="current-icon" src="../../static/icon/current-icon.png" @click="goToCurrentLocation"></image>
+			<image class="current-icon" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/current-icon.png" @click="goToCurrentLocation"></image>
 			</map>
 		</view>
 		<view class="collapse-area">
@@ -26,13 +26,7 @@
 					<view class="info">{{item.location}}</view>
 					<view class="info">{{item.openTime}}</view>
 					<!--  #ifndef  MP -->
-					<!-- <view class="tag" :style="open ? 'background-color: '#FF0000'' : 'background-color: '#C0C0C0''"> -->
-					<view class="tag" :style="{backgroundColor:open?'#FF0000': '#C0C0C0'}">
-					{{open? '营业中' : '已关门'}}
-					</view>
-					 <!-- #endif -->
-					<!--  #ifdef  MP -->
-					<view class="tag" style="{{open ? 'background-color: #FF0000' : 'background-color: #C0C0C0'}}">
+					<view class="tag" :style="open ? 'background-color: #FF0000' : 'background-color: #C0C0C0'">
 					{{open? '营业中' : '已关门'}}
 					</view>
 					 <!-- #endif -->
@@ -40,8 +34,8 @@
 				<view class="location-area">
 					<view class="distance">距离{{item.distance}}km</view>
 					<view class="action-area">
-						<image class="location" src="../../static/icon/tolocation.png" @click="openGuide(item.longitude,item.latitude)"></image>
-						<image class="phone" src="../../static/icon/phone.png" @click="callPhone(item.phone)"></image>
+						<image class="location" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/tolocation.png" @click="openGuide(item.longitude,item.latitude)"></image>
+						<image class="phone" src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/phone.png" @click="callPhone(item.phone)"></image>
 					</view>
 				</view>
 			</view>
@@ -71,8 +65,6 @@ export default {
 			success(res) {
 				const latitude = res.latitude
 				const longitude = res.longitude
-				console.log(latitude,longitude)
-				that.fetchStoreList(longitude, latitude);
 				that.setData({
 					latitude,
 					longitude
@@ -81,11 +73,10 @@ export default {
 		})
 		
 		
-		
 	},
 	onShow() {
 		this.getDateNode();
-		
+		this.fetchStoreList();
 	},
 	mounted() {
 	},
@@ -116,14 +107,10 @@ export default {
 				longitude:this.longitude
 			})
 		},
-		fetchStoreList(longitude, latitude){
+		fetchStoreList(){
 			var that = this;
 			uni.request({
 				url:'http://123.56.217.170:8080/readerstation/list',
-				data:{
-					x:longitude,
-					y:latitude
-				},
 				success: (res) => {
 					var mks = []
 					var point = []
@@ -137,17 +124,9 @@ export default {
 							longitude:res.data.data[i].longitude,
 							openTime:res.data.data[i].openTime,
 							phone:res.data.data[i].phone,
-							distance:res.data.data[i].distance
+							distance:''
 						})
 					}
-					function compare(property) {
-					  return function (a, b) {
-					    var value1 = a[property];
-					    var value2 = b[property];
-					    return value1 - value2;
-					  }
-					}
-				
 					for (var i = 0; i < res.data.data.length; i++) {
 						point.push({
 							id:res.data.data[i].id,
@@ -159,10 +138,44 @@ export default {
 							height:30
 						})
 					}
-				that.storeList = mks.sort(compare("distance"))
 				that.markers = point
+				console.log(mks)
+				that.distanceCalculation(mks)
 				}
 			})
+		},
+		//根据金纬度计算距离
+		distanceCalculation(mks) {
+			var that = this;
+			let lat2 = that.latitude;
+			let lng2 = that.longitude;
+			console.log(that.latitude,that.longitude);
+			let dis = [];
+			for(var i = 0; i < mks.length; i++){
+				let lat1 = mks[i].latitude;
+				let lng1 = mks[i].longitude;
+				let rad1 = lat1 * Math.PI / 180.0;
+				let rad2 = lat2 * Math.PI / 180.0;
+				let a = rad1 - rad2;
+				let b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+				let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) * Math.cos(
+					rad2) * Math.pow(
+					Math.sin(b / 2), 2)));
+				s = s * 6378.137;
+				s = Math.round(s * 10000) / 10000;
+				s = s.toString();
+				s = s.substring(0, s.indexOf('.') + 2);
+				mks[i].distance = s
+			}
+			function compare(property) {
+			  return function (a, b) {
+			    var value1 = a[property];
+			    var value2 = b[property];
+			    return value1 - value2;
+			  }
+			}
+			console.log(mks)
+			that.storeList = mks.sort(compare("distance"))
 		},
 		callPhone(phone)	{
 			uni.makePhoneCall({

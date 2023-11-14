@@ -60,7 +60,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
-          const avatar = (user == null || user.avatar == "" || user.avatar == null) ? require("@/static/images/profile.jpg") : baseUrl + user.avatar
+          const avatar = (user == null || user.avatar == "" || user.avatar == null) ? require("@/pagesA/static/image/profile.jpg") : baseUrl + user.avatar
           const username = (user == null || user.userName == "" || user.userName == null) ? "" : user.userName
           if (res.roles && res.roles.length > 0) {
             commit('SET_ROLES', res.roles)

@@ -46,8 +46,8 @@
 
 <script>
 	let _this;
-	import wInput from '../../components/watch-login/watch-input.vue' //input
-	import wButton from '../../components/watch-login/watch-button.vue' //button
+	import wInput from '@/components/watch-login/watch-input.vue' //input
+	import wButton from '@/components/watch-login/watch-button.vue' //button
 	export default {
 		data() {
 			return {
@@ -135,7 +135,7 @@
 </script>
 
 <style>
-	@import url("../../components/watch-login/css/icon.css");
+	@import url("@/components/watch-login/css/icon.css");
 	@import url("./css/main.css");
 </style>
 

@@ -14,7 +14,7 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
 			<swiper class="carousel" circular @change="swiperChange" autoplay="true">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item">
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
 					<image :src="item.imageUrl" />
 				</swiper-item>
 			</swiper>
@@ -34,12 +34,12 @@
 		</view>
 		
 		<view class="ad-1">
-			<image src="../../static/swipers/ad3.png" mode="scaleToFill"></image>
+			<image src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/mine/ad3.png" mode="scaleToFill"></image>
 		</view>
 
 		<!-- 猜你喜欢 -->
 		<view class="f-header m-t">
-			<image src="/static/icon/sun.png"></image>
+			<image src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/sun.png"></image>
 			<view class="tit-box">
 				<text class="tit">猜你喜欢</text>
 				<text class="tit2">Guess You Like It</text>
@@ -65,16 +65,11 @@
 </template>
 
 <script>
-	
-	import {
-		getUserProfile
-	} from "@/api/system/user"
 
 	export default {
 
 		data() {
 			return {
-				userId:0,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
@@ -82,24 +77,24 @@
 				goodsList: [],
 				navs:[
 				{
-						icon:'/static/icon/book.png',
+						icon:'https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/book.png',
 						title:'每日阅读',
-						path:'/pages/paper/everyread'
+						path:'/pagesD/paper/everyread'
 					},
 					// {
-					// 	icon:'/static/icon/squre.png',
+					// 	icon:'https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/squre.png',
 					// 	title:'话题广场',
 					// 	path:'/pages/squre/squre'
 					// },
 					{
-						icon:'/static/icon/station.png',
+						icon:'https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/station.png',
 						title:'附近小站',
 						path:'/pages/station/station'
 					},
 					{
-						icon:'/static/icon/act.png',
-						title:'活动中心',
-						path:'/pages/act/act'
+						icon:'https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/icon/me.png',
+						title:'个人中心',
+						path:'/pages/mine/index'
 					},
 					]
 			};
@@ -107,17 +102,11 @@
 
 		onLoad() {
 			this.loadData();
-			this.getUser();
 		},
 		onShow() {
 			//this.getSwiper();
 		},
 		methods: {
-			getUser() {
-				getUserProfile().then(response => {
-					this.userId = response.data.userId;
-				})
-			},
 			//导航点击的处理函数
 			navItemClick(url){
 				uni.navigateTo({
@@ -161,8 +150,8 @@
 			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
 				uni.navigateTo({
-					url: '/pages/shop/goods/goods?id= ' + id + '&userId=' + this.userId + ''
-				});
+					url: `/pagesA/shop/goods/goods?id=` + id
+				})
 			},
 			//getSwiper(){
 			//	const that = this;

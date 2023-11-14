@@ -745,7 +745,7 @@
 			opendetail(id) {
 				// console.log("点击查看活动ID为" + id + "的活动详情");
 				uni.navigateTo({
-					url: 'detail/detail?activityid=' + id,
+					url: '/pagesB/act/detail/detail?activityid=' + id,
 					success: res => {
 						console.log("打开成功,id = ", id);
 					},
@@ -759,7 +759,7 @@
 		onNavigationBarButtonTap(e) {
 			// console.log("点击了我的活动按钮");
 			uni.navigateTo({
-				url: 'myact/myact',
+				url: '/pagesB/myact/myact',
 				success: res => {
 					console.log("打开我的活动成功");
 				},

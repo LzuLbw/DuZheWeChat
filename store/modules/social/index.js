@@ -4,7 +4,6 @@ import messageRequest from '@/api/social/message.js';
 import $store from '@/store/modules/social/test.js';
 import $storeApi from '@/store/modules/social';
 import friendRequest from '@/api/social/friend.js';
-import stringUtil from '@/utils/social/stringUtil.js';
 import userRequest from '@/api/social/user.js';
 import { fail } from 'assert';
 Vue.use(Vuex)
@@ -275,7 +274,6 @@ const store = new Vuex.Store({
 					name: $store.state.friendList[i].notation,
 					url: $store.state.friendList[i].avatar
 				}
-				let num = stringUtil.getFirstLetter($store.state.friendList[i].notation).charCodeAt(0)
 				
 				$store.state.friendListShow[1].push(t)
 				// if(num>=65&&num<=90)

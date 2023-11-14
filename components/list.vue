@@ -1,6 +1,6 @@
 <template>
 	<view class="list" v-if="list.length > 0">
-		<navigator :url="'/pages/paper/detail?id='+parseInt(item.id)" :tag="item.id" class="item" v-for="(item, index) in list" :key="index" hover-class="none">
+		<navigator :url="'/pagesD/paper/detail?id='+parseInt(item.id)" :tag="item.id" class="item" v-for="(item, index) in list" :key="index" hover-class="none">
 			<view class="info">
 				<view class="text">
 					<view class="title">{{ item.title }}</view>
@@ -10,7 +10,7 @@
 							<view class="time">{{ item.createTime }}</view>
 						</view>
 						<view class="right view">
-							<image src="../static/images/readcount.png"></image>
+							<image src="https://reader-station.oss-cn-hangzhou.aliyuncs.com/images/mine/readcount.png"></image>
 							<text>{{ item.count }}</text>
 						</view>
 					</view>
